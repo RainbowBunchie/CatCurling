@@ -7,7 +7,7 @@ import pkg from '../package.json';
 // This is the entry point of your game.
 
 const config = {
-  width: 1000,
+  width: 1100,
   height: 600,
   renderer: Phaser.AUTO,
   parent: '',
@@ -27,10 +27,10 @@ const game = new Phaser.Game(config);
 
 function preload() {
 
-	game.load.spritesheet('gameboy', 'assets/img/study.png', 40, 60);
 	game.load.image('atari', 'assets/img/study.png');
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
+  game.load.image('tv-table', 'assets/img/furniture/tv-table.png');
 
 }
 
@@ -38,6 +38,8 @@ var sprite;
 var sprite2;
 var sprite3;
 var sprite4;
+
+let tvtable;
 
 let furniture;
 
@@ -59,7 +61,7 @@ function create() {
   sprite.body.checkCollision.right = true;
 	sprite.body.checkCollision.down = true;
 	sprite.body.immovable = true;
-  sprite.scale.setTo(0.3,0.3);
+  sprite.scale.setTo(0.35,0.35);
 
   furniture.add(sprite);
 
@@ -70,12 +72,23 @@ function create() {
   sprite4.body.checkCollision.up = true;
   sprite4.body.checkCollision.down = true;
   sprite4.body.immovable = true;
-  sprite4.scale.setTo(0.3,0.3);
+  sprite4.scale.setTo(0.35,0.35);
 
   furniture.add(sprite4);
 
+  tvtable = game.add.sprite(60,game.height,'tv-table');
+  tvtable.name = 'tvtable';
+  game.physics.enable(tvtable, Phaser.Physics.ARCADE);
+  tvtable.body.collideWorldBounds = true;
+  tvtable.body.checkCollision.up = true;
+  tvtable.body.checkCollision.down = true;
+  tvtable.body.immovable = true;
+  tvtable.scale.setTo(0.35,0.35);
 
-	sprite2 = game.add.sprite(0, 400, 'atari');
+  furniture.add(tvtable)
+
+
+	sprite2 = game.add.sprite(50, 400, 'atari');
 	sprite2.name = 'gameboy';
 
 	game.physics.enable(sprite2, Phaser.Physics.ARCADE);
@@ -84,7 +97,7 @@ function create() {
   sprite2.scale.setTo(0.3,0.3);
 
 
-	sprite3 = game.add.sprite(600, 0, 'atari');
+	sprite3 = game.add.sprite(600, 120, 'atari');
   sprite3.scale.setTo(0.3,0.3);
 
 
@@ -94,8 +107,8 @@ function create() {
 	sprite3.body.collideWorldBounds = true;
 	sprite3.body.bounce.setTo(1, 1);
 
-	sprite2.body.velocity.y = -100;
-	sprite3.body.velocity.x = -100;
+	sprite2.body.velocity.y = -400;
+	sprite3.body.velocity.x = -400;
 
 }
 
