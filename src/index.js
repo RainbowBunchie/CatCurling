@@ -7,7 +7,7 @@ import pkg from '../package.json';
 // This is the entry point of your game.
 
 const config = {
-  width: 800,
+  width: 1000,
   height: 600,
   renderer: Phaser.AUTO,
   parent: '',
@@ -29,38 +29,64 @@ function preload() {
 
 	game.load.spritesheet('gameboy', 'assets/img/study.png', 40, 60);
 	game.load.image('atari', 'assets/img/study.png');
+  game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
+  game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
 
 }
 
 var sprite;
 var sprite2;
 var sprite3;
+var sprite4;
+
+let furniture;
 
 function create() {
 
-  game.physics.startSystem(Phaser.Physics.ARCADE);
+  furniture = game.add.group();
 
-	game.stage.backgroundColor = '#000';
+  game.physics.startSystem(Phaser.Physics.ARCADE);
+	game.stage.backgroundColor = '#f5cf99';
 
 	//	In this example the little Gameboy sprite can pass through the top/bottom of the Atari sprite
 	//	Because it's set to ignore collisions on its top/bottom faces.
 
-	sprite = game.add.sprite(300, 200, 'atari');
-	sprite.name = 'atari';
+	sprite = game.add.sprite(0, 0, 'couch-long');
+	sprite.name = 'couch-long';
 	game.physics.enable(sprite, Phaser.Physics.ARCADE);
 	sprite.body.collideWorldBounds = true;
-	sprite.body.checkCollision.up = false;
-	sprite.body.checkCollision.down = false;
+	sprite.body.checkCollision.up = true;
+  sprite.body.checkCollision.right = true;
+	sprite.body.checkCollision.down = true;
 	sprite.body.immovable = true;
+  sprite.scale.setTo(0.3,0.3);
 
-	sprite2 = game.add.sprite(350, 400, 'atari');
+  furniture.add(sprite);
+
+  sprite4 = game.add.sprite(0, sprite.height-2, 'couch-short');
+  sprite4.name = 'couch-short';
+  game.physics.enable(sprite4, Phaser.Physics.ARCADE);
+  sprite4.body.collideWorldBounds = true;
+  sprite4.body.checkCollision.up = true;
+  sprite4.body.checkCollision.down = true;
+  sprite4.body.immovable = true;
+  sprite4.scale.setTo(0.3,0.3);
+
+  furniture.add(sprite4);
+
+
+	sprite2 = game.add.sprite(0, 400, 'atari');
 	sprite2.name = 'gameboy';
 
 	game.physics.enable(sprite2, Phaser.Physics.ARCADE);
 	sprite2.body.collideWorldBounds = true;
 	sprite2.body.bounce.setTo(1, 1);
+  sprite2.scale.setTo(0.3,0.3);
 
-	sprite3 = game.add.sprite(0, 210, 'atari');
+
+	sprite3 = game.add.sprite(600, 0, 'atari');
+  sprite3.scale.setTo(0.3,0.3);
+
 
 	game.physics.enable(sprite3, Phaser.Physics.ARCADE);
 
@@ -68,21 +94,23 @@ function create() {
 	sprite3.body.collideWorldBounds = true;
 	sprite3.body.bounce.setTo(1, 1);
 
-	sprite2.body.velocity.y = -50;
-	sprite3.body.velocity.x = 50;
+	sprite2.body.velocity.y = -100;
+	sprite3.body.velocity.x = -100;
 
 }
 
 function update() {
 
-	game.physics.arcade.collide(sprite, sprite2);
-	game.physics.arcade.collide(sprite, sprite3);
+	game.physics.arcade.collide(furniture, sprite2);
+  game.physics.arcade.collide(furniture, sprite3);
+
+	//game.physics.arcade.collide(sprite, sprite3);
 
 }
 
 function render() {
 
-	game.debug.bodyInfo(sprite, 16, 24);
+	//game.debug.bodyInfo(sprite, 16, 24);
 
 	// game.debug.body(sprite);
 	// game.debug.body(sprite2);
