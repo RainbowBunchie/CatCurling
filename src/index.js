@@ -31,7 +31,7 @@ function preload() {
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
   game.load.image('tv-table', 'assets/img/furniture/tv-table.png');
-
+  game.load.image('table', 'assets/img/furniture/table.png' )
 }
 
 var sprite;
@@ -40,6 +40,7 @@ var sprite3;
 var sprite4;
 
 let tvtable;
+let table;
 
 let furniture;
 
@@ -88,6 +89,19 @@ function create() {
   furniture.add(tvtable)
 
 
+  table = game.add.sprite(500,game.height,'table');
+  table.name = 'tvtable';
+  game.physics.enable(table, Phaser.Physics.ARCADE);
+  table.body.collideWorldBounds = true;
+  table.body.checkCollision.up = true;
+  table.body.checkCollision.down = true;
+  table.body.immovable = true;
+  table.angle = -90;
+  table.scale.setTo(0.35,0.35);
+
+  furniture.add(tvtable)
+
+
 	sprite2 = game.add.sprite(50, 400, 'atari');
 	sprite2.name = 'gameboy';
 
@@ -117,6 +131,7 @@ function update() {
 	game.physics.arcade.collide(furniture, sprite2);
   game.physics.arcade.collide(furniture, sprite3);
 
+
 	//game.physics.arcade.collide(sprite, sprite3);
 
 }
@@ -127,5 +142,7 @@ function render() {
 
 	// game.debug.body(sprite);
 	// game.debug.body(sprite2);
+
+  table.angle+=10;
 
 }
