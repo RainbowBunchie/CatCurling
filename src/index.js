@@ -31,7 +31,12 @@ function preload() {
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
   game.load.image('tv-table', 'assets/img/furniture/tv-table.png');
-  game.load.image('table', 'assets/img/furniture/table.png' )
+  game.load.image('table', 'assets/img/furniture/table.png' );
+  game.load.image('chairs', 'assets/img/furniture/chairs-table.png');
+  game.load.image('plant', 'assets/img/furniture/plant.png');
+  game.load.image('goal', 'assets/img/furniture/goal.png');
+
+
 }
 
 var sprite;
@@ -41,6 +46,9 @@ var sprite4;
 
 let tvtable;
 let table;
+let chairs;
+let plant;
+let goal;
 
 let furniture;
 
@@ -50,9 +58,6 @@ function create() {
 
   game.physics.startSystem(Phaser.Physics.ARCADE);
 	game.stage.backgroundColor = '#f5cf99';
-
-	//	In this example the little Gameboy sprite can pass through the top/bottom of the Atari sprite
-	//	Because it's set to ignore collisions on its top/bottom faces.
 
 	sprite = game.add.sprite(0, 0, 'couch-long');
 	sprite.name = 'couch-long';
@@ -85,22 +90,51 @@ function create() {
   tvtable.body.checkCollision.down = true;
   tvtable.body.immovable = true;
   tvtable.scale.setTo(0.35,0.35);
+  furniture.add(tvtable);
 
-  furniture.add(tvtable)
 
+  chairs = game.add.sprite((game.width/2 - 55),(game.height - 243),'chairs');
+  chairs.name = 'chairs';
+  game.physics.enable(chairs, Phaser.Physics.ARCADE);
+  chairs.body.collideWorldBounds = true;
+  chairs.body.checkCollision.up = true;
+  chairs.body.checkCollision.down = true;
+  chairs.body.immovable = true;
+  chairs.scale.setTo(0.35,0.35);
 
-  table = game.add.sprite(500,game.height,'table');
+  furniture.add(chairs);
+
+  table = game.add.sprite(game.width/2,game.height,'table');
   table.name = 'tvtable';
   game.physics.enable(table, Phaser.Physics.ARCADE);
   table.body.collideWorldBounds = true;
   table.body.checkCollision.up = true;
   table.body.checkCollision.down = true;
   table.body.immovable = true;
-  table.angle = -90;
   table.scale.setTo(0.35,0.35);
 
-  furniture.add(tvtable)
+  furniture.add(table);
 
+  plant = game.add.sprite(game.width/5 * 3, 10,'plant');
+  plant.name = 'plant';
+  game.physics.enable(plant, Phaser.Physics.ARCADE);
+  plant.body.collideWorldBounds = true;
+  plant.body.checkCollision.up = true;
+  plant.body.checkCollision.down = true;
+  plant.body.immovable = true;
+  plant.scale.setTo(0.45,0.45);
+
+  furniture.add(plant);
+
+  goal = game.add.sprite(50, 270,'goal');
+  goal.name = 'goal';
+  plant.body.collideWorldBounds = true;
+  game.physics.enable(goal, Phaser.Physics.ARCADE);
+  goal.body.immovable = true;
+  goal.scale.setTo(0.6,0.6);
+
+
+// GAME CHARACTERS:
 
 	sprite2 = game.add.sprite(50, 400, 'atari');
 	sprite2.name = 'gameboy';
@@ -111,7 +145,7 @@ function create() {
   sprite2.scale.setTo(0.3,0.3);
 
 
-	sprite3 = game.add.sprite(600, 120, 'atari');
+	sprite3 = game.add.sprite(0, 450, 'atari');
   sprite3.scale.setTo(0.3,0.3);
 
 
@@ -142,7 +176,5 @@ function render() {
 
 	// game.debug.body(sprite);
 	// game.debug.body(sprite2);
-
-  table.angle+=10;
 
 }
