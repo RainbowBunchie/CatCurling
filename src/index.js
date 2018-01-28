@@ -35,6 +35,8 @@ function preload() {
   game.load.image('chairs', 'assets/img/furniture/chairs-table.png');
   game.load.image('plant', 'assets/img/furniture/plant.png');
   game.load.image('goal', 'assets/img/furniture/goal.png');
+  game.load.image('desk', 'assets/img/furniture/desk.png');
+  game.load.image('deskchair', 'assets/img/furniture/desk-chair.png');
 
 
 }
@@ -49,6 +51,8 @@ let table;
 let chairs;
 let plant;
 let goal;
+let desk;
+let deskchair;
 
 let furniture;
 
@@ -126,6 +130,37 @@ function create() {
 
   furniture.add(plant);
 
+
+  deskchair = game.add.sprite(game.width-130, game.height/4 + 45,'deskchair');
+  deskchair.name = 'deskchair';
+  game.physics.enable(deskchair, Phaser.Physics.ARCADE);
+  deskchair.body.collideWorldBounds = true;
+  deskchair.body.checkCollision.up = true;
+  deskchair.body.checkCollision.down = true;
+  deskchair.body.immovable = true;
+  deskchair.scale.setTo(0.45,0.45);
+  deskchair.rotation = 0.2;
+
+  furniture.add(deskchair);
+
+  desk = game.add.sprite(game.width, game.height/4,'desk');
+  desk.name = 'desk';
+  game.physics.enable(desk, Phaser.Physics.ARCADE);
+  desk.body.collideWorldBounds = true;
+  desk.body.checkCollision.up = true;
+  desk.body.checkCollision.down = true;
+  desk.body.immovable = true;
+  desk.scale.setTo(0.45,0.45);
+
+  furniture.add(desk);
+
+
+
+
+
+
+  // GOAL
+
   goal = game.add.sprite(50, 270,'goal');
   goal.name = 'goal';
   plant.body.collideWorldBounds = true;
@@ -136,7 +171,7 @@ function create() {
 
 // GAME CHARACTERS:
 
-	sprite2 = game.add.sprite(50, 400, 'atari');
+	sprite2 = game.add.sprite(50, 150, 'atari');
 	sprite2.name = 'gameboy';
 
 	game.physics.enable(sprite2, Phaser.Physics.ARCADE);
@@ -145,7 +180,7 @@ function create() {
   sprite2.scale.setTo(0.3,0.3);
 
 
-	sprite3 = game.add.sprite(0, 450, 'atari');
+	sprite3 = game.add.sprite(500, 160, 'atari');
   sprite3.scale.setTo(0.3,0.3);
 
 
