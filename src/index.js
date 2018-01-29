@@ -37,6 +37,8 @@ function preload() {
   game.load.image('goal', 'assets/img/furniture/goal.png');
   game.load.image('desk', 'assets/img/furniture/desk.png');
   game.load.image('deskchair', 'assets/img/furniture/desk-chair.png');
+  game.load.image('coffeetable', 'assets/img/furniture/coffee-table.svg');
+
 }
 
 var sprite;
@@ -51,6 +53,7 @@ let plant;
 let goal;
 let desk;
 let deskchair;
+let coffeetable;
 
 let furniture;
 
@@ -151,6 +154,20 @@ function create() {
   desk.scale.setTo(0.45,0.45);
 
   furniture.add(desk);
+
+
+  coffeetable = game.add.sprite(160, 130,'coffeetable');
+  desk.name = 'coffeetable';
+  game.physics.enable(coffeetable, Phaser.Physics.ARCADE);
+  coffeetable.body.collideWorldBounds = true;
+  coffeetable.body.checkCollision.up = true;
+  coffeetable.body.checkCollision.down = true;
+  coffeetable.body.immovable = true;
+  coffeetable.scale.setTo(0.9 , 0.9);
+  coffeetable.rotation = 0.1;
+
+
+  furniture.add(coffeetable);
 
   // GOAL
 
