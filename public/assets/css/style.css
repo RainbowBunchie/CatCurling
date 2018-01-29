@@ -1,16 +1,59 @@
 body{
     margin:0;
     padding:0;
+    background-color:#f3f4f4;
+    font-family:stringz;
 }
+
+canvas {
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    position:relative;
+    top:5em;
+    border:10px solid #FFF;
+    z-index:-1;
+}
+
 /* -- Nav -- */
+@font-face {
+    font-family: Stringz;
+    src: url(../fonts/stringz.otf);
+}
+
 #nav{
     background: linear-gradient(#ffc8df, #ffafd2);
     height:4rem;
     font-size:3rem;
     color:#FFF;
+    padding-left:0.3em;
+    position:fixed;
+    width:100%;
+    display:flex;
+    flex-direction: row;
+}
+
+#nav img{
+    height:85%;
+    display:inline-block;
+    margin:0 auto;
+    flex:0;
+    padding:5px;
+
+}
+
+#empty{
+    flex:1;
+}
+
+#nav_burger{
+    flex:1;
+    width:50px;
+    display:inline-block;
 }
 
 .sidenav {
+    margin-top:4rem;
     height: 100%;
     width: 0;
     position: fixed;
@@ -20,14 +63,20 @@ body{
     background: linear-gradient(#ffc8df, #ffafd2);
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 60px;
+    padding-top: 1em;
+    border-right:5px solid #FFF;
+}
+
+.nav_toggle{
+    width:250px;
 }
 
 .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
-    color: #818181;
+    color: #FFF;
+    font-size:2rem;
     display: block;
     transition: 0.3s;
 }
@@ -47,4 +96,62 @@ body{
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
+}
+
+/* Burger Icon Animation */
+
+#nav_burger{
+    cursor:pointer;
+}
+
+#burger {
+  background-color: #FFF;
+  width: 2.5rem;
+  border-style: none;
+  height: 0.4rem;
+  position: relative;
+  transition: all 1s ease-out;
+  top:-1.5em;
+  border-radius: 10px;
+}
+#burger::before {
+  position: absolute;
+  content: "";
+  width: inherit;
+  height: inherit;
+  top: 0;
+  left: 0;
+  background-color: inherit;
+  margin-top:-0.8rem;
+  transition: all 1s ease;
+  border-radius: 10px;
+}
+#burger::after {
+  position: absolute;
+  content: "";
+  width: inherit;
+  height: inherit;
+  top: 0;
+  left: 0;
+  margin-top:0.8rem;
+  background-color: inherit;;
+  transition: all 1s ease;
+  border-radius: 10px;
+}
+
+.burgeron {
+  background-color: transparent !important;
+  cursor: pointer;
+}
+.burgeron::before {
+  transform: rotate(45deg);
+  background-color: #449edd;
+  margin-top:0 !important;
+  background-color: #FFF !important;
+}
+.burgeron::after {
+  transform: rotate(315deg);
+  background-color: #449edd;
+  margin-top:0 !important;
+  background-color: #FFF !important;
 }

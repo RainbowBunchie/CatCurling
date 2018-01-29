@@ -11,24 +11,29 @@
   </head>
   <body>
     <div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="#">Game</a>
     <a href="#">Highscore</a>
     <a href="#">Imprint</a>
     </div>
 
-    <section id="nav" onclick="openNav()">&#9776; open</p>
-    <main>
+    <section id="nav">
+      <div id="nav_burger" onclick="toggleNav()">
+        <button id="burger">
+        </button>
+      </div>
+      <img src="assets/img/logo.png" alt="CatCurling">
+      <div id="empty"></div>
+    </section>
+
+    <section id="main">
       <script src="assets/js/bundle.js"></script>
-    </main>
+    </section>
 
     <script>
-      function openNav() {
-      document.getElementById("mySidenav").style.width = "250px";
-      }
-
-      function closeNav() {
-      document.getElementById("mySidenav").style.width = "0";
+      function toggleNav() {
+        document.getElementById("mySidenav").classList.toggle("nav_toggle")
+        document.getElementById("burger").classList.toggle("burgeron")
+        console.log(document.getElementById("burger"))
       }
     </script>
   </body>
