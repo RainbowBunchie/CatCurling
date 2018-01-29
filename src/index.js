@@ -196,30 +196,32 @@ function create() {
   let settingsbutton = game.add.sprite(10, 10,'settingsbutton');
   settingsbutton.scale.setTo(1,1);
 
+  // PAUSING THE GAME
+
   let pausebutton = game.add.sprite(20 + settingsbutton.width, 10,'pausebutton');
+
   pausebutton.inputEnabled = true;
+
   pausebutton.events.onInputUp.add(function(){
-    console.log("aufruf!!");
-    if (game.paused === true){
-      game.paused = false;
-    }
-    else{
       game.paused = true;
-    }
   });
 
   game.onPause.add(handlePause);
 
+  let text;
+
   function handlePause(){
-    console.log("pause");
+    text = game.add.text(game.width * 0.5, game.height * 0.5, "Game paused", textstyleCenter);
   }
 
-  /*game.input.onDown.add(unpause, self);
+  game.input.onDown.add(unpause, self);
+
   function unpause(){
-    game.paused = false;
-  }*/
-
-
+    if (game.paused == true){
+      text.destroy();
+      game.paused = false;
+    }
+  }
 
   let levelgroup = game.add.group();
 
@@ -325,7 +327,6 @@ function collisionHandler (obj1, obj2) {
         player.kill();
       }
     }
- //scoretext.setText(score.toString());
   }
 }
 
