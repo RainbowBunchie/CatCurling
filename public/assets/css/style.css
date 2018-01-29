@@ -3,6 +3,8 @@ body{
     padding:0;
     background-color:#f3f4f4;
     font-family:stringz;
+    display: flex;
+    flex-direction: 
 }
 
 canvas {
@@ -152,5 +154,23 @@ canvas {
 /* -- Imprint --*/
 
 #imprint{
+    padding:1rem;
+    width:100%;
+    height:30rem;
+    background-repeat: no-repeat;
+    background-image:url(../img/imprint.png);
+    background-position: center;
+    background-size:40rem;
+    margin-top:8rem;
+}
 
+#imprint .text{
+    margin-top:9rem;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+    font-size:2rem;
+    max-width:32rem;
+    color:#FFF;
+    text-shadow: 2px 0 0 #f6b47c, -2px 0 0 #f6b47c, 0 2px 0 #f6b47c, 0 -2px 0 #f6b47c, 1px 1px #f6b47c, -1px -1px 0 #f6b47c, 1px -1px 0 #f6b47c, -1px 1px 0 #f6b47c;
 }
