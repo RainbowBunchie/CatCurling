@@ -95,11 +95,11 @@ function create() {
   let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
   furniture.add(tvTable);
 
-  let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
-  furniture.add(chairs);
+  // let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
+  // furniture.add(chairs);
 
-  let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
-  furniture.add(table);
+  // let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
+  // furniture.add(table);
 
   let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
   furniture.add(plant);
@@ -152,7 +152,7 @@ function create() {
 
   arrow = game.add.sprite(player,player,'arrow');
   arrow.anchor.setTo(0.5,0);
-  arrow.alpha = 1;
+  arrow.alpha = 0;
   arrow.scale.setTo(0.5);
 
 	player = game.add.sprite(850, 550, 'player');
@@ -276,11 +276,33 @@ function update() {
 
 }
 
-function collisionHandler (obj1, obj2) {
-  if((player.body.velocity.x < 10 && player.body.velocity.x > -10) && (player.body.velocity.y < 10 && player.body.velocity.y > -10) )
-    player.kill();
-    score += 100;
+function calcOverlap(obj1,obj2){
+  let dx = obj1.x-obj2.x;
+  let dy = obj1.y-obj2.y;
+  let result = Math.sqrt((Math.pow(dx,2)+Math.pow(dy,2)));
+  return result;
+}
 
+
+function collisionHandler (obj1, obj2) {
+  if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
+
+    if(obj2 == goalInner){
+      if (calcOverlap(player.body, goalInner.body)<10){
+    score += 300;
+    player.kill();
+      }
+    }
+    
+    else if (obj2 == goal){
+      if (calcOverlap(player.body, goal.body)<70){
+    score +=100;
+    player.kill();
+  }
+    
+}
+scoretext.setText(score.toString());
+  }
 }
 
 function collectDust(player, dust){
@@ -301,5 +323,6 @@ function render() {
   game.debug.body(player);
   game.debug.body(goal);
   game.debug.body(goalInner);
-
+   game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
+   game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
 }
