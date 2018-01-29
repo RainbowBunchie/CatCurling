@@ -29,8 +29,8 @@ function preload() {
   game.load.image('goal', 'assets/img/furniture/goal.png');
   game.load.image('desk', 'assets/img/furniture/desk.png');
   game.load.image('deskchair', 'assets/img/furniture/desk-chair.png');
-  game.load.image('arrow', 'assets/sprites/arrow-top.svg');
-  game.load.image('analog', 'assets/sprites/arrow-bottom.svg');
+  game.load.image('arrow', 'assets/sprites/arrow-top.png');
+  game.load.image('analog', 'assets/sprites/arrow-bottom.png');
   game.load.image('coffeetable', 'assets/img/furniture/coffee-table.svg');
   game.load.image('scoreholder', 'assets/img/gui/score-holder.svg');
   game.load.image('levelholder', 'assets/img/gui/level-holder.svg');
@@ -127,15 +127,16 @@ goal.body.setSize(100, 100, 50, 50);
 
   // GAME CHARACTERS:
 
-  analog = game.add.sprite(player,player,'analog2');
-  //analog.width=8;
+  analog = game.add.sprite(player,player,'analog');
+  analog.width=8;
+
   //analog.rotation = 220;
   analog.alpha = 0;
   analog.anchor.setTo(0.5, 1);
   analog.scale.setTo(0.5)
 
   arrow = game.add.sprite(player,player,'arrow');
-  arrow.anchor.setTo(0.5,1);
+  arrow.anchor.setTo(0.5,0);
   arrow.alpha = 1;
   arrow.scale.setTo(0.5);
 
@@ -196,7 +197,7 @@ goal.body.setSize(100, 100, 50, 50);
 }
 
 function set(player,pointer) {
-
+if(player.body.velocity.x === 0 && player.body.velocity.y === 0){
     catchFlag = true;
     game.camera.follow(null);
 
@@ -204,11 +205,14 @@ function set(player,pointer) {
     player.body.velocity.setTo(0, 0);
     arrow.reset(player.x, player.y);
     analog.reset(player.x, player.y);
+}
+    
 
 }
 
 function launch() {
 
+  if(player.body.velocity.x === 0 && player.body.velocity.y === 0){
     catchFlag = false;
     player.body.moves = true;
     game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
@@ -220,12 +224,12 @@ function launch() {
     Yvector = (arrow.y - player.y) * 3;
 
     player.body.velocity.setTo(Xvector, Yvector);
-
+  }
 }
 
 function update() {
 
-	arrow.rotation = game.physics.arcade.angleBetween(arrow, player);
+	arrow.rotation = game.physics.arcade.angleBetween(arrow, player)- 3.14 / 2;
 
   game.physics.arcade.collide(furniture, player);
 
@@ -237,9 +241,10 @@ function update() {
 
         arrow.alpha = 1;
         analog.alpha = 1;
-        analog.rotation = arrow.rotation - 3.14 / 2;
-        analog.height = game.physics.arcade.distanceBetween(arrow, player);
+        analog.rotation = arrow.rotation;
+        analog.height = game.physics.arcade.distanceBetween(arrow, player)-20;
         launchVelocity = analog.height-100;
+      
     }
 
     player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
