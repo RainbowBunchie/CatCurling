@@ -5,8 +5,6 @@ import defaults from './config';
 import furnitureTpl from './module-assets/furniture';
 import pkg from '../package.json';
 
-// This is the entry point of your game.
-
 const config = Object.assign(defaults, {
   state: {
     create,
@@ -21,7 +19,7 @@ const game = new Phaser.Game(config);
 
 function preload() {
 
-	game.load.image('player', 'assets/sprites/kitty.png');
+	game.load.image('player', 'assets/sprites/kitty.svg');
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
   game.load.image('tv-table', 'assets/img/furniture/tv-table.png');
@@ -41,15 +39,15 @@ function preload() {
 }
 
 let furniture;
+
 let player;
 let cursors;
 let arrow;
 let catchFlag = false;
 let launchVelocity = 0;
 let analog;
-let deskchair;
-let coffeetable;
 
+let score = 0;
 let scoretext;
 
 function create() {
@@ -59,7 +57,9 @@ function create() {
   let textstyle = {
           font: "3em Stringz",
           fill: "#fff",
-          align: "right"
+          align: "right",
+          boundsAlignH: "right",
+          boundsAlignV: "right"
         };
 
 
@@ -96,6 +96,7 @@ function create() {
   coffeetable.rotation = 0.1;
   furniture.add(coffeetable);
 
+
   // GOAL
 
   let goal = game.add.sprite(50, 270,'goal');
@@ -107,15 +108,21 @@ function create() {
 
   // GUI ELEMENTS
 
-  const scoreholder = game.add.sprite(game.width-160, 0,'scoreholder');
+  let scoregroup =  game.add.group();
+  scoregroup.x = game.width-165;
+
+  const scoreholder = game.add.sprite(0, 0,'scoreholder');
   scoreholder.name = 'goal';
   game.physics.enable(scoreholder, Phaser.Physics.ARCADE);
   scoreholder.body.collideWorldBounds = true;
   scoreholder.body.immovable = true;
   scoreholder.scale.setTo(1, 1);
+  scoregroup.add(scoreholder);
 
-  scoretext = game.add.text(0, 0, "100", textstyle);
-  scoretext.setTextBounds(0,0,800,100);
+  scoretext = game.add.text(0, 0, score.toString(), textstyle);
+  scoretext.setTextBounds(40, 12, 100, 10);
+  scoregroup.add(scoretext);
+
 
   // GAME CHARACTERS:
 
@@ -148,8 +155,6 @@ function create() {
   player.events.onInputUp.add(launch);
   game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
 
-
-
 }
 
 function set(player,pointer) {
@@ -181,7 +186,6 @@ function launch() {
 }
 
 function update() {
-  let score = 0;
 
 	arrow.rotation = game.physics.arcade.angleBetween(arrow, player);
 
@@ -199,6 +203,10 @@ function update() {
         analog.height = game.physics.arcade.distanceBetween(arrow, player);
         launchVelocity = analog.height-100;
     }
+
+    /* WENN SCORE GEÄNDERT WIRD ->
+    scoretext.setText(score.toString());
+    */
 
 }
 
