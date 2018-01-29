@@ -29,8 +29,8 @@ function preload() {
   game.load.image('goal', 'assets/img/furniture/goal.png');
   game.load.image('desk', 'assets/img/furniture/desk.png');
   game.load.image('deskchair', 'assets/img/furniture/desk-chair.png');
-  game.load.image('arrow', 'assets/sprites/arrow.svg');
-  game.load.image('analog', 'assets/sprites/arrow.svg');
+  game.load.image('arrow', 'assets/sprites/arrow-top.svg');
+  game.load.image('analog', 'assets/sprites/arrow-bottom.svg');
   game.load.image('coffeetable', 'assets/img/furniture/coffee-table.svg');
   game.load.image('scoreholder', 'assets/img/gui/score-holder.svg');
   game.load.image('levelholder', 'assets/img/gui/level-holder.svg');
@@ -89,7 +89,7 @@ function create() {
   furniture.add(couchShort);
 
   let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
-  furniture.add(couchShort);
+  furniture.add(tvTable);
 
   let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
   furniture.add(chairs);
@@ -120,6 +120,9 @@ function create() {
   goal.body.collideWorldBounds = true;
   goal.body.immovable = true;
   goal.scale.setTo(0.6 , 0.6);
+
+
+goal.body.setSize(100, 100, 50, 50);
 
 
   // GAME CHARACTERS:
@@ -231,7 +234,7 @@ function update() {
         arrow.x = game.input.activePointer.worldX;
         arrow.y = game.input.activePointer.worldY;
 
-        arrow.alpha = 0;
+        arrow.alpha = 1;
         analog.alpha = 1;
         analog.rotation = arrow.rotation - 3.14 / 2;
         analog.height = game.physics.arcade.distanceBetween(arrow, player);
@@ -247,7 +250,7 @@ function update() {
 }
 
 function collisionHandler (obj1, obj2) {
-
+  if(player.body.velocity < 10 )
     player.kill();
 
 }
