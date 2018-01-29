@@ -136,7 +136,11 @@ function create() {
   dusts.enableBody = true;
 
   let dust = dusts.create(650, 250, 'dust');
+  let dust2 = dusts.create(250, 450, 'dust');
+  let dust3 = dusts.create(480, 180, 'dust');
   dust.scale.setTo(0.2,0.2);
+  dust2.scale.setTo(0.2, 0.2);
+  dust3.scale.setTo(0.2,0.2);
 
 
   // GAME CHARACTERS:
@@ -193,6 +197,29 @@ function create() {
   settingsbutton.scale.setTo(1,1);
 
   let pausebutton = game.add.sprite(20 + settingsbutton.width, 10,'pausebutton');
+  pausebutton.inputEnabled = true;
+  pausebutton.events.onInputUp.add(function(){
+    console.log("aufruf!!");
+    if (game.paused === true){
+      game.paused = false;
+    }
+    else{
+      game.paused = true;
+    }
+  });
+
+  game.onPause.add(handlePause);
+
+  function handlePause(){
+    console.log("pause");
+  }
+
+  /*game.input.onDown.add(unpause, self);
+  function unpause(){
+    game.paused = false;
+  }*/
+
+
 
   let levelgroup = game.add.group();
 
@@ -262,9 +289,6 @@ function update() {
 
     player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
 
-    /* WENN SCORE GEÄNDERT WIRD ->
-    scoretext.setText(score.toString());
-    */
     game.physics.arcade.overlap(player, goalInner, collisionHandler, null, this);
     game.physics.arcade.overlap(player, goal, collisionHandler, null, this);
 
@@ -276,36 +300,38 @@ function update() {
 }
 
 function calcOverlap(obj1,obj2){
-  let dx = obj1.x-obj2.x;
-  let dy = obj1.y-obj2.y;
+  let dx = (obj1.x+obj1.width/2)-(obj2.x+obj2.width/2);
+  let dy = (obj1.y+obj1.height/2)-(obj2.y+obj2.height/2);
   let result = Math.sqrt((Math.pow(dx,2)+Math.pow(dy,2)));
   return result;
 }
 
 
 function collisionHandler (obj1, obj2) {
+
   if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
 
     if(obj2 == goalInner){
-      if (calcOverlap(player.body, goalInner.body)<10){
-    score += 300;
-    player.kill();
+      if (calcOverlap(player.body, goalInner.body)<15){
+        animateScore(300);
+
+        player.kill();
       }
-      else score +=100;
+      //else animateScore(100);
     }
-    
+
     else if (obj2 == goal){
-      if (calcOverlap(player.body, goal.body)<70){
-    score +=100;
-    player.kill();
-  }
-  else{}
-    
-}
-scoretext.setText(score.toString());
+      if (calcOverlap(player.body, goal.body)<66){
+        animateScore(100);
+        player.kill();
+      }
+    }
+ //scoretext.setText(score.toString());
+
   }
 }
 
+//triggered when cat overlaps with dust
 function collectDust(player, dust){
   dust.kill();
   animateScore(50);
@@ -313,13 +339,11 @@ function collectDust(player, dust){
 
 function animateScore(amount){
   game.add.tween(scoretext).to({score:score+amount},700,"Linear", true);
+  score += amount;
 
 }
 
 function render() {
-
-	//game.debug.bodyInfo(sprite, 16, 24);
-	//game.debug.body(sprite);
   game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
   game.debug.cameraInfo(game.camera, 32, 64);
   game.debug.spriteCoords(player, 32, 150);
@@ -330,4 +354,5 @@ function render() {
   game.debug.body(goalInner);
    game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
    game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
+   
 }
