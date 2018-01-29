@@ -91,7 +91,7 @@ function create() {
 
   let desk = furnitureTpl(game,'desk',game.width,game.height/4,0.45,0.45);
   furniture.add(desk);
-  
+
   let coffeetable = furnitureTpl(game,'coffeetable',160,130,0.9,0.9);
   coffeetable.rotation = 0.1;
   furniture.add(coffeetable);
