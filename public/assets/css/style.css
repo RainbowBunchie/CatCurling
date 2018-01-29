@@ -5,6 +5,7 @@ body{
     font-family:stringz;
     display: flex;
     flex-direction: column;
+    height:0;
 }
 
 canvas {
