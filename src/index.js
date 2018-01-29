@@ -127,6 +127,10 @@ function create() {
   scoretext.setTextBounds(40, 12, 100, 10);
   scoregroup.add(scoretext);
 
+  let settingsbutton = game.add.sprite(10, 10,'settingsbutton');
+  settingsbutton.scale.setTo(1,1);
+
+  let pausebutton = game.add.sprite(20 + settingsbutton.width, 10,'pausebutton');
 
   // GAME CHARACTERS:
 
