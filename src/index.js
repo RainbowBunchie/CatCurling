@@ -36,7 +36,10 @@ function preload() {
   game.load.image('levelholder', 'assets/img/gui/level-holder.svg');
   game.load.image('settingsbutton', 'assets/img/gui/settings-button.svg');
   game.load.image('pausebutton', 'assets/img/gui/pause-button.svg');
+  game.load.image('dust', 'assets/sprites/dust.png')
 }
+
+let dusts;
 
 let furniture;
 
@@ -112,7 +115,6 @@ function create() {
   coffeetable.rotation = 0.1;
   furniture.add(coffeetable);
 
-
   // GOAL
 
   goal = game.add.sprite(50, 270,'goal');
@@ -129,11 +131,19 @@ function create() {
   goalInner.scale.setTo(0.6 , 0.6);
   goalInner.body.setSize(20, 20, 90,90);
 
+  //DUSTS
+
+  dusts = game.add.group();
+  dusts.enableBody = true;
+
+  let dust = dusts.create(650, 250, 'dust');
+  dust.scale.setTo(0.2,0.2);
+
 
   // GAME CHARACTERS:
 
   analog = game.add.sprite(player,player,'analog');
-  analog.width=8;
+  analog.width = 8;
 
   //analog.rotation = 220;
   analog.alpha = 0;
@@ -153,7 +163,6 @@ function create() {
 	player.body.bounce.set(0.9);
   player.scale.setTo(0.5,0.5);
   player.body.drag.set(20,20);
-
 
 
 //Enable input
@@ -211,7 +220,7 @@ if(player.body.velocity.x === 0 && player.body.velocity.y === 0){
     arrow.reset(player.x, player.y);
     analog.reset(player.x, player.y);
 }
-    
+
 
 }
 
@@ -249,15 +258,21 @@ function update() {
         analog.rotation = arrow.rotation;
         analog.height = game.physics.arcade.distanceBetween(arrow, player)-20;
         launchVelocity = analog.height-100;
-      
+
     }
 
     player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
+
     /* WENN SCORE GEÄNDERT WIRD ->
     scoretext.setText(score.toString());
     */
     game.physics.arcade.overlap(player, goalInner, collisionHandler, null, this);
     game.physics.arcade.overlap(player, goal, collisionHandler, null, this);
+
+    // increase Score when cat moves over dust
+
+    game.physics.arcade.overlap(player, dusts, collectDust, null, this);
+
 
 }
 
@@ -266,6 +281,12 @@ function collisionHandler (obj1, obj2) {
     player.kill();
     score += 100;
 
+}
+
+function collectDust(player, dust){
+  dust.kill();
+  score += 50;
+  scoretext.setText(score.toString());
 }
 
 function render() {
