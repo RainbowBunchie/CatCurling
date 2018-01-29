@@ -172,6 +172,7 @@ function create() {
   scoretext = game.add.text(0, 0, score.toString(), textstyleRight);
   scoretext.setTextBounds(40, 12, 100, 10);
   scoregroup.add(scoretext);
+  scoregroup.y = 10;
 
   let settingsbutton = game.add.sprite(10, 10,'settingsbutton');
   settingsbutton.scale.setTo(1,1);
