@@ -64,7 +64,7 @@ function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
 
   let textstyleRight = {
-          font: "3em Stringz",
+          font: "2.8em Stringz",
           fill: "#fff",
           align: "right",
           boundsAlignH: "right",
@@ -72,7 +72,7 @@ function create() {
         };
 
   let textstyleCenter = {
-          font: "3em Stringz",
+          font: "2.8em Stringz",
           fill: "#fff",
           align: "center",
           boundsAlignH: "center",
@@ -178,8 +178,8 @@ function create() {
   scoreholder.scale.setTo(1, 1);
   scoregroup.add(scoreholder);
 
-  scoretext = game.add.text(0, 0, score.toString(), textstyleRight);
-  scoretext.setTextBounds(40, 12, 100, 10);
+  scoretext = game.add.text(0, 0, score, textstyleRight);
+  scoretext.setTextBounds(35, 13, 100, 10);
   scoregroup.add(scoretext);
   scoregroup.y = 10;
 
@@ -262,6 +262,7 @@ function update() {
 
     game.physics.arcade.overlap(player, dusts, collectDust, null, this);
 
+    scoretext.text=~~scoretext.score;
 }
 
 function collisionHandler (obj1, obj2) {
@@ -272,8 +273,12 @@ function collisionHandler (obj1, obj2) {
 
 function collectDust(player, dust){
   dust.kill();
-  score += 50;
-  scoretext.setText(score.toString());
+  animateScore(50);
+}
+
+function animateScore(amount){
+  game.add.tween(scoretext).to({score:score+amount},700,"Linear", true);
+
 }
 
 function render() {
