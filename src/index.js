@@ -41,15 +41,15 @@ function preload() {
 }
 
 let furniture;
+
 let player;
 let cursors;
 let arrow;
 let catchFlag = false;
 let launchVelocity = 0;
 let analog;
-let deskchair;
-let coffeetable;
 
+let score = 0;
 let scoretext;
 
 function create() {
@@ -59,7 +59,9 @@ function create() {
   let textstyle = {
           font: "3em Stringz",
           fill: "#fff",
-          align: "right"
+          align: "right",
+          boundsAlignH: "right",
+          boundsAlignV: "right"
         };
 
 
@@ -92,6 +94,10 @@ function create() {
   let desk = furnitureTpl(game, 'desk', game.width, game.height/4, 0.45, 0.45);
   furniture.add(desk);
 
+  let coffeetable = furnitureTpl(game, 'coffeetable', 160, 130, 0.9, 0.9)
+  coffeetable.rotation = 0.1;
+  furniture.add(coffeetable);
+
   analog = game.add.sprite(player,player,'analog');
   //analog.width=8;
   //analog.rotation = 220;
@@ -102,17 +108,6 @@ function create() {
   arrow.anchor.setTo(player,player);
   arrow.alpha = 0;
 
-  coffeetable = game.add.sprite(160, 130,'coffeetable');
-  coffeetable.name = 'coffeetable';
-  game.physics.enable(coffeetable, Phaser.Physics.ARCADE);
-  coffeetable.body.collideWorldBounds = true;
-  coffeetable.body.checkCollision.up = true;
-  coffeetable.body.checkCollision.down = true;
-  coffeetable.body.immovable = true;
-  coffeetable.scale.setTo(0.9 , 0.9);
-  coffeetable.rotation = 0.1;
-
-  furniture.add(coffeetable);
 
   // GOAL
 
@@ -125,15 +120,21 @@ function create() {
 
   // GUI ELEMENTS
 
-  const scoreholder = game.add.sprite(game.width-160, 0,'scoreholder');
+  let scoregroup =  game.add.group();
+  scoregroup.x = game.width-165;
+
+  const scoreholder = game.add.sprite(0, 0,'scoreholder');
   scoreholder.name = 'goal';
   game.physics.enable(scoreholder, Phaser.Physics.ARCADE);
   scoreholder.body.collideWorldBounds = true;
   scoreholder.body.immovable = true;
   scoreholder.scale.setTo(1, 1);
+  scoregroup.add(scoreholder);
 
-  scoretext = game.add.text(0, 0, "100", textstyle);
-  scoretext.setTextBounds(0,0,800,100);
+  scoretext = game.add.text(0, 0, score.toString(), textstyle);
+  scoretext.setTextBounds(40, 12, 100, 10);
+  scoregroup.add(scoretext);
+
 
   // GAME CHARACTERS:
 
@@ -152,8 +153,6 @@ function create() {
   player.events.onInputDown.add(set);
   player.events.onInputUp.add(launch);
   game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
-
-
 
 }
 
@@ -186,7 +185,6 @@ function launch() {
 }
 
 function update() {
-  let score = 0;
 
 	arrow.rotation = game.physics.arcade.angleBetween(arrow, player);
 
@@ -203,6 +201,10 @@ function update() {
         analog.height = game.physics.arcade.distanceBetween(arrow, player);
         launchVelocity = analog.height;
     }
+
+    /* WENN SCORE GEÄNDERT WIRD ->
+    scoretext.setText(score.toString());
+    */
 
 }
 
