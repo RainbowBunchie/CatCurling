@@ -120,9 +120,7 @@ function create() {
   goal.body.collideWorldBounds = true;
   goal.body.immovable = true;
   goal.scale.setTo(0.6 , 0.6);
-
-
-goal.body.setSize(100, 100, 50, 50);
+  goal.body.setSize(100, 100, 50, 50);
 
 
   // GAME CHARACTERS:
@@ -250,12 +248,12 @@ function update() {
     /* WENN SCORE GEÄNDERT WIRD ->
     scoretext.setText(score.toString());
     */
-    game.physics.arcade.collide(player, goal, collisionHandler, null, this);
+    game.physics.arcade.overlap(player, goal, collisionHandler, null, this);
 
 }
 
 function collisionHandler (obj1, obj2) {
-  if(player.body.velocity < 10 )
+  if((player.body.velocity.x < 10 && player.body.velocity.x > -10) && (player.body.velocity.y < 10 && player.body.velocity.y > -10) )
     player.kill();
 
 }
