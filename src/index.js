@@ -38,6 +38,10 @@ function preload() {
   game.load.image('desk', 'assets/img/furniture/desk.png');
   game.load.image('deskchair', 'assets/img/furniture/desk-chair.png');
   game.load.image('coffeetable', 'assets/img/furniture/coffee-table.svg');
+  game.load.image('scoreholder', 'assets/img/gui/score-holder.svg');
+  game.load.image('levelholder', 'assets/img/gui/level-holder.svg');
+  game.load.image('settingsbutton', 'assets/img/gui/settings-button.svg');
+  game.load.image('pausebutton', 'assets/img/gui/pause-button.svg');
 
 }
 
@@ -177,6 +181,8 @@ function create() {
   game.physics.enable(goal, Phaser.Physics.ARCADE);
   goal.body.immovable = true;
   goal.scale.setTo(0.6,0.6);
+
+  // GUI ELEMENTS
 
 
 // GAME CHARACTERS:
