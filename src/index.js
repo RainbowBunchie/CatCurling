@@ -19,7 +19,7 @@ const game = new Phaser.Game(config);
 
 function preload() {
 
-	game.load.image('player', 'assets/sprites/kitty.svg');
+	game.load.image('player', 'assets/sprites/kitty.png');
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
   game.load.image('tv-table', 'assets/img/furniture/tv-table.png');
@@ -49,6 +49,10 @@ let analog;
 
 let score = 0;
 let scoretext;
+
+let Xvector;
+let Yvector;
+let goal;
 
 function create() {
 
@@ -99,7 +103,7 @@ function create() {
 
   // GOAL
 
-  let goal = game.add.sprite(50, 270,'goal');
+  goal = game.add.sprite(50, 270,'goal');
   goal.name = 'goal';
   game.physics.enable(goal, Phaser.Physics.ARCADE);
   goal.body.collideWorldBounds = true;
@@ -129,13 +133,14 @@ function create() {
   analog = game.add.sprite(player,player,'analog');
   //analog.width=8;
   //analog.rotation = 220;
-  //analog.alpha = 0;
+  analog.alpha = 0;
   analog.anchor.setTo(0.5, 1);
+  analog.scale.setTo(0.5)
 
   arrow = game.add.sprite(player,player,'arrow');
-  arrow.anchor.setTo(0,0.5);
+  arrow.anchor.setTo(0.5,1);
   arrow.alpha = 1;
-  arrow.scale.setTo(0.5,0.5);
+  arrow.scale.setTo(0.5);
 
 	player = game.add.sprite(850, 550, 'player');
   game.physics.enable([player], Phaser.Physics.ARCADE);
@@ -144,7 +149,7 @@ function create() {
 	player.body.collideWorldBounds = true;
 	player.body.bounce.set(0.9);
   player.scale.setTo(0.5,0.5);
-  //player.body.drag.set(20,20);
+  player.body.drag.set(20,20);
 
 
 
@@ -178,8 +183,8 @@ function launch() {
     arrow.alpha = 0;
     analog.alpha = 0;
 
-    let Xvector = (arrow.x - player.x) * 3;
-    let Yvector = (arrow.y - player.y) * 3;
+    Xvector = (arrow.x - player.x) * 3;
+    Yvector = (arrow.y - player.y) * 3;
 
     player.body.velocity.setTo(Xvector, Yvector);
 
@@ -204,9 +209,17 @@ function update() {
         launchVelocity = analog.height-100;
     }
 
+    player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
     /* WENN SCORE GEÄNDERT WIRD ->
     scoretext.setText(score.toString());
     */
+    game.physics.arcade.collide(player, goal, collisionHandler, null, this);
+
+}
+
+function collisionHandler (obj1, obj2) {
+
+    player.kill();
 
 }
 
@@ -219,5 +232,8 @@ function render() {
   game.debug.cameraInfo(game.camera, 32, 64);
   game.debug.spriteCoords(player, 32, 150);
   game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
+  game.debug.bodyInfo(player, 32, 32);
+  game.debug.body(player);
+  game.debug.body(goal);
 
 }
