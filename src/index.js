@@ -18,7 +18,6 @@ const game = new Phaser.Game(config);
 
 
 function preload() {
-
 	game.load.image('player', 'assets/sprites/kitty.png');
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
@@ -58,6 +57,7 @@ let leveltext;
 let Xvector;
 let Yvector;
 let goal;
+let goalInner;
 
 function create() {
 
@@ -117,12 +117,18 @@ function create() {
   // GOAL
 
   goal = game.add.sprite(50, 270,'goal');
-  goal.name = 'goal';
   game.physics.enable(goal, Phaser.Physics.ARCADE);
   goal.body.collideWorldBounds = true;
   goal.body.immovable = true;
   goal.scale.setTo(0.6 , 0.6);
-  goal.body.setSize(100, 100, 50, 50);
+  goal.body.setSize(200, 200, 0, 0);
+
+  goalInner = game.add.sprite(50, 270,'goal');
+  game.physics.enable(goalInner, Phaser.Physics.ARCADE);
+  goalInner.body.collideWorldBounds = true;
+  goalInner.body.immovable = true;
+  goalInner.scale.setTo(0.6 , 0.6);
+  goalInner.body.setSize(20, 20, 90,90);
 
   //DUSTS
 
@@ -256,7 +262,11 @@ function update() {
 
     player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
 
-    game.physics.arcade.collide(player, goal, collisionHandler, null, this);
+    /* WENN SCORE GEÄNDERT WIRD ->
+    scoretext.setText(score.toString());
+    */
+    game.physics.arcade.overlap(player, goalInner, collisionHandler, null, this);
+    game.physics.arcade.overlap(player, goal, collisionHandler, null, this);
 
     // increase Score when cat moves over dust
 
@@ -268,6 +278,7 @@ function update() {
 function collisionHandler (obj1, obj2) {
   if((player.body.velocity.x < 10 && player.body.velocity.x > -10) && (player.body.velocity.y < 10 && player.body.velocity.y > -10) )
     player.kill();
+    score += 100;
 
 }
 
@@ -284,14 +295,14 @@ function animateScore(amount){
 function render() {
 
 	//game.debug.bodyInfo(sprite, 16, 24);
-	// game.debug.body(sprite);
-	// game.debug.body(player);
-  /*game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
+	//game.debug.body(sprite);
+  game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
   game.debug.cameraInfo(game.camera, 32, 64);
   game.debug.spriteCoords(player, 32, 150);
   game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
   game.debug.bodyInfo(player, 32, 32);
   game.debug.body(player);
-  game.debug.body(goal);*/
+  game.debug.body(goal);
+  game.debug.body(goalInner);
 
 }
