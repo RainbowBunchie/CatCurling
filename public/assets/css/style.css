@@ -10,7 +10,7 @@ canvas {
     margin-right: auto;
     border-radius: 10px;
     position:relative;
-    top:5em;
+    top:8em;
     border:10px solid #FFF;
     z-index:-1;
 }
@@ -23,7 +23,7 @@ canvas {
 
 #nav{
     background: linear-gradient(#ffc8df, #ffafd2);
-    height:4rem;
+    height:6rem;
     font-size:3rem;
     color:#FFF;
     padding-left:0.3em;
@@ -53,9 +53,10 @@ canvas {
 }
 
 .sidenav {
-    margin-top:4rem;
+    margin-top:6rem;
     height: 100%;
     width: 0;
+    margin-left:-10px;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -85,14 +86,6 @@ canvas {
     color: #f1f1f1;
 }
 
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-}
-
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
@@ -111,7 +104,6 @@ canvas {
   height: 0.4rem;
   position: relative;
   transition: all 1s ease-out;
-  top:-1.5em;
   border-radius: 10px;
 }
 #burger::before {
