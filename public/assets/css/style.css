@@ -41,7 +41,7 @@ canvas {
     height:85%;
     display:inline-block;
     margin:0 auto;
-    margin-left:-50px;
+    margin-left:-25px;
     flex:0;
     padding:5px;
 
@@ -85,10 +85,12 @@ canvas {
     font-size:2rem;
     display: block;
     transition: 0.3s;
+    text-shadow: 2px 0 0 #ffafd2, -2px 0 0 #ffafd2, 0 2px 0 #ffafd2, 0 -2px 0 #ffafd2, 1px 1px #ffafd2, -1px -1px 0 #ffafd2, 1px -1px 0 #ffafd2, -1px 1px 0 #ffafd2;
+
 }
 
 .sidenav a:hover {
-    color: #f1f1f1;
+  text-shadow: 4px 0 0 #9fe4f7, -4px 0 0 #9fe4f7, 0 4px 0 #9fe4f7, 0 -4px 0 #9fe4f7, 2px 2px #9fe4f7, -2px -2px 0 #9fe4f7, 2px -2px 0 #9fe4f7, -2px 2px 0 #9fe4f7;
 }
 
 @media screen and (max-height: 450px) {
