@@ -1,33 +1,27 @@
 import 'pixi';
 import 'p2';
 import 'phaser';
-
+import defaults from './config';
+import furnitureTpl from './module-assets/furniture';
 import pkg from '../package.json';
 
 // This is the entry point of your game.
 
-const config = {
-  width: 1100,
-  height: 600,
-  renderer: Phaser.AUTO,
-  parent: '',
+const config = Object.assign(defaults, {
   state: {
-    preload,
     create,
+    preload,
     update,
     render
-  },
-  transparent: false,
-  antialias: true,
-  physicsConfig: { arcade: true },
-};
+  }
+})
 
 const game = new Phaser.Game(config);
 
 
 function preload() {
 
-	game.load.image('atari', 'assets/img/study.png');
+	game.load.image('player', 'assets/kitty.svg');
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
   game.load.image('tv-table', 'assets/img/furniture/tv-table.png');
@@ -37,15 +31,21 @@ function preload() {
   game.load.image('goal', 'assets/img/furniture/goal.png');
   game.load.image('desk', 'assets/img/furniture/desk.png');
   game.load.image('deskchair', 'assets/img/furniture/desk-chair.png');
-
+  game.load.image('arrow', 'assets/sprites/arrow.svg');
+  game.load.image('analog', 'assets/sprites/arrow.svg');
 
 }
 
-var sprite;
-var sprite2;
+var player;
+var cursors;
+var arrow;
+var catchFlag = false;
+var launchVelocity = 0;
+
 var sprite3;
 var sprite4;
 
+let analog;
 let tvtable;
 let table;
 let chairs;
@@ -53,7 +53,7 @@ let plant;
 let goal;
 let desk;
 let deskchair;
-
+let couchLong;
 let furniture;
 
 function create() {
@@ -63,19 +63,11 @@ function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
 	game.stage.backgroundColor = '#f5cf99';
 
-	sprite = game.add.sprite(0, 0, 'couch-long');
-	sprite.name = 'couch-long';
-	game.physics.enable(sprite, Phaser.Physics.ARCADE);
-	sprite.body.collideWorldBounds = true;
-	sprite.body.checkCollision.up = true;
-  sprite.body.checkCollision.right = true;
-	sprite.body.checkCollision.down = true;
-	sprite.body.immovable = true;
-  sprite.scale.setTo(0.35,0.35);
+  
+	couchLong = furnitureTpl(game,'couch-long',0,0,0.35,0.35);
+  furniture.add(couchLong);
 
-  furniture.add(sprite);
-
-  sprite4 = game.add.sprite(0, sprite.height-2, 'couch-short');
+  sprite4 = game.add.sprite(0, couchLong.height-2, 'couch-short');
   sprite4.name = 'couch-short';
   game.physics.enable(sprite4, Phaser.Physics.ARCADE);
   sprite4.body.collideWorldBounds = true;
@@ -154,10 +146,34 @@ function create() {
 
   furniture.add(desk);
 
+  analog = game.add.sprite(200,450,'analog');
+  analog.width=8;
+  analog.rotation = 220;
+  analog.alpha = 0;
+  analog.anchor.setTo(0.5, 0.0);
+
+  arrow = game.add.sprite(200,450,'arrow');
+  arrow.anchor.setTo(0.1,0.5);
+  arrow.alpha =0;
 
 
+// GAME CHARACTERS:
 
+	player = game.add.sprite(850, 550, 'player');
+  game.physics.enable([player], Phaser.Physics.ARCADE);
+  player.anchor.set(0.5);
 
+	player.body.collideWorldBounds = true;
+	player.body.bounce.set(0.9);
+  player.scale.setTo(0.5,0.5);
+  player.body.drag.set(20,20);
+
+//Enable input
+  player.inputEnabled=true;
+  player.input.start(0, true);
+  player.events.onInputDown.add(set);
+  player.events.onInputUp.add(launch);
+  game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
 
   // GOAL
 
@@ -168,40 +184,52 @@ function create() {
   goal.body.immovable = true;
   goal.scale.setTo(0.6,0.6);
 
+}
 
-// GAME CHARACTERS:
+function set(player,pointer) {
 
-	sprite2 = game.add.sprite(50, 150, 'atari');
-	sprite2.name = 'gameboy';
+    catchFlag = true;
+    game.camera.follow(null);
+    
+    player.body.moves = false;
+    player.body.velocity.setTo(0, 0);
+    arrow.reset(player.x, player.y);
+    analog.reset(player.x, player.y);
 
-	game.physics.enable(sprite2, Phaser.Physics.ARCADE);
-	sprite2.body.collideWorldBounds = true;
-	sprite2.body.bounce.setTo(1, 1);
-  sprite2.scale.setTo(0.3,0.3);
+}
 
+function launch() {
 
-	sprite3 = game.add.sprite(500, 160, 'atari');
-  sprite3.scale.setTo(0.3,0.3);
+    catchFlag = false;
+    player.body.moves = true;
+    game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
+    
+    arrow.alpha = 0;
+    analog.alpha = 0;
 
+    let Xvector = (arrow.x - player.x) * 3;
+    let Yvector = (arrow.y - player.y) * 3;
 
-	game.physics.enable(sprite3, Phaser.Physics.ARCADE);
-
-	sprite3.name = 'gameboy2';
-	sprite3.body.collideWorldBounds = true;
-	sprite3.body.bounce.setTo(1, 1);
-
-	sprite2.body.velocity.y = -400;
-	sprite3.body.velocity.x = -400;
+    player.body.velocity.setTo(Xvector, Yvector);
 
 }
 
 function update() {
 
-	game.physics.arcade.collide(furniture, sprite2);
-  game.physics.arcade.collide(furniture, sprite3);
-
-
-	//game.physics.arcade.collide(sprite, sprite3);
+	arrow.rotation = game.physics.arcade.angleBetween(arrow, player);
+    
+    if (catchFlag === true)
+    {
+        //  Track the ball sprite to the mouse  
+        player.x = game.input.activePointer.worldX; 
+        player.y = game.input.activePointer.worldY;
+        
+        arrow.alpha = 1;    
+        analog.alpha = 0.5;
+        analog.rotation = arrow.rotation - 3.14 / 2;
+        analog.height = game.physics.arcade.distanceBetween(arrow, player);    
+        launchVelocity = analog.height;
+    }
 
 }
 
@@ -210,6 +238,10 @@ function render() {
 	//game.debug.bodyInfo(sprite, 16, 24);
 
 	// game.debug.body(sprite);
-	// game.debug.body(sprite2);
+	// game.debug.body(player);
+    game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
+    game.debug.cameraInfo(game.camera, 32, 64);
+    game.debug.spriteCoords(player, 32, 150);
+    game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
 
 }
