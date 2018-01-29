@@ -5,8 +5,6 @@ import defaults from './config';
 import furnitureTpl from './module-assets/furniture';
 import pkg from '../package.json';
 
-// This is the entry point of your game.
-
 const config = Object.assign(defaults, {
   state: {
     create,
@@ -91,22 +89,12 @@ function create() {
   deskchair.rotation = 0.2;
   furniture.add(deskchair);
 
-  let desk = furnitureTpl(game, 'desk', game.width, game.height/4, 0.45, 0.45);
+  let desk = furnitureTpl(game,'desk',game.width,game.height/4,0.45,0.45);
   furniture.add(desk);
-
-  let coffeetable = furnitureTpl(game, 'coffeetable', 160, 130, 0.9, 0.9)
+  
+  let coffeetable = furnitureTpl(game,'coffeetable',160,130,0.9,0.9);
   coffeetable.rotation = 0.1;
   furniture.add(coffeetable);
-
-  analog = game.add.sprite(player,player,'analog');
-  //analog.width=8;
-  //analog.rotation = 220;
-  //analog.alpha = 0;
-  analog.anchor.setTo(0.0, 0.0);
-
-  arrow = game.add.sprite(player,player,'arrow');
-  arrow.anchor.setTo(player,player);
-  arrow.alpha = 0;
 
 
   // GOAL
@@ -142,14 +130,27 @@ function create() {
 
   // GAME CHARACTERS:
 
+  analog = game.add.sprite(player,player,'analog');
+  //analog.width=8;
+  //analog.rotation = 220;
+  //analog.alpha = 0;
+  analog.anchor.setTo(0.5, 1);
+
+  arrow = game.add.sprite(player,player,'arrow');
+  arrow.anchor.setTo(0,0.5);
+  arrow.alpha = 1;
+  arrow.scale.setTo(0.5,0.5);
+
 	player = game.add.sprite(850, 550, 'player');
   game.physics.enable([player], Phaser.Physics.ARCADE);
-  player.anchor.set(0);
+  player.anchor.set(0.5);
 
 	player.body.collideWorldBounds = true;
 	player.body.bounce.set(0.9);
   player.scale.setTo(0.5,0.5);
   //player.body.drag.set(20,20);
+
+
 
 //Enable input
   player.inputEnabled=true;
@@ -193,17 +194,18 @@ function update() {
 	arrow.rotation = game.physics.arcade.angleBetween(arrow, player);
 
   game.physics.arcade.collide(furniture, player);
+
     if (catchFlag === true)
     {
         //  Track the ball sprite to the mouse
-        player.x = game.input.activePointer.worldX;
-        player.y = game.input.activePointer.worldY;
+        arrow.x = game.input.activePointer.worldX;
+        arrow.y = game.input.activePointer.worldY;
 
-        arrow.alpha = 1;
-        analog.alpha = 0.5;
+        arrow.alpha = 0;
+        analog.alpha = 1;
         analog.rotation = arrow.rotation - 3.14 / 2;
         analog.height = game.physics.arcade.distanceBetween(arrow, player);
-        launchVelocity = analog.height;
+        launchVelocity = analog.height-100;
     }
 
     /* WENN SCORE GEÄNDERT WIRD ->
@@ -217,9 +219,9 @@ function render() {
 	//game.debug.bodyInfo(sprite, 16, 24);
 	// game.debug.body(sprite);
 	// game.debug.body(player);
-    /*game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
-    game.debug.cameraInfo(game.camera, 32, 64);
-    game.debug.spriteCoords(player, 32, 150);
-    game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');*/
+  game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
+  game.debug.cameraInfo(game.camera, 32, 64);
+  game.debug.spriteCoords(player, 32, 150);
+  game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
 
 }
