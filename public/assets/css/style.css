@@ -4,7 +4,8 @@ body{
     background-color:#f3f4f4;
     font-family:stringz;
     display: flex;
-    flex-direction: 
+    flex-direction: column;
+    height:0;
 }
 
 canvas {

@@ -35,7 +35,9 @@ function preload() {
   game.load.image('levelholder', 'assets/img/gui/level-holder.svg');
   game.load.image('settingsbutton', 'assets/img/gui/settings-button.svg');
   game.load.image('pausebutton', 'assets/img/gui/pause-button.svg');
-  game.load.image('dust', 'assets/sprites/dust.png')
+  game.load.image('dust', 'assets/sprites/dust.png');
+  game.load.image('menu', 'assets/img/gui/menu.png');
+  game.load.image('playbutton', 'assets/img/gui/playbutton.png')
 }
 
 let dusts;
@@ -78,8 +80,6 @@ function create() {
           boundsAlignH: "center",
           boundsAlignV: "center"
         };
-
-
 
   furniture = game.add.group();
 
@@ -200,7 +200,7 @@ function create() {
 
   let pausebutton = game.add.sprite(20 + settingsbutton.width, 10,'pausebutton');
 
-  /*pausebutton.inputEnabled = true;
+  pausebutton.inputEnabled = true;
 
   pausebutton.events.onInputUp.add(function(){
       game.paused = true;
@@ -208,20 +208,40 @@ function create() {
 
   game.onPause.add(handlePause);
 
-  let text;
+  let menu;
+  let pausetext;
+  let playbutton;
 
   function handlePause(){
-    text = game.add.text(game.width * 0.5, game.height * 0.5, "Game paused", textstyleCenter);
+    menu = game.add.sprite(game.width/2,game.height/2,'menu');
+    menu.scale.setTo(0.9,0.9);
+    menu.anchor.setTo(0.5, 0.5);
+
+    pausetext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
+    pausetext.anchor.setTo(0.5,1);
+
+    playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
+    playbutton.scale.setTo(0.5,0.5);
+    playbutton.anchor.setTo(0.5,1);
+
+    playbutton.inputEnabled = true;
+
+    playbutton.events.onInputUp.add(function(){
+        console.log("hi");
+        //game.paused = false;
+    });
   }
 
   game.input.onDown.add(unpause, self);
 
   function unpause(){
     if (game.paused == true){
-      text.destroy();
+      menu.destroy();
+      pausetext.destroy();
+      playbutton.destroy();
       game.paused = false;
     }
-  }*/
+  }
 
   let levelgroup = game.add.group();
 
