@@ -21,7 +21,7 @@ const game = new Phaser.Game(config);
 
 function preload() {
 
-	game.load.image('player', 'assets/sprites/kitty.png');
+	game.load.image('player', 'assets/sprites/kitty.svg');
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
   game.load.image('tv-table', 'assets/img/furniture/tv-table.png');
@@ -88,15 +88,7 @@ function create() {
   deskchair.rotation = 0.2;
   furniture.add(deskchair);
 
-  let desk = game.add.sprite(game.width, game.height/4,'desk');
-  desk.name = 'desk';
-  game.physics.enable(desk, Phaser.Physics.ARCADE);
-  desk.body.collideWorldBounds = true;
-  desk.body.checkCollision.up = true;
-  desk.body.checkCollision.down = true;
-  desk.body.immovable = true;
-  desk.scale.setTo(0.45,0.45);
-
+  let desk = furnitureTpl(game, 'desk', game.width, game.height/4, 0.45, 0.45);
   furniture.add(desk);
 
 
