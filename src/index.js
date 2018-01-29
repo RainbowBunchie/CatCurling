@@ -328,11 +328,7 @@ function collisionHandler (obj1, obj2) {
         player.kill();
       }
     }
-<<<<<<< HEAD
-=======
- //scoretext.setText(score.toString());
 
->>>>>>> aaf014991b2d2a1263964dd952719d9dec4f3561
   }
 }
 
