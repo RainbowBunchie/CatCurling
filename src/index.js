@@ -344,15 +344,15 @@ function animateScore(amount){
 }
 
 function render() {
-  game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
-  game.debug.cameraInfo(game.camera, 32, 64);
-  game.debug.spriteCoords(player, 32, 150);
-  game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
-  game.debug.bodyInfo(player, 32, 32);
-  game.debug.body(player);
-  game.debug.body(goal);
-  game.debug.body(goalInner);
-   game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
-   game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
+  // game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
+  // game.debug.cameraInfo(game.camera, 32, 64);
+  // game.debug.spriteCoords(player, 32, 150);
+  // game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
+  // game.debug.bodyInfo(player, 32, 32);
+  // game.debug.body(player);
+  // game.debug.body(goal);
+  // game.debug.body(goalInner);
+  //  game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
+  //  game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
    
 }
