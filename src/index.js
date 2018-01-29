@@ -54,17 +54,18 @@ let scoretext;
 
 function create() {
 
+  game.physics.startSystem(Phaser.Physics.ARCADE);
+
   let textstyle = {
           font: "3em Stringz",
           fill: "#fff",
           align: "right"
         };
 
+
   furniture = game.add.group();
 
-  game.physics.startSystem(Phaser.Physics.ARCADE);
 	game.stage.backgroundColor = '#f5cf99';
-
 
 	let couchLong = furnitureTpl(game,'couch-long',0,0,0.35,0.35);
   furniture.add(couchLong);
@@ -91,16 +92,15 @@ function create() {
   let desk = furnitureTpl(game, 'desk', game.width, game.height/4, 0.45, 0.45);
   furniture.add(desk);
 
+  analog = game.add.sprite(player,player,'analog');
+  //analog.width=8;
+  //analog.rotation = 220;
+  //analog.alpha = 0;
+  analog.anchor.setTo(0.0, 0.0);
 
-  analog = game.add.sprite(200,450,'analog');
-  analog.width=8;
-  analog.rotation = 220;
-  analog.alpha = 0;
-  analog.anchor.setTo(0.5, 0.0);
-
-  arrow = game.add.sprite(200,450,'arrow');
-  arrow.anchor.setTo(0.1,0.5);
-  arrow.alpha =0;
+  arrow = game.add.sprite(player,player,'arrow');
+  arrow.anchor.setTo(player,player);
+  arrow.alpha = 0;
 
   coffeetable = game.add.sprite(160, 130,'coffeetable');
   coffeetable.name = 'coffeetable';
@@ -139,12 +139,12 @@ function create() {
 
 	player = game.add.sprite(850, 550, 'player');
   game.physics.enable([player], Phaser.Physics.ARCADE);
-  player.anchor.set(0.5);
+  player.anchor.set(0);
 
 	player.body.collideWorldBounds = true;
 	player.body.bounce.set(0.9);
   player.scale.setTo(0.5,0.5);
-  player.body.drag.set(20,20);
+  //player.body.drag.set(20,20);
 
 //Enable input
   player.inputEnabled=true;
