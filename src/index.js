@@ -37,8 +37,6 @@ function preload() {
   game.load.image('goal', 'assets/img/furniture/goal.png');
   game.load.image('desk', 'assets/img/furniture/desk.png');
   game.load.image('deskchair', 'assets/img/furniture/desk-chair.png');
-
-
 }
 
 var sprite;
@@ -154,11 +152,6 @@ function create() {
 
   furniture.add(desk);
 
-
-
-
-
-
   // GOAL
 
   goal = game.add.sprite(50, 270,'goal');
@@ -199,9 +192,6 @@ function update() {
 
 	game.physics.arcade.collide(furniture, sprite2);
   game.physics.arcade.collide(furniture, sprite3);
-
-
-	//game.physics.arcade.collide(sprite, sprite3);
 
 }
 
