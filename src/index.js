@@ -200,7 +200,7 @@ function create() {
 
   let pausebutton = game.add.sprite(20 + settingsbutton.width, 10,'pausebutton');
 
-  pausebutton.inputEnabled = true;
+  /*pausebutton.inputEnabled = true;
 
   pausebutton.events.onInputUp.add(function(){
       game.paused = true;
@@ -221,7 +221,7 @@ function create() {
       text.destroy();
       game.paused = false;
     }
-  }
+  }*/
 
   let levelgroup = game.add.group();
 
@@ -302,8 +302,8 @@ function update() {
 }
 
 function calcOverlap(obj1,obj2){
-  let dx = (obj1.x+obj1.width/2)-(obj2.x+obj2.width/2);
-  let dy = (obj1.y+obj1.height/2)-(obj2.y+obj2.height/2);
+  let dx = obj1.x-obj2.x;
+  let dy = obj1.y-obj2.y;
   let result = Math.sqrt((Math.pow(dx,2)+Math.pow(dy,2)));
   return result;
 }
@@ -314,25 +314,19 @@ function collisionHandler (obj1, obj2) {
   if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
 
     if(obj2 == goalInner){
-      if (calcOverlap(player.body, goalInner.body)<15){
+      if (calcOverlap(player.body, goalInner.body)<10){
         animateScore(300);
 
         player.kill();
       }
-      //else animateScore(100);
     }
 
     else if (obj2 == goal){
-      if (calcOverlap(player.body, goal.body)<66){
+      if (calcOverlap(player.body, goal.body)<70){
         animateScore(100);
         player.kill();
       }
     }
-<<<<<<< HEAD
-=======
- //scoretext.setText(score.toString());
-
->>>>>>> aaf014991b2d2a1263964dd952719d9dec4f3561
   }
 }
 
@@ -349,15 +343,18 @@ function animateScore(amount){
 }
 
 function render() {
-  // game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
-  // game.debug.cameraInfo(game.camera, 32, 64);
-  // game.debug.spriteCoords(player, 32, 150);
-  // game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
-  // game.debug.bodyInfo(player, 32, 32);
-  // game.debug.body(player);
-  // game.debug.body(goal);
-  // game.debug.body(goalInner);
-  //  game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
-  //  game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
-   
+
+	//game.debug.bodyInfo(sprite, 16, 24);
+	//game.debug.body(sprite);
+  /*game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
+  game.debug.cameraInfo(game.camera, 32, 64);
+  game.debug.spriteCoords(player, 32, 150);
+  game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
+  game.debug.bodyInfo(player, 32, 32);
+  game.debug.body(player);
+  game.debug.body(goal);
+  game.debug.body(goalInner);
+   game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
+   game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
+   */
 }
