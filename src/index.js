@@ -291,6 +291,7 @@ function collisionHandler (obj1, obj2) {
     score += 300;
     player.kill();
       }
+      else score +=100;
     }
     
     else if (obj2 == goal){
@@ -298,6 +299,7 @@ function collisionHandler (obj1, obj2) {
     score +=100;
     player.kill();
   }
+  else{}
     
 }
 scoretext.setText(score.toString());
