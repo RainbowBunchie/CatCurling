@@ -1,11 +1,12 @@
 body{
     margin:0;
     padding:0;
+    height:100vh;
     background-color:#f3f4f4;
     font-family:stringz;
     display: flex;
     flex-direction: column;
-    height:0;
+    z-index: -1;
 }
 
 canvas {
@@ -15,7 +16,6 @@ canvas {
     position:relative;
     top:8em;
     border:10px solid #FFF;
-    z-index:-1;
 }
 
 /* -- Nav -- */
@@ -32,6 +32,7 @@ canvas {
     padding-left:0.3em;
     position:fixed;
     width:100%;
+    z-index: 10;
     display:flex;
     flex-direction: row;
 }
@@ -40,6 +41,7 @@ canvas {
     height:85%;
     display:inline-block;
     margin:0 auto;
+    margin-left:-50px;
     flex:0;
     padding:5px;
 
@@ -132,6 +134,10 @@ canvas {
   background-color: inherit;;
   transition: all 1s ease;
   border-radius: 10px;
+}
+
+button:focus{
+  outline:0;
 }
 
 .burgeron {
