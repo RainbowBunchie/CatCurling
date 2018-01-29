@@ -265,7 +265,7 @@ function update() {
 }
 
 function collisionHandler (obj1, obj2) {
-  if(player.body.velocity < 10 )
+  if((player.body.velocity.x < 10 && player.body.velocity.x > -10) && (player.body.velocity.y < 10 && player.body.velocity.y > -10) )
     player.kill();
 
 }
