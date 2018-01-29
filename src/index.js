@@ -59,9 +59,17 @@ let desk;
 let deskchair;
 let coffeetable;
 
+let scoretext;
+
 let furniture;
 
 function create() {
+
+  let textstyle = {
+          font: "3em Stringz",
+          fill: "#fff",
+          align: "right"
+        };
 
   furniture = game.add.group();
 
@@ -161,7 +169,7 @@ function create() {
 
 
   coffeetable = game.add.sprite(160, 130,'coffeetable');
-  desk.name = 'coffeetable';
+  coffeetable.name = 'coffeetable';
   game.physics.enable(coffeetable, Phaser.Physics.ARCADE);
   coffeetable.body.collideWorldBounds = true;
   coffeetable.body.checkCollision.up = true;
@@ -170,22 +178,30 @@ function create() {
   coffeetable.scale.setTo(0.9 , 0.9);
   coffeetable.rotation = 0.1;
 
-
   furniture.add(coffeetable);
 
   // GOAL
 
   goal = game.add.sprite(50, 270,'goal');
   goal.name = 'goal';
-  plant.body.collideWorldBounds = true;
   game.physics.enable(goal, Phaser.Physics.ARCADE);
+  goal.body.collideWorldBounds = true;
   goal.body.immovable = true;
-  goal.scale.setTo(0.6,0.6);
+  goal.scale.setTo(0.6 , 0.6);
 
   // GUI ELEMENTS
 
+  const scoreholder = game.add.sprite(game.width-160, 0,'scoreholder');
+  scoreholder.name = 'goal';
+  game.physics.enable(scoreholder, Phaser.Physics.ARCADE);
+  scoreholder.body.collideWorldBounds = true;
+  scoreholder.body.immovable = true;
+  scoreholder.scale.setTo(1, 1);
 
-// GAME CHARACTERS:
+  scoretext = game.add.text(0, 0, "100", textstyle);
+  scoretext.setTextBounds(0,0,800,100);
+
+  // GAME CHARACTERS:
 
 	sprite2 = game.add.sprite(50, 150, 'atari');
 	sprite2.name = 'gameboy';
@@ -194,7 +210,6 @@ function create() {
 	sprite2.body.collideWorldBounds = true;
 	sprite2.body.bounce.setTo(1, 1);
   sprite2.scale.setTo(0.3,0.3);
-
 
 	sprite3 = game.add.sprite(500, 160, 'atari');
   sprite3.scale.setTo(0.3,0.3);
@@ -212,6 +227,7 @@ function create() {
 }
 
 function update() {
+  let score = 0;
 
 	game.physics.arcade.collide(furniture, sprite2);
   game.physics.arcade.collide(furniture, sprite3);
@@ -221,7 +237,6 @@ function update() {
 function render() {
 
 	//game.debug.bodyInfo(sprite, 16, 24);
-
 	// game.debug.body(sprite);
 	// game.debug.body(sprite2);
 
