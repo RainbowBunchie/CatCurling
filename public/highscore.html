@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Cat Curling</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="assets/img/favicon.png">
+    <style>
+    </style>
+    <link href="assets/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="mySidenav" class="sidenav">
+    <a href="index.html">Game</a>
+    <a href="#">Highscore</a>
+    <a href="imprint.html">Imprint</a>
+    </div>
+
+    <section id="nav">
+      <div id="nav_burger" onclick="toggleNav()">
+        <button id="burger">
+        </button>
+      </div>
+      <img src="assets/img/logo.png" alt="CatCurling">
+      <div id="empty"></div>
+    </section>
+
+    <section id="imprint">
+      <div class="text">
+      </div>
+    </section>
+
+    <script>
+      function toggleNav() {
+        document.getElementById("mySidenav").classList.toggle("nav_toggle")
+        document.getElementById("burger").classList.toggle("burgeron")
+        console.log(document.getElementById("burger"))
+      }
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+    <script src="../src/firebase_init.js"></script>
+  </body>
+</html>
