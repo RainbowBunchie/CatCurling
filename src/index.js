@@ -49,6 +49,8 @@ let analog;
 
 let score = 0;
 let scoretext;
+let level = 1;
+let leveltext;
 
 let Xvector;
 let Yvector;
@@ -58,13 +60,22 @@ function create() {
 
   game.physics.startSystem(Phaser.Physics.ARCADE);
 
-  let textstyle = {
+  let textstyleRight = {
           font: "3em Stringz",
           fill: "#fff",
           align: "right",
           boundsAlignH: "right",
           boundsAlignV: "right"
         };
+
+  let textstyleCenter = {
+          font: "3em Stringz",
+          fill: "#fff",
+          align: "center",
+          boundsAlignH: "center",
+          boundsAlignV: "center"
+        };
+
 
 
   furniture = game.add.group();
@@ -110,31 +121,10 @@ function create() {
   goal.body.immovable = true;
   goal.scale.setTo(0.6 , 0.6);
 
-  // GUI ELEMENTS
-
-  let scoregroup =  game.add.group();
-  scoregroup.x = game.width-165;
-
-  const scoreholder = game.add.sprite(0, 0,'scoreholder');
-  scoreholder.name = 'goal';
-  game.physics.enable(scoreholder, Phaser.Physics.ARCADE);
-  scoreholder.body.collideWorldBounds = true;
-  scoreholder.body.immovable = true;
-  scoreholder.scale.setTo(1, 1);
-  scoregroup.add(scoreholder);
-
-  scoretext = game.add.text(0, 0, score.toString(), textstyle);
-  scoretext.setTextBounds(40, 12, 100, 10);
-  scoregroup.add(scoretext);
-
-  let settingsbutton = game.add.sprite(10, 10,'settingsbutton');
-  settingsbutton.scale.setTo(1,1);
-
-  let pausebutton = game.add.sprite(20 + settingsbutton.width, 10,'pausebutton');
 
   // GAME CHARACTERS:
 
-  analog = game.add.sprite(player,player,'analog');
+  analog = game.add.sprite(player,player,'analog2');
   //analog.width=8;
   //analog.rotation = 220;
   analog.alpha = 0;
@@ -163,6 +153,41 @@ function create() {
   player.events.onInputDown.add(set);
   player.events.onInputUp.add(launch);
   game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
+
+  // GUI ELEMENTS
+
+  let scoregroup = game.add.group();
+  scoregroup.x = game.width-165;
+
+  const scoreholder = game.add.sprite(0, 0,'scoreholder');
+  scoreholder.name = 'goal';
+  game.physics.enable(scoreholder, Phaser.Physics.ARCADE);
+  scoreholder.body.collideWorldBounds = true;
+  scoreholder.body.immovable = true;
+  scoreholder.scale.setTo(1, 1);
+  scoregroup.add(scoreholder);
+
+  scoretext = game.add.text(0, 0, score.toString(), textstyleRight);
+  scoretext.setTextBounds(40, 12, 100, 10);
+  scoregroup.add(scoretext);
+
+  let settingsbutton = game.add.sprite(10, 10,'settingsbutton');
+  settingsbutton.scale.setTo(1,1);
+
+  let pausebutton = game.add.sprite(20 + settingsbutton.width, 10,'pausebutton');
+
+  let levelgroup = game.add.group();
+
+  let levelholder = game.add.sprite(0, 0,'levelholder');
+  levelholder.anchor.setTo(0.5,0);
+  levelgroup.add(levelholder);
+
+  leveltext = game.add.text(0, 7, `Level ${level.toString()}`, textstyleCenter);
+  leveltext.anchor.setTo(0.5,0);
+  levelgroup.add(leveltext);
+
+  levelgroup.x=game.width/2;
+  levelgroup.y = 10;
 
 }
 
@@ -232,12 +257,12 @@ function render() {
 	//game.debug.bodyInfo(sprite, 16, 24);
 	// game.debug.body(sprite);
 	// game.debug.body(player);
-  game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
+  /*game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
   game.debug.cameraInfo(game.camera, 32, 64);
   game.debug.spriteCoords(player, 32, 150);
   game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
   game.debug.bodyInfo(player, 32, 32);
   game.debug.body(player);
-  game.debug.body(goal);
+  game.debug.body(goal);*/
 
 }
