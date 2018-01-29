@@ -21,7 +21,7 @@ const game = new Phaser.Game(config);
 
 function preload() {
 
-	game.load.image('player', 'assets/kitty.svg');
+	game.load.image('player', 'assets/sprites/kitty.png');
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
   game.load.image('tv-table', 'assets/img/furniture/tv-table.png');
@@ -35,26 +35,13 @@ function preload() {
   game.load.image('analog', 'assets/sprites/arrow.svg');
 
 }
-
-var player;
-var cursors;
-var arrow;
-var catchFlag = false;
-var launchVelocity = 0;
-
-var sprite3;
-var sprite4;
-
-let analog;
-let tvtable;
-let table;
-let chairs;
-let plant;
-let goal;
-let desk;
-let deskchair;
-let couchLong;
 let furniture;
+let player;
+let cursors;
+let arrow;
+let catchFlag = false;
+let launchVelocity = 0;
+let analog;
 
 function create() {
 
@@ -64,78 +51,29 @@ function create() {
 	game.stage.backgroundColor = '#f5cf99';
 
   
-	couchLong = furnitureTpl(game,'couch-long',0,0,0.35,0.35);
+	let couchLong = furnitureTpl(game,'couch-long',0,0,0.35,0.35);
   furniture.add(couchLong);
 
-  sprite4 = game.add.sprite(0, couchLong.height-2, 'couch-short');
-  sprite4.name = 'couch-short';
-  game.physics.enable(sprite4, Phaser.Physics.ARCADE);
-  sprite4.body.collideWorldBounds = true;
-  sprite4.body.checkCollision.up = true;
-  sprite4.body.checkCollision.down = true;
-  sprite4.body.immovable = true;
-  sprite4.scale.setTo(0.35,0.35);
+  let couchShort = furnitureTpl(game,'couch-short',0,couchLong.height-2,0.35,0.35);
+  furniture.add(couchShort);
 
-  furniture.add(sprite4);
+  let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
+  furniture.add(couchShort);
 
-  tvtable = game.add.sprite(60,game.height,'tv-table');
-  tvtable.name = 'tvtable';
-  game.physics.enable(tvtable, Phaser.Physics.ARCADE);
-  tvtable.body.collideWorldBounds = true;
-  tvtable.body.checkCollision.up = true;
-  tvtable.body.checkCollision.down = true;
-  tvtable.body.immovable = true;
-  tvtable.scale.setTo(0.35,0.35);
-  furniture.add(tvtable);
-
-
-  chairs = game.add.sprite((game.width/2 - 55),(game.height - 243),'chairs');
-  chairs.name = 'chairs';
-  game.physics.enable(chairs, Phaser.Physics.ARCADE);
-  chairs.body.collideWorldBounds = true;
-  chairs.body.checkCollision.up = true;
-  chairs.body.checkCollision.down = true;
-  chairs.body.immovable = true;
-  chairs.scale.setTo(0.35,0.35);
-
+  let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
   furniture.add(chairs);
 
-  table = game.add.sprite(game.width/2,game.height,'table');
-  table.name = 'tvtable';
-  game.physics.enable(table, Phaser.Physics.ARCADE);
-  table.body.collideWorldBounds = true;
-  table.body.checkCollision.up = true;
-  table.body.checkCollision.down = true;
-  table.body.immovable = true;
-  table.scale.setTo(0.35,0.35);
-
+  let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
   furniture.add(table);
 
-  plant = game.add.sprite(game.width/5 * 3, 10,'plant');
-  plant.name = 'plant';
-  game.physics.enable(plant, Phaser.Physics.ARCADE);
-  plant.body.collideWorldBounds = true;
-  plant.body.checkCollision.up = true;
-  plant.body.checkCollision.down = true;
-  plant.body.immovable = true;
-  plant.scale.setTo(0.45,0.45);
-
+  let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
   furniture.add(plant);
 
-
-  deskchair = game.add.sprite(game.width-130, game.height/4 + 45,'deskchair');
-  deskchair.name = 'deskchair';
-  game.physics.enable(deskchair, Phaser.Physics.ARCADE);
-  deskchair.body.collideWorldBounds = true;
-  deskchair.body.checkCollision.up = true;
-  deskchair.body.checkCollision.down = true;
-  deskchair.body.immovable = true;
-  deskchair.scale.setTo(0.45,0.45);
+  let deskchair = furnitureTpl(game,'deskchair',game.width-130,game.height/4 + 45,0.45,0.45);
   deskchair.rotation = 0.2;
-
   furniture.add(deskchair);
 
-  desk = game.add.sprite(game.width, game.height/4,'desk');
+  let desk = game.add.sprite(game.width, game.height/4,'desk');
   desk.name = 'desk';
   game.physics.enable(desk, Phaser.Physics.ARCADE);
   desk.body.collideWorldBounds = true;
@@ -177,7 +115,7 @@ function create() {
 
   // GOAL
 
-  goal = game.add.sprite(50, 270,'goal');
+  let goal = game.add.sprite(50, 270,'goal');
   goal.name = 'goal';
   plant.body.collideWorldBounds = true;
   game.physics.enable(goal, Phaser.Physics.ARCADE);
@@ -218,6 +156,7 @@ function update() {
 
 	arrow.rotation = game.physics.arcade.angleBetween(arrow, player);
     
+  game.physics.arcade.collide(furniture, player);
     if (catchFlag === true)
     {
         //  Track the ball sprite to the mouse  
