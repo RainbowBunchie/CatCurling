@@ -39,7 +39,8 @@ function preload() {
   game.load.image('menu', 'assets/img/gui/menu.png');
   game.load.image('playbutton', 'assets/img/gui/playbutton.png')
   game.load.image('transparent', 'assets/img/gui/transparency.png')
-
+  game.load.image('homebutton', 'assets/img/gui/homebutton.png')
+  game.load.image('restartbutton', 'assets/img/gui/restartbutton.png')
 }
 
 let dusts;
@@ -198,6 +199,9 @@ function create() {
   // SETTINGS MENU
   let showSettings = false;
 
+  let homebutton;
+  let restartbutton;
+
   let settingsbutton = game.add.sprite(10, 10,'settingsbutton');
   settingsbutton.scale.setTo(1,1);
   settingsbutton.inputEnabled = true;
@@ -205,6 +209,8 @@ function create() {
   settingsbutton.events.onInputUp.add(function(){
     getSettingsMenu();
   });
+
+  //WENN IN SETTINGS GEPAUSED WIRD -> SETTINGS KANN NICHT MEHR GESCHLOSSEN WERDEN?
 
   function getSettingsMenu(){
 
@@ -217,6 +223,18 @@ function create() {
     menutext = game.add.text(game.width/2, 115, `SETTINGS`, textstyleCenter);
     menutext.anchor.setTo(0.5,1);
 
+    playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
+    playbutton.scale.setTo(0.45,0.45);
+    playbutton.anchor.setTo(0.5,1);
+
+    homebutton = game.add.sprite(game.width/2 - playbutton.width - 40,menu.height/2 + game.height/2 + 30,'homebutton');
+    homebutton.scale.setTo(0.45,0.45);
+    homebutton.anchor.setTo(0.5,1);
+
+    restartbutton = game.add.sprite(game.width/2 + playbutton.width + 40,menu.height/2 + game.height/2 + 30,'restartbutton');
+    restartbutton.scale.setTo(0.45,0.45);
+    restartbutton.anchor.setTo(0.5,1);
+
     showSettings = true;
 
   }
@@ -225,8 +243,12 @@ function create() {
 
   function removeSettingsMenu(){
     if (showSettings == true){
+      restartbutton.destroy();
+      homebutton.destroy();
       menu.destroy();
       transparent.destroy();
+      menutext.destroy();
+      playbutton.destroy();
       showSettings = false;
     }
   }
@@ -266,7 +288,7 @@ function create() {
 
 
     playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
-    playbutton.scale.setTo(0.5,0.5);
+    playbutton.scale.setTo(0.45,0.45);
     playbutton.anchor.setTo(0.5,1);
 
     //playbutton.inputEnabled = true;
