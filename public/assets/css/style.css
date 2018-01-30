@@ -160,7 +160,7 @@ button:focus{
 }
 
 
-/* -- Imprint --*/
+/* -- Imprint, Highscore --*/
 
 #imprint, #highscore{
     padding:1rem;
@@ -182,4 +182,8 @@ button:focus{
     max-width:32rem;
     color:#FFF;
     text-shadow: 2px 0 0 #f6b47c, -2px 0 0 #f6b47c, 0 2px 0 #f6b47c, 0 -2px 0 #f6b47c, 1px 1px #f6b47c, -1px -1px 0 #f6b47c, 1px -1px 0 #f6b47c, -1px 1px 0 #f6b47c;
+}
+
+#highscore table{
+  width:100%;
 }
