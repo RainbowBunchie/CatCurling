@@ -162,7 +162,7 @@ button:focus{
 
 /* -- Imprint --*/
 
-#imprint{
+#imprint, #highscore{
     padding:1rem;
     width:100%;
     height:30rem;
@@ -173,7 +173,7 @@ button:focus{
     margin-top:8rem;
 }
 
-#imprint .text{
+#imprint .text, #highscore .text{
     margin-top:9rem;
     margin-left:auto;
     margin-right:auto;
