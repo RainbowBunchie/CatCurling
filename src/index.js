@@ -38,6 +38,8 @@ function preload() {
   game.load.image('dust', 'assets/sprites/dust.png');
   game.load.image('menu', 'assets/img/gui/menu.png');
   game.load.image('playbutton', 'assets/img/gui/playbutton.png')
+  game.load.image('transparent', 'assets/img/gui/transparency.png')
+
 }
 
 let dusts;
@@ -211,8 +213,16 @@ function create() {
   let menu;
   let pausetext;
   let playbutton;
+  let transparent;
+  let pausescore;
+  let leveltextpause;
+  let scorepause;
 
   function handlePause(){
+    game.paused= true; //if player clicks outside game and game pauses automatically
+
+    transparent = game.add.sprite(0,0, 'transparent');
+
     menu = game.add.sprite(game.width/2,game.height/2,'menu');
     menu.scale.setTo(0.9,0.9);
     menu.anchor.setTo(0.5, 0.5);
@@ -220,22 +230,39 @@ function create() {
     pausetext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
     pausetext.anchor.setTo(0.5,1);
 
+
     playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
     playbutton.scale.setTo(0.5,0.5);
     playbutton.anchor.setTo(0.5,1);
 
-    playbutton.inputEnabled = true;
+    //playbutton.inputEnabled = true;
 
-    playbutton.events.onInputUp.add(function(){
-        console.log("hi");
-        //game.paused = false;
-    });
+    pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
+    pausescore.anchor.setTo(0.5,0.5);
+    pausescore.scale.setTo(1.2,1.2);
+
+    scorepause = game.add.text(0,0,score.toString(), textstyleRight);
+    scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
+
+    leveltextpause = game.add.text(0, 0, 'Level ' + level, {
+            font: "5em Stringz",
+            fill: "#fff",
+            align: "center",
+            boundsAlignH: "center",
+            boundsAlignV: "center"
+          });
+    leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
+
   }
 
   game.input.onDown.add(unpause, self);
 
   function unpause(){
     if (game.paused == true){
+      scorepause.destroy();
+      leveltextpause.destroy();
+      pausescore.destroy();
+      transparent.destroy();
       menu.destroy();
       pausetext.destroy();
       playbutton.destroy();
