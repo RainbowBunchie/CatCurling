@@ -195,23 +195,57 @@ function create() {
   scoregroup.add(scoretext);
   scoregroup.y = 10;
 
+  // SETTINGS MENU
+  let showSettings = false;
+
   let settingsbutton = game.add.sprite(10, 10,'settingsbutton');
   settingsbutton.scale.setTo(1,1);
+  settingsbutton.inputEnabled = true;
+
+  settingsbutton.events.onInputUp.add(function(){
+    getSettingsMenu();
+  });
+
+  function getSettingsMenu(){
+
+    transparent = game.add.sprite(0,0, 'transparent');
+
+    menu = game.add.sprite(game.width/2,game.height/2,'menu');
+    menu.scale.setTo(0.9,0.9);
+    menu.anchor.setTo(0.5, 0.5);
+
+    menutext = game.add.text(game.width/2, 115, `SETTINGS`, textstyleCenter);
+    menutext.anchor.setTo(0.5,1);
+
+    showSettings = true;
+
+  }
+
+  game.input.onDown.add(removeSettingsMenu, self);
+
+  function removeSettingsMenu(){
+    if (showSettings == true){
+      menu.destroy();
+      transparent.destroy();
+      showSettings = false;
+    }
+  }
+
 
   // PAUSING THE GAME
 
   let pausebutton = game.add.sprite(20 + settingsbutton.width, 10,'pausebutton');
-
   pausebutton.inputEnabled = true;
 
   pausebutton.events.onInputUp.add(function(){
+    console.log("pause");
       game.paused = true;
   });
 
   game.onPause.add(handlePause);
 
   let menu;
-  let pausetext;
+  let menutext;
   let playbutton;
   let transparent;
   let pausescore;
@@ -227,8 +261,8 @@ function create() {
     menu.scale.setTo(0.9,0.9);
     menu.anchor.setTo(0.5, 0.5);
 
-    pausetext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
-    pausetext.anchor.setTo(0.5,1);
+    menutext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
+    menutext.anchor.setTo(0.5,1);
 
 
     playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
@@ -264,7 +298,7 @@ function create() {
       pausescore.destroy();
       transparent.destroy();
       menu.destroy();
-      pausetext.destroy();
+      menutext.destroy();
       playbutton.destroy();
       game.paused = false;
     }
