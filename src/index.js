@@ -85,7 +85,11 @@ function preload() {
   game.load.image('levelholder', 'assets/img/gui/level-holder.svg');
   game.load.image('settingsbutton', 'assets/img/gui/settings-button.svg');
   game.load.image('pausebutton', 'assets/img/gui/pause-button.svg');
-  game.load.image('dust', 'assets/sprites/dust.png')
+
+  game.load.image('dust', 'assets/sprites/dust.png');
+  game.load.image('menu', 'assets/img/gui/menu.png');
+  game.load.image('playbutton', 'assets/img/gui/playbutton.png')
+  game.load.image('transparent', 'assets/img/gui/transparency.png')
 
 
 }
@@ -136,7 +140,9 @@ function create() {
         };
 
 
+
   shots = 3;
+
   furniture = game.add.group();
 
 	game.stage.backgroundColor = '#f5cf99';
@@ -264,17 +270,62 @@ function create() {
 
   game.onPause.add(handlePause);
 
-  let text;
+  let menu;
+  let pausetext;
+  let playbutton;
+  let transparent;
+  let pausescore;
+  let leveltextpause;
+  let scorepause;
 
   function handlePause(){
-    text = game.add.text(game.width * 0.5, game.height * 0.5, "Game paused", textstyleCenter);
+    game.paused= true; //if player clicks outside game and game pauses automatically
+
+    transparent = game.add.sprite(0,0, 'transparent');
+
+    menu = game.add.sprite(game.width/2,game.height/2,'menu');
+    menu.scale.setTo(0.9,0.9);
+    menu.anchor.setTo(0.5, 0.5);
+
+    pausetext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
+    pausetext.anchor.setTo(0.5,1);
+
+
+    playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
+    playbutton.scale.setTo(0.5,0.5);
+    playbutton.anchor.setTo(0.5,1);
+
+    //playbutton.inputEnabled = true;
+
+    pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
+    pausescore.anchor.setTo(0.5,0.5);
+    pausescore.scale.setTo(1.2,1.2);
+
+    scorepause = game.add.text(0,0,score.toString(), textstyleRight);
+    scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
+
+    leveltextpause = game.add.text(0, 0, 'Level ' + level, {
+            font: "5em Stringz",
+            fill: "#fff",
+            align: "center",
+            boundsAlignH: "center",
+            boundsAlignV: "center"
+          });
+    leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
+
   }
 
   game.input.onDown.add(unpause, self);
 
   function unpause(){
     if (game.paused == true){
-      text.destroy();
+      scorepause.destroy();
+      leveltextpause.destroy();
+      pausescore.destroy();
+      transparent.destroy();
+      menu.destroy();
+      pausetext.destroy();
+      playbutton.destroy();
       game.paused = false;
     }
   }
@@ -359,8 +410,8 @@ function update() {
 }
 
 function calcOverlap(obj1,obj2){
-  let dx = (obj1.x+obj1.width/2)-(obj2.x+obj2.width/2);
-  let dy = (obj1.y+obj1.height/2)-(obj2.y+obj2.height/2);
+  let dx = obj1.x-obj2.x;
+  let dy = obj1.y-obj2.y;
   let result = Math.sqrt((Math.pow(dx,2)+Math.pow(dy,2)));
   return result;
 }
@@ -384,21 +435,19 @@ function collisionHandler (obj1, obj2) {
   if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
 
     if(obj2 == goalInner){
-      if (calcOverlap(player.body, goalInner.body)<15){
+      if (calcOverlap(player.body, goalInner.body)<10){
         animateScore(300);
 
         player.kill();
       }
-      //else animateScore(100);
     }
 
     else if (obj2 == goal){
-      if (calcOverlap(player.body, goal.body)<66){
+      if (calcOverlap(player.body, goal.body)<70){
         animateScore(100);
         player.kill();
       }
     }
-
   }
 }
 
@@ -415,7 +464,11 @@ function animateScore(amount){
 }
 
 function render() {
+
   game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
+game.debug.bodyInfo(sprite, 16, 24);
+game.debug.body(sprite);
+game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
   game.debug.cameraInfo(game.camera, 32, 64);
   game.debug.spriteCoords(player, 32, 150);
   game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
@@ -426,6 +479,6 @@ function render() {
    game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
    game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
    game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
-   
+
 }
 
