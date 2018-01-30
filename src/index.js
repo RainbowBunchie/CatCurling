@@ -92,6 +92,8 @@ function preload() {
   game.load.image('transparent', 'assets/img/gui/transparency.png')
   game.load.image('homebutton', 'assets/img/gui/homebutton.png')
   game.load.image('restartbutton', 'assets/img/gui/restartbutton.png')
+  game.load.image('shotsholder', 'assets/img/gui/shotsholder.png')
+
 }
 
 let dusts;
@@ -253,7 +255,26 @@ function create() {
   scoretext = game.add.text(0, 0, score, textstyleRight);
   scoretext.setTextBounds(35, 13, 100, 10);
   scoregroup.add(scoretext);
-  scoregroup.y = 10;
+  scoregroup.y = 70;
+
+  // SHOTS
+
+  let shotsGroup = game.add.group();
+
+  let shotsAmount = game.add.text(0,0, shots, textstyleRight);
+
+  let shotsHolder = game.add.sprite(0, 0, 'shotsholder');
+
+  shotsGroup.add(shotsHolder);
+
+  let shotsText = game.add.text(10,7, "SHOTS", textstyleCenter);
+  shotsHolder.scale.setTo(0.73,0.73);
+
+  shotsGroup.add(shotsText);
+
+  shotsGroup.x = game.width -256;
+  shotsGroup.y = 12;
+
 
   // SETTINGS MENU
   let showSettings = false;
@@ -426,7 +447,7 @@ function launch() {
     catchFlag = false;
     player.body.moves = true;
     game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
-    shots -=1;
+    updateShots();
     arrow.alpha = 0;
     analog.alpha = 0;
 
@@ -435,6 +456,9 @@ function launch() {
 
     player.body.velocity.setTo(Xvector, Yvector);
   }
+}
+function updateShots(){
+  shots-=1;
 }
 
 function update() {
@@ -530,7 +554,7 @@ function animateScore(amount){
 
 function render() {
 
-  game.debug.cameraInfo(game.camera, 32, 64);
+/*  game.debug.cameraInfo(game.camera, 32, 64);
   game.debug.spriteCoords(player, 32, 150);
   game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
   game.debug.bodyInfo(player, 32, 32);
@@ -538,7 +562,7 @@ function render() {
   game.debug.body(goal);
   game.debug.body(goalInner);
    game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
-   game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
+   game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');*/
    game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
 
 }
