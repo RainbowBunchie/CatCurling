@@ -426,7 +426,11 @@ function gameOver() {
           boundsAlignV: "center"
         };
   let over = game.add.text(game.width * 0.5, game.height * 0.5, "Game over", textstyleCenter);
+ restart();
+}
 
+function restart(){
+  player.resetPosition(); 
 }
 
 
@@ -465,10 +469,6 @@ function animateScore(amount){
 
 function render() {
 
-  game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
-game.debug.bodyInfo(sprite, 16, 24);
-game.debug.body(sprite);
-game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
   game.debug.cameraInfo(game.camera, 32, 64);
   game.debug.spriteCoords(player, 32, 150);
   game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
