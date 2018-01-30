@@ -85,14 +85,14 @@ function preload() {
   game.load.image('levelholder', 'assets/img/gui/level-holder.svg');
   game.load.image('settingsbutton', 'assets/img/gui/settings-button.svg');
   game.load.image('pausebutton', 'assets/img/gui/pause-button.svg');
-
   game.load.image('dust', 'assets/sprites/dust.png');
   game.load.image('menu', 'assets/img/gui/menu.png');
-  game.load.image('playbutton', 'assets/img/gui/playbutton.png')
-  game.load.image('transparent', 'assets/img/gui/transparency.png')
-  game.load.image('homebutton', 'assets/img/gui/homebutton.png')
-  game.load.image('restartbutton', 'assets/img/gui/restartbutton.png')
-  game.load.image('shotsholder', 'assets/img/gui/shotsholder.png')
+  game.load.image('playbutton', 'assets/img/gui/playbutton.png');
+  game.load.image('transparent', 'assets/img/gui/transparency.png');
+  game.load.image('homebutton', 'assets/img/gui/homebutton.png');
+  game.load.image('restartbutton', 'assets/img/gui/restartbutton.png');
+  game.load.image('shotsholder', 'assets/img/gui/shotsholder.png');
+  game.load.image('shot', 'assets/img/gui/shot.png');
 
 }
 
@@ -143,7 +143,7 @@ function create() {
 
 
 
-  shots = 3;
+  shots = 4;
 
   furniture = game.add.group();
 
@@ -206,7 +206,6 @@ function create() {
   dust2.scale.setTo(0.2, 0.2);
   dust3.scale.setTo(0.2,0.2);
 
-
   // GAME CHARACTERS:
 
   analog = game.add.sprite(player,player,'analog');
@@ -261,11 +260,11 @@ function create() {
 
   let shotsGroup = game.add.group();
 
-  let shotsAmount = game.add.text(0,0, shots, textstyleRight);
-
   let shotsHolder = game.add.sprite(0, 0, 'shotsholder');
 
   shotsGroup.add(shotsHolder);
+
+  displayShots(shots);
 
   let shotsText = game.add.text(10,7, "SHOTS", textstyleCenter);
   shotsHolder.scale.setTo(0.73,0.73);
@@ -457,8 +456,30 @@ function launch() {
     player.body.velocity.setTo(Xvector, Yvector);
   }
 }
+
 function updateShots(){
   shots-=1;
+  reduceShots(shots);
+}
+
+let shot;
+let shotsleft
+
+function displayShots(shots){
+  shotsleft = game.add.group();
+  let x = 950;
+  while (shots > 0){
+    shot = game.add.sprite(x, 22, 'shot');
+    shot.scale.setTo(0.75,0.75);
+    x += 20;
+    shots -= 1;
+    shotsleft.add(shot);
+  }
+}
+function reduceShots(shots){
+  console.log(shotsleft.length);
+  shotsleft.destroy();
+  displayShots(shots);
 }
 
 function update() {
@@ -515,24 +536,24 @@ function gameOver() {
 }
 
 function restart(){
-  player.resetPosition();
+  //player.resetPosition();
 }
 
 
 function collisionHandler (obj1, obj2) {
 
   if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
-
     if(obj2 == goalInner){
       if (calcOverlap(player.body, goalInner.body)<10){
+        animateScore(shots*20);
         animateScore(300);
-
         player.kill();
       }
     }
 
     else if (obj2 == goal){
       if (calcOverlap(player.body, goal.body)<70){
+        animateScore(shots*20);
         animateScore(100);
         player.kill();
       }
@@ -547,6 +568,7 @@ function collectDust(player, dust){
 }
 
 function animateScore(amount){
+  console.log("score increased by " + amount);
   game.add.tween(scoretext).to({score:score+amount},700,"Linear", true);
   score += amount;
 
@@ -563,6 +585,6 @@ function render() {
   game.debug.body(goalInner);
    game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
    game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');*/
-   game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
+  // game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
 
 }
