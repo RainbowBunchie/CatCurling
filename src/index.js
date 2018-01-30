@@ -94,11 +94,11 @@ function create() {
   let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
   furniture.add(tvTable);
 
-  // let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
-  // furniture.add(chairs);
+  let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
+  furniture.add(chairs);
 
-  // let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
-  // furniture.add(table);
+  let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
+  furniture.add(table);
 
   let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
   furniture.add(plant);
