@@ -205,6 +205,7 @@ function create() {
   let settingsbutton = game.add.sprite(10, 10,'settingsbutton');
   settingsbutton.scale.setTo(1,1);
   settingsbutton.inputEnabled = true;
+  settingsbutton.input.useHandCursor = true;
 
   settingsbutton.events.onInputUp.add(function(){
     getSettingsMenu();
@@ -226,20 +227,24 @@ function create() {
     playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
     playbutton.scale.setTo(0.45,0.45);
     playbutton.anchor.setTo(0.5,1);
+    playbutton.inputEnabled = true;
+    playbutton.input.useHandCursor = true;
+    playbutton.events.onInputUp.add(function(){
+      removeSettingsMenu();
+    });
 
-    homebutton = game.add.sprite(game.width/2 - playbutton.width - 40,menu.height/2 + game.height/2 + 30,'homebutton');
-    homebutton.scale.setTo(0.45,0.45);
+    homebutton = game.add.sprite(game.width/2 - playbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
+    homebutton.scale.setTo(0.4,0.4);
     homebutton.anchor.setTo(0.5,1);
 
-    restartbutton = game.add.sprite(game.width/2 + playbutton.width + 40,menu.height/2 + game.height/2 + 30,'restartbutton');
-    restartbutton.scale.setTo(0.45,0.45);
+    restartbutton = game.add.sprite(game.width/2 + playbutton.width + 40,menu.height/2 + game.height/2 + 20,'restartbutton');
+    restartbutton.scale.setTo(0.4, 0.4);
     restartbutton.anchor.setTo(0.5,1);
 
     showSettings = true;
-
   }
 
-  game.input.onDown.add(removeSettingsMenu, self);
+  //game.input.onDown.add(removeSettingsMenu, self);
 
   function removeSettingsMenu(){
     if (showSettings == true){
@@ -258,6 +263,7 @@ function create() {
 
   let pausebutton = game.add.sprite(20 + settingsbutton.width, 10,'pausebutton');
   pausebutton.inputEnabled = true;
+  pausebutton.input.useHandCursor = true;
 
   pausebutton.events.onInputUp.add(function(){
     console.log("pause");
