@@ -7,6 +7,7 @@ export default function (game, spriteName, posX=0, posY=0,scaleX=0.5,scaleY=0.5)
   sprite.body.checkCollision.up = true;
   sprite.body.checkCollision.right = true;
   sprite.body.checkCollision.down = true;
+  sprite.body.checkCollision.left = true;
   sprite.body.immovable = true;
   sprite.scale.setTo(scaleX,scaleY);
   return sprite;

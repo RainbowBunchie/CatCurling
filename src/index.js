@@ -7,17 +7,67 @@ import pkg from '../package.json';
 
 const config = Object.assign(defaults, {
   state: {
+    start,
+    loadStart,
+    fileComplete,
+    loadComplete,
     create,
     preload,
     update,
-    render
+    render    
   }
 })
 
 const game = new Phaser.Game(config);
 
+function start() {
+
+      // Splash
+    game.load.image('bg','assets/img/BG.png');
+    game.load.image('bar','assets/img/rahmen.png');
+    game.load.image('progress','assets/img/bar.png');
+    game.load.script('logo','assets/img/logo.png');
+
+    game.load.start();
+    console.log('start');
+
+}
+
+function loadStart() {
+  let BG = game.add.tileSprite(0, 0, 800, 600, 'bg');
+	text.setText("Loading ...");
+  console.log('loadstart');
+}
+
+//	This callback is sent the following parameters:
+function fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
+
+	text.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles);
+
+	var newImage = game.add.image(x, y, 'bar');
+
+	newImage.scale.set(0.3);
+
+	x += newImage.width + 20;
+
+	if (x > 700)
+	{
+		x = 32;
+		y += 332;
+	}
+ console.log('filecomplete');
+}
+
+function loadComplete() {
+
+	text.setText("Load Complete");
+  console.log('loadcomplete');
+
+}
+
 
 function preload() {
+
 	game.load.image('player', 'assets/sprites/kitty.png');
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
@@ -35,11 +85,17 @@ function preload() {
   game.load.image('levelholder', 'assets/img/gui/level-holder.svg');
   game.load.image('settingsbutton', 'assets/img/gui/settings-button.svg');
   game.load.image('pausebutton', 'assets/img/gui/pause-button.svg');
-  game.load.image('dust', 'assets/sprites/dust.png')
+
+  game.load.image('dust', 'assets/sprites/dust.png');
+  game.load.image('menu', 'assets/img/gui/menu.png');
+  game.load.image('playbutton', 'assets/img/gui/playbutton.png')
+  game.load.image('transparent', 'assets/img/gui/transparency.png')
+
+
 }
 
 let dusts;
-
+let shots;
 let furniture;
 
 let player;
@@ -63,6 +119,10 @@ function create() {
 
   game.physics.startSystem(Phaser.Physics.ARCADE);
 
+   game.load.onLoadStart.add(loadStart, this);
+   game.load.onFileComplete.add(fileComplete, this);
+   game.load.onLoadComplete.add(loadComplete, this);
+
   let textstyleRight = {
           font: "2.8em Stringz",
           fill: "#fff",
@@ -81,6 +141,8 @@ function create() {
 
 
 
+  shots = 3;
+
   furniture = game.add.group();
 
 	game.stage.backgroundColor = '#f5cf99';
@@ -94,11 +156,11 @@ function create() {
   let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
   furniture.add(tvTable);
 
-  // let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
-  // furniture.add(chairs);
+  let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
+  furniture.add(chairs);
 
-  // let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
-  // furniture.add(table);
+  let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
+  furniture.add(table);
 
   let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
   furniture.add(plant);
@@ -208,17 +270,62 @@ function create() {
 
   game.onPause.add(handlePause);
 
-  let text;
+  let menu;
+  let pausetext;
+  let playbutton;
+  let transparent;
+  let pausescore;
+  let leveltextpause;
+  let scorepause;
 
   function handlePause(){
-    text = game.add.text(game.width * 0.5, game.height * 0.5, "Game paused", textstyleCenter);
+    game.paused= true; //if player clicks outside game and game pauses automatically
+
+    transparent = game.add.sprite(0,0, 'transparent');
+
+    menu = game.add.sprite(game.width/2,game.height/2,'menu');
+    menu.scale.setTo(0.9,0.9);
+    menu.anchor.setTo(0.5, 0.5);
+
+    pausetext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
+    pausetext.anchor.setTo(0.5,1);
+
+
+    playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
+    playbutton.scale.setTo(0.5,0.5);
+    playbutton.anchor.setTo(0.5,1);
+
+    //playbutton.inputEnabled = true;
+
+    pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
+    pausescore.anchor.setTo(0.5,0.5);
+    pausescore.scale.setTo(1.2,1.2);
+
+    scorepause = game.add.text(0,0,score.toString(), textstyleRight);
+    scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
+
+    leveltextpause = game.add.text(0, 0, 'Level ' + level, {
+            font: "5em Stringz",
+            fill: "#fff",
+            align: "center",
+            boundsAlignH: "center",
+            boundsAlignV: "center"
+          });
+    leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
+
   }
 
   game.input.onDown.add(unpause, self);
 
   function unpause(){
     if (game.paused == true){
-      text.destroy();
+      scorepause.destroy();
+      leveltextpause.destroy();
+      pausescore.destroy();
+      transparent.destroy();
+      menu.destroy();
+      pausetext.destroy();
+      playbutton.destroy();
       game.paused = false;
     }
   }
@@ -258,7 +365,7 @@ function launch() {
     catchFlag = false;
     player.body.moves = true;
     game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
-
+    shots -=1;
     arrow.alpha = 0;
     analog.alpha = 0;
 
@@ -288,7 +395,8 @@ function update() {
         launchVelocity = analog.height-100;
 
     }
-
+    
+    if (shots == 0 && (player.body.velocity.x ==0 && player.body.velocity.y ==0)) {gameOver();}
     player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
 
     game.physics.arcade.overlap(player, goalInner, collisionHandler, null, this);
@@ -302,10 +410,27 @@ function update() {
 }
 
 function calcOverlap(obj1,obj2){
-  let dx = (obj1.x+obj1.width/2)-(obj2.x+obj2.width/2);
-  let dy = (obj1.y+obj1.height/2)-(obj2.y+obj2.height/2);
+  let dx = obj1.x-obj2.x;
+  let dy = obj1.y-obj2.y;
   let result = Math.sqrt((Math.pow(dx,2)+Math.pow(dy,2)));
   return result;
+}
+
+function gameOver() {
+  player.kill();
+  let textstyleCenter = {
+          font: "2.8em Stringz",
+          fill: "#fff",
+          align: "center",
+          boundsAlignH: "center",
+          boundsAlignV: "center"
+        };
+  let over = game.add.text(game.width * 0.5, game.height * 0.5, "Game over", textstyleCenter);
+ restart();
+}
+
+function restart(){
+  player.resetPosition(); 
 }
 
 
@@ -314,21 +439,19 @@ function collisionHandler (obj1, obj2) {
   if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
 
     if(obj2 == goalInner){
-      if (calcOverlap(player.body, goalInner.body)<15){
+      if (calcOverlap(player.body, goalInner.body)<10){
         animateScore(300);
 
         player.kill();
       }
-      //else animateScore(100);
     }
 
     else if (obj2 == goal){
-      if (calcOverlap(player.body, goal.body)<66){
+      if (calcOverlap(player.body, goal.body)<70){
         animateScore(100);
         player.kill();
       }
     }
-
   }
 }
 
@@ -345,15 +468,17 @@ function animateScore(amount){
 }
 
 function render() {
-  // game.debug.text("Drag the sprite and release to launch", 32, 32, 'rgb(0,255,0)');
-  // game.debug.cameraInfo(game.camera, 32, 64);
-  // game.debug.spriteCoords(player, 32, 150);
-  // game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
-  // game.debug.bodyInfo(player, 32, 32);
-  // game.debug.body(player);
-  // game.debug.body(goal);
-  // game.debug.body(goalInner);
-  //  game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
-  //  game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
-   
+
+  game.debug.cameraInfo(game.camera, 32, 64);
+  game.debug.spriteCoords(player, 32, 150);
+  game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
+  game.debug.bodyInfo(player, 32, 32);
+  game.debug.body(player);
+  game.debug.body(goal);
+  game.debug.body(goalInner);
+   game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
+   game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
+   game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
+
 }
+
