@@ -70,7 +70,6 @@ function preload() {
   game.load.image('levelholder', 'assets/img/gui/level-holder.svg');
   game.load.image('settingsbutton', 'assets/img/gui/settings-button.svg');
   game.load.image('pausebutton', 'assets/img/gui/pause-button.svg');
-
   game.load.image('dust', 'assets/sprites/dust.png');
   game.load.image('menu', 'assets/img/gui/menu.png');
   game.load.image('playbutton', 'assets/img/gui/playbutton.png')
@@ -123,8 +122,6 @@ function create() {
           boundsAlignH: "center",
           boundsAlignV: "center"
         };
-
-
 
   shots = 3;
 
@@ -380,7 +377,7 @@ function update() {
         launchVelocity = analog.height-100;
 
     }
-    
+
     if (shots == 0 && (player.body.velocity.x ==0 && player.body.velocity.y ==0)) {gameOver();}
     player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
 
@@ -415,7 +412,7 @@ function gameOver() {
 }
 
 function restart(){
-  player.resetPosition(); 
+  player.resetPosition();
 }
 
 
@@ -466,4 +463,3 @@ function render() {
    game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
 
 }
-
