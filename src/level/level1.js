@@ -194,6 +194,10 @@ function create() {
 
     let homebutton;
     let restartbutton;
+    let raisebutton;
+    let lowerbutton;
+    let mutebutton;
+    let soundText;
 
     let settingsbutton = game.add.sprite(10, 10,'settingsbutton');
     settingsbutton.scale.setTo(1,1);
@@ -226,7 +230,7 @@ function create() {
         removeSettingsMenu();
       });
 
-      let raisebutton = game.add.sprite(game.width/3,menu.height/2 + game.height/2 - 120,'raisebutton');
+      raisebutton = game.add.sprite(game.width/3,menu.height/2 + game.height/2 - 120,'raisebutton');
       raisebutton.scale.setTo(0.6,0.6);
       raisebutton.anchor.setTo(0.5,1);
       raisebutton.inputEnabled = true;
@@ -235,13 +239,17 @@ function create() {
         music.pause();
         music.volume += 1;
         music.resume();
-        console.log(music.volume);
+        console.log("raise: " + music.volume);
         if(music.volume > 10)
           music.volume = 10;
+        if(music.volume == 1){
+          soundValue = music.volume;
+          onDeMuteButton();
+        }
         soundText.setText(`${~~music.volume}`);
       });
 
-      let lowerbutton = game.add.sprite(2*game.width/3,menu.height/2 + game.height/2 - 120,'lowerbutton');
+      lowerbutton = game.add.sprite(2*game.width/3,menu.height/2 + game.height/2 - 120,'lowerbutton');
       lowerbutton.scale.setTo(0.6,0.6);
       lowerbutton.anchor.setTo(0.5,1);
       lowerbutton.inputEnabled = true;
@@ -250,28 +258,54 @@ function create() {
         music.pause();
         music.volume -= 1;
         music.resume();
-        console.log(music.volume);
-        if (music.volume < 0)
+        if(music.volume < 0)
           music.volume = 0;
+        if(music.volume <= 0)
+          onMuteButton();
         soundText.setText(`${~~music.volume}`);
       });
 
-      let mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120,'mutebutton');
+      mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120, 'muteoffbutton');
       mutebutton.scale.setTo(0.6,0.6);
       mutebutton.anchor.setTo(0.5,1);
       mutebutton.inputEnabled = true;
       mutebutton.input.useHandCursor = true;
       mutebutton.events.onInputUp.add(function(){
-        if(music.volume == 0)
-          music.volume = soundValue;
-        else{
-          soundValue = music.volume;
-          music.volume = 0;
-        }
-        soundText.setText(`${~~music.volume}`);
+        onMuteButton();
       });
 
-      let soundText = game.add.text(game.width/2, menu.height/2 + game.height/2 - 160, `${~~music.volume}`, {
+      function onMuteButton(){
+        soundValue = music.volume;
+        mutebutton.destroy();
+        mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120, 'muteonbutton');
+        mutebutton.scale.setTo(0.6,0.6);
+        mutebutton.anchor.setTo(0.5,1);
+        mutebutton.inputEnabled = true;
+        mutebutton.input.useHandCursor = true;
+        if(soundValue > 0){
+          mutebutton.events.onInputUp.add(function(){
+            onDeMuteButton();
+          });
+        }
+        music.volume = 0;
+        soundText.setText(`${~~music.volume}`);
+      }
+
+      function onDeMuteButton(){
+        mutebutton.destroy();
+        mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120, 'muteoffbutton');
+        mutebutton.scale.setTo(0.6,0.6);
+        mutebutton.anchor.setTo(0.5,1);
+        mutebutton.inputEnabled = true;
+        mutebutton.input.useHandCursor = true;
+        mutebutton.events.onInputUp.add(function(){
+          onMuteButton();
+        });
+        music.volume = soundValue;
+        soundText.setText(`${~~music.volume}`);
+      }
+
+      soundText = game.add.text(game.width/2, menu.height/2 + game.height/2 - 250, `${~~music.volume}`, {
           font: "6em Stringz",
           fill: "#fff",
           align: "center",
@@ -300,6 +334,10 @@ function create() {
         transparent.destroy();
         menutext.destroy();
         playbutton.destroy();
+        raisebutton.destroy();
+        lowerbutton.destroy();
+        mutebutton.destroy();
+        soundText.destroy();
         showSettings = false;
       }
     }

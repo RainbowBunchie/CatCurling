@@ -28,7 +28,8 @@ function preload(){
   game.load.image('restartbutton', 'assets/img/gui/restartbutton.png');
   game.load.image('raisebutton', 'assets/img/gui/raisebutton.png');
   game.load.image('lowerbutton', 'assets/img/gui/lowerbutton.png');
-  game.load.image('mutebutton', 'assets/img/gui/mutebutton.png');
+  game.load.image('muteonbutton', 'assets/img/gui/mute.png');
+  game.load.image('muteoffbutton', 'assets/img/gui/nomute.png');
   game.load.image('shotsholder', 'assets/img/gui/shotsholder.png');
   game.load.image('shot', 'assets/img/gui/shot.png');
   game.load.audio('background-music', ['assets/audio/background.mp3', 'assets/audio/background.ogg']);
