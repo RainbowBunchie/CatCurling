@@ -27,10 +27,19 @@ let menu;
 let scorepause;
 let textstyleRight;
 let textstyleCenter;
+let music;
+let collect;
+let bump;
 
 
 function create() {
-level = 1;
+  level = 1;
+  music = game.add.audio('background-music');
+  music.volume = 0.2;
+  collect = game.add.audio('collect');
+  bump = game.add.audio('bump');
+  music.play();
+
 
   textstyleRight = {
           font: "2.8em Stringz",
@@ -389,7 +398,13 @@ function update() {
 
 	arrow.rotation = game.physics.arcade.angleBetween(arrow, player)- 3.14 / 2;
 
-  game.physics.arcade.collide(furniture, player);
+  if(player.body.blocked.up || player.body.blocked.down || player.body.blocked.left || player.body.blocked.right){
+    bump.play();
+  }
+
+  game.physics.arcade.collide(furniture, player, function(){
+    bump.play();
+  });
 
     if (catchFlag === true)
     {
@@ -466,6 +481,7 @@ function collisionHandler (obj1, obj2) {
 
 //triggered when cat overlaps with dust
 function collectDust(player, dust){
+  collect.play();
   dust.kill();
   animateScore(50);
 }

@@ -28,6 +28,9 @@ function preload(){
   game.load.image('restartbutton', 'assets/img/gui/restartbutton.png');
   game.load.image('shotsholder', 'assets/img/gui/shotsholder.png');
   game.load.image('shot', 'assets/img/gui/shot.png');
+  game.load.audio('background-music', ['assets/audio/background.mp3', 'assets/audio/background.ogg']);
+  game.load.audio('collect', 'assets/audio/collect.ogg');
+  game.load.audio('bump', 'assets/audio/bump.ogg');
 
   let bg = game.add.image(0, 0, 'bg');
   let logo = game.add.image(50, 50, 'logo');
