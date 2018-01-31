@@ -41,6 +41,12 @@ function preload(){
   game.load.image('menuSetting', 'assets/buttons/settings2.png');
   game.load.image('menuLevel', 'assets/buttons/levelsbutton.png');
   game.load.image('menuCredits', 'assets/buttons/credits.png');
+  game.load.image('back', 'assets/buttons/back.png');
+
+  game.load.image('in1', 'assets/instructions/instructions-1.png');
+  game.load.image('in2', 'assets/instructions/instructions-2.png');
+  game.load.image('next', 'assets/instructions/next-button.png');
+  game.load.image('previous', 'assets/instructions/back-button.png');
 
   let intID;
   game.load.onLoadStart.add(function() {

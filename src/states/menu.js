@@ -5,14 +5,13 @@ let settings;
 let newGame;
 let select;
 let credits;
-let middleX = game.width/2;
-let middleY =game.height/2;
+let middleX;
+let middleY;
 
 function create(){
 
-
-  let middleX = game.width/2;
-  let middleY =game.height/2;
+  middleX = game.width/2;
+  middleY =game.height/2;
 
     bg=game.add.tileSprite(0, 0, 1100, 600, "bg");
     bg.tileScale.y = 0.3;
@@ -72,14 +71,16 @@ function buttonHoverOut(button){
 function buttonClick(button){
   switch(button) {
     case newGame:
-        game.state.start('level1');
+        game.state.start('newGame');
         break;
     case select:
-        //code block
+        game.state.start('levelSelect');
         break;
     case credits:
+      game.state.start('credits');
     break;
     case settings:
+      game.state.start('menuSettings');
     break;
     default:
         let error = game.add.text(middleX,middleY, 'ERROR!!!!!', {fill: '#FFF'});
