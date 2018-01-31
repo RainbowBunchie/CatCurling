@@ -37,6 +37,11 @@ function preload(){
   game.load.image('shotsholder', 'assets/img/gui/shotsholder.png');
   game.load.image('shot', 'assets/img/gui/shot.png');
 
+  game.load.image('menuPlay', 'assets/buttons/playbutton.png');
+  game.load.image('menuSetting', 'assets/buttons/settings2.png');
+  game.load.image('menuLevel', 'assets/buttons/levelsbutton.png');
+  game.load.image('menuCredits', 'assets/buttons/credits.png');
+
   let intID;
   game.load.onLoadStart.add(function() {
       intID = setInterval(update, 5);
