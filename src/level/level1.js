@@ -30,6 +30,7 @@ let textstyleCenter;
 let music;
 let collect;
 let bump;
+let soundValue;
 
 
 function create() {
@@ -224,6 +225,53 @@ function create() {
       playbutton.events.onInputUp.add(function(){
         removeSettingsMenu();
       });
+
+      let raisebutton = game.add.sprite(game.width/3,menu.height/2 + game.height/2 - 120,'raisebutton');
+      raisebutton.scale.setTo(0.6,0.6);
+      raisebutton.anchor.setTo(0.5,1);
+      raisebutton.inputEnabled = true;
+      raisebutton.input.useHandCursor = true;
+      raisebutton.events.onInputUp.add(function(){
+        music.pause();
+        music.volume += 1;
+        music.resume();
+        console.log(music.volume);
+        if(music.volume > 10)
+          music.volume = 10;
+      });
+
+      let lowerbutton = game.add.sprite(2*game.width/3,menu.height/2 + game.height/2 - 120,'lowerbutton');
+      lowerbutton.scale.setTo(0.6,0.6);
+      lowerbutton.anchor.setTo(0.5,1);
+      lowerbutton.inputEnabled = true;
+      lowerbutton.input.useHandCursor = true;
+      lowerbutton.events.onInputUp.add(function(){
+        music.pause();
+        music.volume -= 1;
+        music.resume();
+        console.log(music.volume);
+        if (music.volume < 0)
+          music.volume = 0;
+        soundText.setText(`${~music.volume+1}`);
+      });
+
+      let mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120,'mutebutton');
+      mutebutton.scale.setTo(0.6,0.6);
+      mutebutton.anchor.setTo(0.5,1);
+      mutebutton.inputEnabled = true;
+      mutebutton.input.useHandCursor = true;
+      mutebutton.events.onInputUp.add(function(){
+        if(music.volume == 0)
+          music.volume = soundValue;
+        else{
+          soundValue = music.volume;
+          music.volume = 0;
+        }
+        soundText.setText(`${~music.volume+1}`);
+      });
+
+      let soundText = game.add.text(game.width/2, menu.height/2 + game.height/2 - 160, `${~music.volume+1}`, textstyleCenter);
+      soundText.anchor.setTo(0.5,1);
 
       homebutton = game.add.sprite(game.width/2 - playbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
       homebutton.scale.setTo(0.4,0.4);
