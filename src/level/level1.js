@@ -237,6 +237,7 @@ function create() {
       restartbutton.inputEnabled = true;
       restartbutton.input.useHandCursor = true;
       restartbutton.events.onInputUp.add(function(){
+        levelscore = 0;
         game.state.start('level1');
       });
 
@@ -308,7 +309,6 @@ function create() {
 
         scorepause = game.add.text(0,0,levelscore.toString(), textstyleRight);
         scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
-        scoretext.score= 0;
 
         leveltextpause = game.add.text(0, 0, 'Level ' + level, {
                 font: "5em Stringz",
@@ -472,6 +472,7 @@ function gameOver() {
   restartbutton.input.useHandCursor = true;
   restartbutton.events.onInputUp.add(function(){
     gameLost = false;
+    levelscore = 0;
     game.state.start('level1');
   });
 
@@ -543,6 +544,7 @@ function gameWon(){
   restartbutton.input.useHandCursor = true;
   restartbutton.events.onInputUp.add(function(){
     gameIsWon = false;
+    levelscore = 0;
     game.state.start('level1');
   });
 
@@ -588,9 +590,14 @@ function collectDust(player, dust){
 }
 
 function animateScore(amount){
-  console.log("score increased by " + amount);
+  //console.log("score increased by " + amount);
+  console.log("levelscore before: " + levelscore + " amount: " + amount);
   levelscore += amount;
+  console.log("levelscore after: " + levelscore + " amount: " + amount);
+  console.log("scoretext.score vorher: " + scoretext.score);
   game.add.tween(scoretext).to({score:levelscore},700,"Linear", true);
+  console.log("scoretext.score nacher: " + scoretext.score);
+
   //scoretext.score muss zurück gesetzt werden !!!!!!!!
 
 }
