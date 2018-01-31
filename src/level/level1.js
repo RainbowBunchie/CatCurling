@@ -566,11 +566,12 @@ function gameWon(){
 //triggered when cat overlaps with dust
 function collectDust(player, dust){
   dust.kill();
+  console.log("1 dust collected");
   animateScore(50);
 }
 
 function animateScore(amount){
-  console.log("score increased by " + amount);
+  //console.log("score increased by " + amount);
   game.add.tween(scoretext).to({score:score+amount},700,"Linear", true);
   score += amount;
 
