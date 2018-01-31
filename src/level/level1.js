@@ -36,7 +36,7 @@ let soundValue;
 function create() {
   level = 1;
   music = game.add.audio('background-music');
-  music.volume = 0.2;
+  music.volume = 2;
   collect = game.add.audio('collect');
   bump = game.add.audio('bump');
   music.play();
@@ -238,6 +238,7 @@ function create() {
         console.log(music.volume);
         if(music.volume > 10)
           music.volume = 10;
+        soundText.setText(`${~~music.volume}`);
       });
 
       let lowerbutton = game.add.sprite(2*game.width/3,menu.height/2 + game.height/2 - 120,'lowerbutton');
@@ -252,7 +253,7 @@ function create() {
         console.log(music.volume);
         if (music.volume < 0)
           music.volume = 0;
-        soundText.setText(`${~music.volume+1}`);
+        soundText.setText(`${~~music.volume}`);
       });
 
       let mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120,'mutebutton');
@@ -267,10 +268,10 @@ function create() {
           soundValue = music.volume;
           music.volume = 0;
         }
-        soundText.setText(`${~music.volume+1}`);
+        soundText.setText(`${~~music.volume}`);
       });
 
-      let soundText = game.add.text(game.width/2, menu.height/2 + game.height/2 - 160, `${~music.volume+1}`, textstyleCenter);
+      let soundText = game.add.text(game.width/2, menu.height/2 + game.height/2 - 160, `${~~music.volume}`, textstyleCenter);
       soundText.anchor.setTo(0.5,1);
 
       homebutton = game.add.sprite(game.width/2 - playbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
