@@ -228,6 +228,7 @@ function create() {
       homebutton.inputEnabled = true;
       homebutton.input.useHandCursor = true;
       homebutton.events.onInputUp.add(function(){
+        levelscore = 0;
         game.state.start('loading');
       });
 
@@ -484,7 +485,7 @@ function gameOver() {
   homebutton.input.useHandCursor = true;
   homebutton.events.onInputUp.add(function(){
     gameLost = false;
-
+    levelscore = 0;
     game.state.start('loading');
   });
 }
@@ -555,6 +556,7 @@ function gameWon(){
   homebutton.input.useHandCursor = true;
   homebutton.events.onInputUp.add(function(){
     gameIsWon = false;
+    levelscore = 0;
     game.state.start('loading');
   });
 
