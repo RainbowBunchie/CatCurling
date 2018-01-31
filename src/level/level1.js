@@ -30,7 +30,8 @@ let textstyleCenter;
 
 
 function create() {
-level = 1;
+  level = 1;
+  shots = 5;
 
   textstyleRight = {
           font: "2.8em Stringz",
@@ -47,7 +48,6 @@ level = 1;
           boundsAlignV: "center"
         };
 
-  shots = 3;
   furniture = game.add.group();
 
 	game.stage.backgroundColor = '#f5cf99';
@@ -191,7 +191,9 @@ level = 1;
     settingsbutton.input.useHandCursor = true;
 
     settingsbutton.events.onInputUp.add(function(){
-      getSettingsMenu();
+      if (showSettings == false){
+        getSettingsMenu();
+      }
     });
 
     //WENN IN SETTINGS GEPAUSED WIRD -> SETTINGS KANN NICHT MEHR GESCHLOSSEN WERDEN?
@@ -219,10 +221,20 @@ level = 1;
       homebutton = game.add.sprite(game.width/2 - playbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
       homebutton.scale.setTo(0.4,0.4);
       homebutton.anchor.setTo(0.5,1);
+      homebutton.inputEnabled = true;
+      homebutton.input.useHandCursor = true;
+      homebutton.events.onInputUp.add(function(){
+        game.state.start('loading');
+      });
 
       restartbutton = game.add.sprite(game.width/2 + playbutton.width + 40,menu.height/2 + game.height/2 + 20,'restartbutton');
       restartbutton.scale.setTo(0.4, 0.4);
       restartbutton.anchor.setTo(0.5,1);
+      restartbutton.inputEnabled = true;
+      restartbutton.input.useHandCursor = true;
+      restartbutton.events.onInputUp.add(function(){
+        game.state.start('level1');
+      });
 
       showSettings = true;
     }
@@ -264,6 +276,9 @@ level = 1;
     let scorepause;
 
     function handlePause(){
+      if (showSettings){
+        removeSettingsMenu();
+      }
       game.paused= true; //if player clicks outside game and game pauses automatically
 
       transparent = game.add.sprite(0,0, 'transparent');
@@ -405,7 +420,9 @@ function update() {
 
     }
 
-    if (shots == 0 && (player.body.velocity.x ==0 && player.body.velocity.y ==0)) {gameOver();}
+    if (shots == 0 && (player.body.velocity.x ==0 && player.body.velocity.y ==0)) {
+      gameOver();
+    }
     player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
 
     game.physics.arcade.overlap(player, goalInner, collisionHandler, null, this);
@@ -425,43 +442,125 @@ function calcOverlap(obj1,obj2){
   return result;
 }
 
+let gameLost = false;
+
 function gameOver() {
-  player.kill();
-  let textstyleCenter = {
-          font: "2.8em Stringz",
+  if (gameLost == false){
+    let transparent = game.add.sprite(0,0, 'transparent');
+  }
+  gameLost = true;
+
+  menu = game.add.sprite(game.width/2,game.height/2,'menu');
+  menu.scale.setTo(0.9,0.9);
+  menu.anchor.setTo(0.5, 0.5);
+  let menutext;
+  menutext = game.add.text(game.width/2, 115, `GAME OVER`, textstyleCenter);
+  menutext.anchor.setTo(0.5,1);
+
+  let restartbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 20,'restartbutton');
+  restartbutton.scale.setTo(0.45, 0.45);
+  restartbutton.anchor.setTo(0.5,1);
+  restartbutton.inputEnabled = true;
+  restartbutton.input.useHandCursor = true;
+  restartbutton.events.onInputUp.add(function(){
+    gameLost = false;
+    game.state.start('level1');
+  });
+
+  let homebutton;
+  homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
+  homebutton.scale.setTo(0.4,0.4);
+  homebutton.anchor.setTo(0.5,1);
+  homebutton.inputEnabled = true;
+  homebutton.input.useHandCursor = true;
+  homebutton.events.onInputUp.add(function(){
+    gameLost = false;
+
+    game.state.start('loading');
+  });
+}
+
+let gameIsWon = false;
+
+function collisionHandler (obj1, obj2) {
+    if (!gameIsWon){
+    if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
+      if(obj2 == goalInner){
+        if (calcOverlap(player.body, goalInner.body)<10){
+          animateScore(shots*20);
+          animateScore(300);
+          gameWon();
+        }
+      }
+
+      else if (obj2 == goal){
+        if (calcOverlap(player.body, goal.body)<70){
+          animateScore(shots*20);
+          animateScore(100);
+          gameWon();
+        }
+      }
+    }
+  }
+}
+
+function gameWon(){
+  if (gameIsWon == false){
+    let transparent = game.add.sprite(0,0, 'transparent');
+  }
+  menu = game.add.sprite(game.width/2,game.height/2,'menu');
+  menu.scale.setTo(0.9,0.9);
+  menu.anchor.setTo(0.5, 0.5);
+  let menutext;
+  menutext = game.add.text(game.width/2, 115, `VICTORY`, textstyleCenter);
+  menutext.anchor.setTo(0.5,1);
+
+  let nextlevel =  game.add.sprite(game.width/2 ,menu.height/2 + game.height/2 + 20,'playbutton');
+  nextlevel.scale.setTo(0.4,0.4);
+  nextlevel.anchor.setTo(0.5,1);
+  nextlevel.inputEnabled = true;
+  nextlevel.input.useHandCursor = true;
+
+  let restartbutton = game.add.sprite(game.width/2 + nextlevel.width + 40,menu.height/2 + game.height/2 + 20,'restartbutton');
+  restartbutton.scale.setTo(0.41, 0.41);
+  restartbutton.anchor.setTo(0.5,1);
+  restartbutton.inputEnabled = true;
+  restartbutton.input.useHandCursor = true;
+  restartbutton.events.onInputUp.add(function(){
+    gameIsWon = false;
+    game.state.start('level1');
+  });
+
+  let homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
+  homebutton.scale.setTo(0.4,0.4);
+  homebutton.anchor.setTo(0.5,1);
+  homebutton.inputEnabled = true;
+  homebutton.input.useHandCursor = true;
+  homebutton.events.onInputUp.add(function(){
+    gameIsWon = false;
+    game.state.start('loading');
+  });
+
+
+
+  let pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
+  pausescore.anchor.setTo(0.5,0.5);
+  pausescore.scale.setTo(1.2,1.2);
+
+  let scorepause = game.add.text(0,0,score.toString(), textstyleRight);
+  scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
+
+  let leveltextpause = game.add.text(0, 0, 'Level ' + level, {
+          font: "5em Stringz",
           fill: "#fff",
           align: "center",
           boundsAlignH: "center",
           boundsAlignV: "center"
-        };
-  let over = game.add.text(game.width * 0.5, game.height * 0.5, "Game over", textstyleCenter);
- restart();
-}
+        });
 
-function restart(){
-  //player.resetPosition();
-}
+  leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
 
-
-function collisionHandler (obj1, obj2) {
-
-  if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
-    if(obj2 == goalInner){
-      if (calcOverlap(player.body, goalInner.body)<10){
-        animateScore(shots*20);
-        animateScore(300);
-        player.kill();
-      }
-    }
-
-    else if (obj2 == goal){
-      if (calcOverlap(player.body, goal.body)<70){
-        animateScore(shots*20);
-        animateScore(100);
-        player.kill();
-      }
-    }
-  }
+  gameIsWon = true;
 }
 
 //triggered when cat overlaps with dust
@@ -486,8 +585,8 @@ function render() {
   // game.debug.body(player);
   // game.debug.body(goal);
   // game.debug.body(goalInner);
-  //  game.debug.text("Overlap: inner"+ gameFunctions.calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
-  //  game.debug.text("Overlap: outer"+ gameFunctions.calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
+  //  game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
+  //  game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
   //  game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
 
 }
