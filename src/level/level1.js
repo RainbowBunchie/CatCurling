@@ -259,7 +259,7 @@ function create() {
     let pausebutton = game.add.sprite(20 + settingsbutton.width, 10,'pausebutton');
     pausebutton.inputEnabled = true;
     pausebutton.input.useHandCursor = true;
-
+    let paused = false;
     pausebutton.events.onInputUp.add(function(){
       console.log("pause");
         game.paused = true;
@@ -281,38 +281,40 @@ function create() {
       }
       game.paused= true; //if player clicks outside game and game pauses automatically
 
-      transparent = game.add.sprite(0,0, 'transparent');
+      if (!paused){
+        transparent = game.add.sprite(0,0, 'transparent');
 
-      menu = game.add.sprite(game.width/2,game.height/2,'menu');
-      menu.scale.setTo(0.9,0.9);
-      menu.anchor.setTo(0.5, 0.5);
+        menu = game.add.sprite(game.width/2,game.height/2,'menu');
+        menu.scale.setTo(0.9,0.9);
+        menu.anchor.setTo(0.5, 0.5);
 
-      menutext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
-      menutext.anchor.setTo(0.5,1);
+        menutext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
+        menutext.anchor.setTo(0.5,1);
 
 
-      playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
-      playbutton.scale.setTo(0.45,0.45);
-      playbutton.anchor.setTo(0.5,1);
+        playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
+        playbutton.scale.setTo(0.45,0.45);
+        playbutton.anchor.setTo(0.5,1);
 
-      //playbutton.inputEnabled = true;
+        //playbutton.inputEnabled = true;
 
-      pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
-      pausescore.anchor.setTo(0.5,0.5);
-      pausescore.scale.setTo(1.2,1.2);
+        pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
+        pausescore.anchor.setTo(0.5,0.5);
+        pausescore.scale.setTo(1.2,1.2);
 
-      scorepause = game.add.text(0,0,score.toString(), textstyleRight);
-      scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
+        scorepause = game.add.text(0,0,score.toString(), textstyleRight);
+        scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
-      leveltextpause = game.add.text(0, 0, 'Level ' + level, {
-              font: "5em Stringz",
-              fill: "#fff",
-              align: "center",
-              boundsAlignH: "center",
-              boundsAlignV: "center"
-            });
-      leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
-
+        leveltextpause = game.add.text(0, 0, 'Level ' + level, {
+                font: "5em Stringz",
+                fill: "#fff",
+                align: "center",
+                boundsAlignH: "center",
+                boundsAlignV: "center"
+              });
+        leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
+      }
+      paused = true;
     }
 
     game.input.onDown.add(unpause, self);
@@ -327,6 +329,7 @@ function create() {
         menutext.destroy();
         playbutton.destroy();
         game.paused = false;
+        paused = false;
       }
     }
 
