@@ -171,7 +171,7 @@ function create() {
     displayShots(shots);
 
     let shotsText = game.add.text(10,7, "SHOTS", textstyleCenter);
-    shotsHolder.scale.setTo(0.73,0.73);
+    shotsHolder.scale.setTo(0.73);
 
     shotsGroup.add(shotsText);
 
@@ -185,8 +185,9 @@ function create() {
     let homebutton;
     let restartbutton;
 
-    let settingsbutton = game.add.sprite(10, 10,'settingsbutton');
-    settingsbutton.scale.setTo(1,1);
+    let settingsbutton = game.add.sprite(45, 45,'settingsbutton');
+    settingsbutton.scale.setTo(1);
+    settingsbutton.anchor.setTo(0.5);
     settingsbutton.inputEnabled = true;
     settingsbutton.input.useHandCursor = true;
 
@@ -195,6 +196,9 @@ function create() {
         getSettingsMenu();
       }
     });
+
+    settingsbutton.events.onInputOver.add(buttonHover,this);
+    settingsbutton.events.onInputOut.add(buttonHoverOut,this);
 
     //WENN IN SETTINGS GEPAUSED WIRD -> SETTINGS KANN NICHT MEHR GESCHLOSSEN WERDEN?
 
@@ -256,9 +260,16 @@ function create() {
 
     // PAUSING THE GAME
 
-    let pausebutton = game.add.sprite(20 + settingsbutton.width, 10,'pausebutton');
+    let pausebutton = game.add.sprite(125, 45,'pausebutton');
+    pausebutton.anchor.setTo(0.5);
+
+    pausebutton.events.onInputOver.add(buttonHover,this);
+    pausebutton.events.onInputOut.add(buttonHoverOut,this);
+
     pausebutton.inputEnabled = true;
     pausebutton.input.useHandCursor = true;
+
+
     let paused = false;
     pausebutton.events.onInputUp.add(function(){
       console.log("pause");
@@ -321,6 +332,7 @@ function create() {
 
     function unpause(){
       if (game.paused == true){
+        pausebutton.scale.setTo(1);
         scorepause.destroy();
         leveltextpause.destroy();
         pausescore.destroy();
@@ -359,6 +371,14 @@ if(player.body.velocity.x === 0 && player.body.velocity.y === 0){
 }
 
 
+}
+
+function buttonHover(button){
+  button.scale.setTo(1.1);
+}
+
+function buttonHoverOut(button){
+  button.scale.setTo(1);
 }
 
 function launch() {
@@ -454,15 +474,15 @@ function gameOver() {
   gameLost = true;
 
   menu = game.add.sprite(game.width/2,game.height/2,'menu');
-  menu.scale.setTo(0.9,0.9);
-  menu.anchor.setTo(0.5, 0.5);
+  menu.scale.setTo(0.9);
+  menu.anchor.setTo(0.5);
   let menutext;
   menutext = game.add.text(game.width/2, 115, `GAME OVER`, textstyleCenter);
-  menutext.anchor.setTo(0.5,1);
+  menutext.anchor.setTo(0.5);
 
   let restartbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 20,'restartbutton');
-  restartbutton.scale.setTo(0.45, 0.45);
-  restartbutton.anchor.setTo(0.5,1);
+  restartbutton.scale.setTo(0.45);
+  restartbutton.anchor.setTo(0.5);
   restartbutton.inputEnabled = true;
   restartbutton.input.useHandCursor = true;
   restartbutton.events.onInputUp.add(function(){
@@ -472,8 +492,8 @@ function gameOver() {
 
   let homebutton;
   homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
-  homebutton.scale.setTo(0.4,0.4);
-  homebutton.anchor.setTo(0.5,1);
+  homebutton.scale.setTo(0.4);
+  homebutton.anchor.setTo(0.5);
   homebutton.inputEnabled = true;
   homebutton.input.useHandCursor = true;
   homebutton.events.onInputUp.add(function(){
@@ -525,8 +545,8 @@ function gameWon(){
   nextlevel.input.useHandCursor = true;
 
   let restartbutton = game.add.sprite(game.width/2 + nextlevel.width + 40,menu.height/2 + game.height/2 + 20,'restartbutton');
-  restartbutton.scale.setTo(0.41, 0.41);
-  restartbutton.anchor.setTo(0.5,1);
+  restartbutton.scale.setTo(0.41);
+  restartbutton.anchor.setTo(0.5);
   restartbutton.inputEnabled = true;
   restartbutton.input.useHandCursor = true;
   restartbutton.events.onInputUp.add(function(){
@@ -535,8 +555,8 @@ function gameWon(){
   });
 
   let homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
-  homebutton.scale.setTo(0.4,0.4);
-  homebutton.anchor.setTo(0.5,1);
+  homebutton.scale.setTo(0.4);
+  homebutton.anchor.setTo(0.5);
   homebutton.inputEnabled = true;
   homebutton.input.useHandCursor = true;
   homebutton.events.onInputUp.add(function(){
