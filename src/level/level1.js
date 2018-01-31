@@ -308,6 +308,7 @@ function create() {
 
         scorepause = game.add.text(0,0,levelscore.toString(), textstyleRight);
         scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
+        scoretext.score= 0;
 
         leveltextpause = game.add.text(0, 0, 'Level ' + level, {
                 font: "5em Stringz",
@@ -590,6 +591,7 @@ function animateScore(amount){
   console.log("score increased by " + amount);
   levelscore += amount;
   game.add.tween(scoretext).to({score:levelscore},700,"Linear", true);
+  //scoretext.score muss zurück gesetzt werden !!!!!!!!
 
 }
 
