@@ -14,7 +14,7 @@ let arrow;
 let catchFlag = false;
 let launchVelocity = 0;
 let analog;
-let score = 0;
+let levelscore = 0;
 let scoretext;
 let leveltext;
 let Xvector;
@@ -30,6 +30,10 @@ let textstyleCenter;
 
 
 function create() {
+
+  console.log("level 1 start ===========================");
+  console.log("==============================");
+
   level = 1;
   shots = 5;
 
@@ -148,14 +152,14 @@ function create() {
     scoregroup.x = game.width-165;
 
     const scoreholder = game.add.sprite(0, 0,'scoreholder');
-    scoreholder.name = 'goal';
+    scoreholder.name = 'scoreholder';
     game.physics.enable(scoreholder, Phaser.Physics.ARCADE);
     scoreholder.body.collideWorldBounds = true;
     scoreholder.body.immovable = true;
     scoreholder.scale.setTo(1, 1);
     scoregroup.add(scoreholder);
 
-    scoretext = game.add.text(0, 0, score, textstyleRight);
+    scoretext = game.add.text(0, 0, levelscore, textstyleRight);
     scoretext.setTextBounds(35, 13, 100, 10);
     scoregroup.add(scoretext);
     scoregroup.y = 70;
@@ -279,7 +283,7 @@ function create() {
       if (showSettings){
         removeSettingsMenu();
       }
-      game.paused= true; //if player clicks outside game and game pauses automatically
+      //game.paused= true; //if player clicks outside game and game pauses automatically
 
       if (!paused){
         transparent = game.add.sprite(0,0, 'transparent');
@@ -302,7 +306,7 @@ function create() {
         pausescore.anchor.setTo(0.5,0.5);
         pausescore.scale.setTo(1.2,1.2);
 
-        scorepause = game.add.text(0,0,score.toString(), textstyleRight);
+        scorepause = game.add.text(0,0,levelscore.toString(), textstyleRight);
         scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
         leveltextpause = game.add.text(0, 0, 'Level ' + level, {
@@ -484,23 +488,30 @@ function gameOver() {
 }
 
 let gameIsWon = false;
+let inGoal = false;
 
 function collisionHandler (obj1, obj2) {
-    if (!gameIsWon){
+    if (!gameIsWon && !inGoal){
     if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
       if(obj2 == goalInner){
         if (calcOverlap(player.body, goalInner.body)<10){
-          animateScore(shots*20);
-          animateScore(300);
-          gameWon();
+          //game.time.events.add(40, function () {
+            console.log("GAME WON: player in the middle goal");
+            animateScore(shots*20);
+            animateScore(300);
+            gameWon();
+          //});
         }
       }
 
       else if (obj2 == goal){
         if (calcOverlap(player.body, goal.body)<70){
-          animateScore(shots*20);
-          animateScore(100);
-          gameWon();
+          console.log("GAME WON: player in goal");
+          //game.time.events.add(40, function () {
+            animateScore(shots*20);
+            animateScore(100);
+            gameWon();
+          //});
         }
       }
     }
@@ -550,7 +561,7 @@ function gameWon(){
   pausescore.anchor.setTo(0.5,0.5);
   pausescore.scale.setTo(1.2,1.2);
 
-  let scorepause = game.add.text(0,0,score.toString(), textstyleRight);
+  let scorepause = game.add.text(0,0,levelscore.toString(), textstyleRight);
   scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
   let leveltextpause = game.add.text(0, 0, 'Level ' + level, {
@@ -570,13 +581,15 @@ function gameWon(){
 function collectDust(player, dust){
   dust.kill();
   console.log("1 dust collected");
-  animateScore(50);
+  game.time.events.add(30, function () {
+    animateScore(50);
+  });
 }
 
 function animateScore(amount){
-  //console.log("score increased by " + amount);
-  game.add.tween(scoretext).to({score:score+amount},700,"Linear", true);
-  score += amount;
+  console.log("score increased by " + amount);
+  levelscore += amount;
+  game.add.tween(scoretext).to({score:levelscore},700,"Linear", true);
 
 }
 
