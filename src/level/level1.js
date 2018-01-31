@@ -271,7 +271,12 @@ function create() {
         soundText.setText(`${~~music.volume}`);
       });
 
-      let soundText = game.add.text(game.width/2, menu.height/2 + game.height/2 - 160, `${~~music.volume}`, textstyleCenter);
+      let soundText = game.add.text(game.width/2, menu.height/2 + game.height/2 - 160, `${~~music.volume}`, {
+          font: "6em Stringz",
+          fill: "#fff",
+          align: "center",
+          boundsAlignV: "center"
+          });
       soundText.anchor.setTo(0.5,1);
 
       homebutton = game.add.sprite(game.width/2 - playbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
