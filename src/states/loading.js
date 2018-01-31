@@ -12,9 +12,6 @@ function preload(){
   let progress= game.load.progress;
   let loadingLabel = game.add.text(80,150,'loading...',{font: '30px Courier', fill: '#fff'});
   game.load.image('player', 'assets/sprites/kitty.png');
-  game.load.image('arrow', 'assets/sprites/arrow-top.png');
-  game.load.image('analog', 'assets/sprites/arrow-bottom.png');
-
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
   game.load.image('tv-table', 'assets/img/furniture/tv-table.png');
@@ -24,8 +21,9 @@ function preload(){
   game.load.image('goal', 'assets/img/furniture/goal.png');
   game.load.image('desk', 'assets/img/furniture/desk.png');
   game.load.image('deskchair', 'assets/img/furniture/desk-chair.png');
+  game.load.image('arrow', 'assets/sprites/arrow-top.png');
+  game.load.image('analog', 'assets/sprites/arrow-bottom.png');
   game.load.image('coffeetable', 'assets/img/furniture/coffee-table.svg');
-
   game.load.image('scoreholder', 'assets/img/gui/score-holder.svg');
   game.load.image('levelholder', 'assets/img/gui/level-holder.svg');
   game.load.image('settingsbutton', 'assets/img/gui/settings-button.svg');
@@ -34,6 +32,10 @@ function preload(){
   game.load.image('menu', 'assets/img/gui/menu.png');
   game.load.image('playbutton', 'assets/img/gui/playbutton.png');
   game.load.image('transparent', 'assets/img/gui/transparency.png');
+  game.load.image('homebutton', 'assets/img/gui/homebutton.png');
+  game.load.image('restartbutton', 'assets/img/gui/restartbutton.png');
+  game.load.image('shotsholder', 'assets/img/gui/shotsholder.png');
+  game.load.image('shot', 'assets/img/gui/shot.png');
 
   let intID;
   game.load.onLoadStart.add(function() {
