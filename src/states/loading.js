@@ -8,9 +8,10 @@ function preload(){
   bg.tileScale.x = 0.3;
   let logo = game.add.image(game.width/2 ,game.height/4 , 'logo');
   logo.anchor.setTo(0.5);
+  let loadingLabel = game.add.text(game.width/2,game.height/2+40,'loading...',{font: '30px Courier', fill: '#fff'});
+  loadingLabel.anchor.set(0.5);
 
-  let progress= game.load.progress;
-  let loadingLabel = game.add.text(80,150,'loading...',{font: '30px Courier', fill: '#fff'});
+
   game.load.image('player', 'assets/sprites/kitty.png');
   game.load.image('couch-long', 'assets/img/furniture/couch-1.png');
   game.load.image('couch-short', 'assets/img/furniture/couch-2.png');
@@ -66,12 +67,10 @@ function preload(){
 }
 
 function create(){
+
 }
 
 function update(){
-
-    let text = game.add.text(game.width/2, game.height/2+40, "progress: "+ game.load.progress, { fill: '#ffffff' });
-    text.anchor.setTo(0.5);
     bg.tilePosition.x +=1 ;
     bg.tilePosition.y += 1;
     console.log(game.load.progress);
