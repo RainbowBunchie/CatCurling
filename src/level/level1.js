@@ -445,7 +445,7 @@ function update() {
 
     }
 
-    if (((shots == 0) && (player.body.speed == 0))) {
+    if (((shots == 0) && (player.body.speed == 0))&& gameIsWon!=true) {
       gameOver();
     }
     player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
