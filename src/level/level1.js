@@ -27,15 +27,21 @@ let menu;
 let scorepause;
 let textstyleRight;
 let textstyleCenter;
+let music;
+let collect;
+let bump;
+let soundValue;
 
 
 function create() {
 
-  console.log("level 1 start ===========================");
-  console.log("==============================");
-
   level = 1;
   shots = 5;
+  music = game.add.audio('background-music');
+  music.volume = 2;
+  collect = game.add.audio('collect');
+  bump = game.add.audio('bump');
+  music.play();
 
   textstyleRight = {
           font: "2.8em Stringz",
@@ -188,6 +194,10 @@ function create() {
 
     let homebutton;
     let restartbutton;
+    let raisebutton;
+    let lowerbutton;
+    let mutebutton;
+    let soundText;
 
     let settingsbutton = game.add.sprite(45, 45,'settingsbutton');
     settingsbutton.scale.setTo(1);
@@ -226,6 +236,89 @@ function create() {
         removeSettingsMenu();
       });
 
+      raisebutton = game.add.sprite(game.width/3,menu.height/2 + game.height/2 - 120,'raisebutton');
+      raisebutton.scale.setTo(0.6,0.6);
+      raisebutton.anchor.setTo(0.5,1);
+      raisebutton.inputEnabled = true;
+      raisebutton.input.useHandCursor = true;
+      raisebutton.events.onInputUp.add(function(){
+        music.pause();
+        music.volume += 1;
+        music.resume();
+        console.log("raise: " + music.volume);
+        if(music.volume > 10)
+          music.volume = 10;
+        if(music.volume == 1){
+          soundValue = music.volume;
+          onDeMuteButton();
+        }
+        soundText.setText(`${~~music.volume}`);
+      });
+
+      lowerbutton = game.add.sprite(2*game.width/3,menu.height/2 + game.height/2 - 120,'lowerbutton');
+      lowerbutton.scale.setTo(0.6,0.6);
+      lowerbutton.anchor.setTo(0.5,1);
+      lowerbutton.inputEnabled = true;
+      lowerbutton.input.useHandCursor = true;
+      lowerbutton.events.onInputUp.add(function(){
+        music.pause();
+        music.volume -= 1;
+        music.resume();
+        if(music.volume < 0)
+          music.volume = 0;
+        if(music.volume <= 0)
+          onMuteButton();
+        soundText.setText(`${~~music.volume}`);
+      });
+
+      mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120, 'muteoffbutton');
+      mutebutton.scale.setTo(0.6,0.6);
+      mutebutton.anchor.setTo(0.5,1);
+      mutebutton.inputEnabled = true;
+      mutebutton.input.useHandCursor = true;
+      mutebutton.events.onInputUp.add(function(){
+        onMuteButton();
+      });
+
+      function onMuteButton(){
+        soundValue = music.volume;
+        mutebutton.destroy();
+        mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120, 'muteonbutton');
+        mutebutton.scale.setTo(0.6,0.6);
+        mutebutton.anchor.setTo(0.5,1);
+        mutebutton.inputEnabled = true;
+        mutebutton.input.useHandCursor = true;
+        if(soundValue > 0){
+          mutebutton.events.onInputUp.add(function(){
+            onDeMuteButton();
+          });
+        }
+        music.volume = 0;
+        soundText.setText(`${~~music.volume}`);
+      }
+
+      function onDeMuteButton(){
+        mutebutton.destroy();
+        mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120, 'muteoffbutton');
+        mutebutton.scale.setTo(0.6,0.6);
+        mutebutton.anchor.setTo(0.5,1);
+        mutebutton.inputEnabled = true;
+        mutebutton.input.useHandCursor = true;
+        mutebutton.events.onInputUp.add(function(){
+          onMuteButton();
+        });
+        music.volume = soundValue;
+        soundText.setText(`${~~music.volume}`);
+      }
+
+      soundText = game.add.text(game.width/2, menu.height/2 + game.height/2 - 250, `${~~music.volume}`, {
+          font: "6em Stringz",
+          fill: "#fff",
+          align: "center",
+          boundsAlignV: "center"
+          });
+      soundText.anchor.setTo(0.5,1);
+
       homebutton = game.add.sprite(game.width/2 - playbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
       homebutton.scale.setTo(0.4,0.4);
       homebutton.anchor.setTo(0.5,1);
@@ -233,6 +326,7 @@ function create() {
       homebutton.input.useHandCursor = true;
       homebutton.events.onInputUp.add(function(){
         levelscore = 0;
+        music.stop();
         game.state.start('loading');
       });
 
@@ -243,6 +337,7 @@ function create() {
       restartbutton.input.useHandCursor = true;
       restartbutton.events.onInputUp.add(function(){
         levelscore = 0;
+        music.stop();
         game.state.start('level1');
       });
 
@@ -259,6 +354,10 @@ function create() {
         transparent.destroy();
         menutext.destroy();
         playbutton.destroy();
+        raisebutton.destroy();
+        lowerbutton.destroy();
+        mutebutton.destroy();
+        soundText.destroy();
         showSettings = false;
       }
     }
@@ -433,7 +532,13 @@ function update() {
 
 	arrow.rotation = game.physics.arcade.angleBetween(arrow, player)- 3.14 / 2;
 
-  game.physics.arcade.collide(furniture, player);
+  if(player.body.blocked.up || player.body.blocked.down || player.body.blocked.left || player.body.blocked.right){
+    bump.play();
+  }
+
+  game.physics.arcade.collide(furniture, player, function(){
+    bump.play();
+  });
 
     if (catchFlag === true)
     {
@@ -494,6 +599,7 @@ function gameOver() {
   restartbutton.events.onInputUp.add(function(){
     gameLost = false;
     levelscore = 0;
+    music.stop();
     game.state.start('level1');
   });
 
@@ -506,6 +612,7 @@ function gameOver() {
   homebutton.events.onInputUp.add(function(){
     gameLost = false;
     levelscore = 0;
+    music.stop();
     game.state.start('loading');
   });
 }
@@ -566,6 +673,7 @@ function gameWon(){
   restartbutton.events.onInputUp.add(function(){
     gameIsWon = false;
     levelscore = 0;
+    music.stop();
     game.state.start('level1');
   });
 
@@ -577,6 +685,7 @@ function gameWon(){
   homebutton.events.onInputUp.add(function(){
     gameIsWon = false;
     levelscore = 0;
+    music.stop();
     game.state.start('loading');
   });
 
@@ -604,6 +713,7 @@ function gameWon(){
 
 //triggered when cat overlaps with dust
 function collectDust(player, dust){
+  collect.play();
   dust.kill();
   console.log("1 dust collected");
   game.time.events.add(30, function () {
