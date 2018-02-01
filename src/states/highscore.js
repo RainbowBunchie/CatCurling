@@ -6,6 +6,9 @@ let highscore;
 let input;
 let highscoreText;
 let inputstyleLeft;
+let confirmbutton;
+let score = 100;
+let name;
 
 function create(){
 
@@ -34,7 +37,27 @@ function create(){
     boundsAlignV: "center"
   };
 
-  input = game.add.inputField(game.width/2-125, game.height/2 + 50, inputstyleLeft);
+  input = game.add.inputField(game.width/2-120, game.height/2 + 50, inputstyleLeft);
+
+  confirmbutton = game.add.sprite(game.width/2, 2*game.height/3+130, 'confirmbutton');
+  confirmbutton.scale.setTo(0.8);
+  confirmbutton.anchor.setTo(0.5);
+
+  confirmbutton.events.onInputOver.add(buttonHover,this);
+  confirmbutton.events.onInputOut.add(buttonHoverOut,this);
+  confirmbutton.inputEnabled = true;
+  confirmbutton.input.useHandCursor = true;
+  confirmbutton.events.onInputUp.add(function(){
+      console.log("do stuff");
+  });
+
+  function buttonHover(button){
+    button.scale.setTo(0.9);
+  }
+
+  function buttonHoverOut(button){
+    button.scale.setTo(0.8);
+  }
 
 }
 
