@@ -2,6 +2,8 @@ import 'pixi';
 import 'p2';
 import 'phaser';
 import game from '../game';
+import {textstyleRight}from '../style';
+import {textstyleCenter}from '../style';
 import furnitureTpl from '../module-assets/furniture';
 import pkg from '../../package.json';
 
@@ -19,14 +21,11 @@ let scoretext;
 let leveltext;
 let Xvector;
 let Yvector;
-let goalInner;
 let goal;
 let level;
 let transparent;
 let menu;
 let scorepause;
-let textstyleRight;
-let textstyleCenter;
 let music;
 let collect;
 let bump;
@@ -43,21 +42,6 @@ function create() {
   bump = game.add.audio('bump');
   music.play();
 
-  textstyleRight = {
-          font: "2.8em Stringz",
-          fill: "#fff",
-          align: "right",
-          boundsAlignH: "right",
-          boundsAlignV: "right"
-        };
-
-  textstyleCenter = {
-          font: "2.8em Stringz",
-          fill: "#fff",
-          align: "center",
-          boundsAlignV: "center"
-        };
-
   furniture = game.add.group();
 
 	game.stage.backgroundColor = '#f5cf99';
@@ -71,11 +55,11 @@ function create() {
   let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
   furniture.add(tvTable);
 
-  let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
-  furniture.add(chairs);
+  // let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
+  // furniture.add(chairs);
 
-  let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
-  furniture.add(table);
+  // let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
+  // furniture.add(table);
 
   let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
   furniture.add(plant);
@@ -93,19 +77,13 @@ function create() {
 
   // GOAL
 
-  goal = game.add.sprite(50, 270,'goal');
+  goal = game.add.sprite(50, 300,'goal');
+  goal.anchor.setTo(0.5);
   game.physics.enable(goal, Phaser.Physics.ARCADE);
   goal.body.collideWorldBounds = true;
   goal.body.immovable = true;
   goal.scale.setTo(0.6 , 0.6);
   goal.body.setSize(200, 200, 0, 0);
-
-  goalInner = game.add.sprite(50, 270,'goal');
-  game.physics.enable(goalInner, Phaser.Physics.ARCADE);
-  goalInner.body.collideWorldBounds = true;
-  goalInner.body.immovable = true;
-  goalInner.scale.setTo(0.6 , 0.6);
-  goalInner.body.setSize(20, 20, 90,90);
 
 
     //DUSTS
@@ -199,6 +177,8 @@ function create() {
     let mutebutton;
     let soundText;
 
+    // ----------------------  buttons -----------------------
+
     let settingsbutton = game.add.sprite(45, 45,'settingsbutton');
     settingsbutton.scale.setTo(1);
     settingsbutton.anchor.setTo(0.5);
@@ -236,6 +216,9 @@ function create() {
         removeSettingsMenu();
       });
 
+      playbutton.events.onInputOver.add(buttonHover,this);
+      playbutton.events.onInputOut.add(buttonHoverOut,this);
+
       raisebutton = game.add.sprite(game.width/3,menu.height/2 + game.height/2 - 120,'raisebutton');
       raisebutton.scale.setTo(0.6,0.6);
       raisebutton.anchor.setTo(0.5,1);
@@ -255,6 +238,9 @@ function create() {
         soundText.setText(`${~~music.volume}`);
       });
 
+      raisebutton.events.onInputOver.add(buttonHover,this);
+      raisebutton.events.onInputOut.add(buttonHoverOut,this);
+
       lowerbutton = game.add.sprite(2*game.width/3,menu.height/2 + game.height/2 - 120,'lowerbutton');
       lowerbutton.scale.setTo(0.6,0.6);
       lowerbutton.anchor.setTo(0.5,1);
@@ -271,6 +257,9 @@ function create() {
         soundText.setText(`${~~music.volume}`);
       });
 
+      lowerbutton.events.onInputOver.add(buttonHover,this);
+      lowerbutton.events.onInputOut.add(buttonHoverOut,this);
+
       mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120, 'muteoffbutton');
       mutebutton.scale.setTo(0.6,0.6);
       mutebutton.anchor.setTo(0.5,1);
@@ -279,6 +268,9 @@ function create() {
       mutebutton.events.onInputUp.add(function(){
         onMuteButton();
       });
+
+      mutebutton.events.onInputOver.add(buttonHover,this);
+      mutebutton.events.onInputOut.add(buttonHoverOut,this);
 
       function onMuteButton(){
         soundValue = music.volume;
@@ -320,8 +312,8 @@ function create() {
       soundText.anchor.setTo(0.5,1);
 
       homebutton = game.add.sprite(game.width/2 - playbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
-      homebutton.scale.setTo(0.4,0.4);
-      homebutton.anchor.setTo(0.5,1);
+      homebutton.scale.setTo(0.4);
+      homebutton.anchor.setTo(0.5);
       homebutton.inputEnabled = true;
       homebutton.input.useHandCursor = true;
       homebutton.events.onInputUp.add(function(){
@@ -329,6 +321,9 @@ function create() {
         music.stop();
         game.state.start('loading');
       });
+
+      homebutton.events.onInputOver.add(buttonHover,this);
+      homebutton.events.onInputOut.add(buttonHoverOut,this);
 
       restartbutton = game.add.sprite(game.width/2 + playbutton.width + 40,menu.height/2 + game.height/2 + 20,'restartbutton');
       restartbutton.scale.setTo(0.4, 0.4);
@@ -340,6 +335,9 @@ function create() {
         music.stop();
         game.state.start('level1');
       });
+
+      restartbutton.events.onInputOver.add(buttonHover,this);
+      restartbutton.events.onInputOut.add(buttonHoverOut,this);
 
       showSettings = true;
     }
@@ -465,19 +463,7 @@ function create() {
     levelgroup.y = 10;
 }
 
-function set(player,pointer) {
-if(player.body.velocity.x === 0 && player.body.velocity.y === 0){
-    catchFlag = true;
-    game.camera.follow(null);
 
-    player.body.moves = false;
-    player.body.velocity.setTo(0, 0);
-    arrow.reset(player.x, player.y);
-    analog.reset(player.x, player.y);
-}
-
-
-}
 
 function buttonHover(button){
   button.scale.setTo(1.1);
@@ -487,9 +473,22 @@ function buttonHoverOut(button){
   button.scale.setTo(1);
 }
 
-function launch() {
 
-  if(player.body.velocity.x === 0 && player.body.velocity.y === 0){
+function set(player,pointer) {
+  if(player.body.speed<10){
+    catchFlag = true;
+    game.camera.follow(null);
+
+    player.body.moves = false;
+    player.body.velocity.setTo(0, 0);
+    arrow.reset(player.x, player.y);
+    analog.reset(player.x, player.y);
+  }
+}
+
+function launch() {
+if(player.body.speed<10){
+
     catchFlag = false;
     player.body.moves = true;
     game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
@@ -543,7 +542,6 @@ function update() {
 
     if (catchFlag === true)
     {
-        //  Track the ball sprite to the mouse
         arrow.x = game.input.activePointer.worldX;
         arrow.y = game.input.activePointer.worldY;
 
@@ -560,7 +558,6 @@ function update() {
     }
     player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
 
-    game.physics.arcade.overlap(player, goalInner, collisionHandler, null, this);
     game.physics.arcade.overlap(player, goal, collisionHandler, null, this);
 
     // increase Score when cat moves over dust
@@ -571,8 +568,12 @@ function update() {
 }
 
 function calcOverlap(obj1,obj2){
-  let dx = obj1.x-obj2.x;
-  let dy = obj1.y-obj2.y;
+  let x1 = obj1.x+(obj1.width/2);
+  let x2= obj2.x+(obj2.width/2);
+  let y1 = obj1.y+(obj1.height/2);
+  let y2= obj2.y+(obj2.height/2);
+  let dx = x1-x2;
+  let dy = y1-y2;
   let result = Math.sqrt((Math.pow(dx,2)+Math.pow(dy,2)));
   return result;
 }
@@ -622,27 +623,23 @@ let gameIsWon = false;
 let inGoal = false;
 
 function collisionHandler (obj1, obj2) {
-    if (!gameIsWon && !inGoal){
+  if (!gameIsWon && !inGoal){
     if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
-      if(obj2 == goalInner){
-        if (calcOverlap(player.body, goalInner.body)<10){
+        if (calcOverlap(player.body, goal.body)<20){
           //game.time.events.add(40, function () {
             animateScore(shots*20);
             animateScore(300);
             gameWon();
           //});
         }
-      }
-
-      else if (obj2 == goal){
-        if (calcOverlap(player.body, goal.body)<70){
+        else if (calcOverlap(player.body, goal.body)<60){
           //game.time.events.add(40, function () {
             animateScore(shots*20);
             animateScore(100);
             gameWon();
           //});
         }
-      }
+
     }
   }
 }
@@ -729,16 +726,16 @@ function animateScore(amount){
 
 function render() {
 
-  // game.debug.cameraInfo(game.camera, 32, 64);
-  // game.debug.spriteCoords(player, 32, 150);
-  // game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
-  // game.debug.bodyInfo(player, 32, 32);
-  // game.debug.body(player);
-  // game.debug.body(goal);
-  // game.debug.body(goalInner);
-  //  game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
-  //  game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
-  //  game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
+  game.debug.cameraInfo(game.camera, 32, 64);
+  game.debug.spriteCoords(player, 32, 150);
+  game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
+  game.debug.bodyInfo(player, 32, 32);
+  game.debug.body(player);
+  game.debug.body(goal);
+   game.debug.text("Overlap: inner"+ calcOverlap(player.body, goal.body), 250, 250, 'rgb(0,255,0)');
+   game.debug.text("SPEEEEEED"+ player.body.speed, 400, 400, 'rgb(0,255,0)');
+   game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
+   game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
 
 }
 
