@@ -278,7 +278,6 @@ function create() {
 
     let paused = false;
     pausebutton.events.onInputUp.add(function(){
-      console.log("pause");
         game.paused = true;
     });
 
@@ -337,7 +336,9 @@ function create() {
     game.input.onDown.add(unpause, self);
 
     function unpause(){
-      if (game.paused == true){
+      console.log("unpause aufruf");
+      if (paused == true){
+        console.log("UNPAUSE")
         pausebutton.scale.setTo(1);
         scorepause.destroy();
         leveltextpause.destroy();
@@ -519,7 +520,6 @@ function collisionHandler (obj1, obj2) {
       if(obj2 == goalInner){
         if (calcOverlap(player.body, goalInner.body)<10){
           //game.time.events.add(40, function () {
-            console.log("GAME WON: player in the middle goal");
             animateScore(shots*20);
             animateScore(300);
             gameWon();
@@ -529,7 +529,6 @@ function collisionHandler (obj1, obj2) {
 
       else if (obj2 == goal){
         if (calcOverlap(player.body, goal.body)<70){
-          console.log("GAME WON: player in goal");
           //game.time.events.add(40, function () {
             animateScore(shots*20);
             animateScore(100);
@@ -605,7 +604,6 @@ function gameWon(){
 //triggered when cat overlaps with dust
 function collectDust(player, dust){
   dust.kill();
-  console.log("1 dust collected");
   game.time.events.add(30, function () {
     animateScore(50);
   });
@@ -613,13 +611,8 @@ function collectDust(player, dust){
 
 function animateScore(amount){
   //console.log("score increased by " + amount);
-  console.log("levelscore before: " + levelscore + " amount: " + amount);
   levelscore += amount;
-  console.log("levelscore after: " + levelscore + " amount: " + amount);
-  console.log("scoretext.score vorher: " + scoretext.score);
   game.add.tween(scoretext).to({score:levelscore},700,"Linear", true);
-  console.log("scoretext.score nacher: " + scoretext.score);
-
   //scoretext.score muss zurück gesetzt werden !!!!!!!!
 
 }
