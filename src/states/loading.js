@@ -39,8 +39,13 @@ function preload(){
   game.load.image('lowerbutton', 'assets/img/gui/lowerbutton.png');
   game.load.image('muteonbutton', 'assets/img/gui/mute.png');
   game.load.image('muteoffbutton', 'assets/img/gui/nomute.png');
+  game.load.image('confirmbutton', 'assets/img/gui/accept.png');
   game.load.image('shotsholder', 'assets/img/gui/shotsholder.png');
   game.load.image('shot', 'assets/img/gui/shot.png');
+  game.load.image('highscore', 'assets/img/highscore.png');
+
+  game.add.plugin(Fabrique.Plugins.InputField);
+
   game.load.audio('background-music', ['assets/audio/background.mp3', 'assets/audio/background.ogg']);
   game.load.audio('collect', 'assets/audio/collect.ogg');
   game.load.audio('bump', 'assets/audio/bump.ogg');

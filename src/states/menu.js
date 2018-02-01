@@ -77,7 +77,7 @@ function buttonClick(button){
         game.state.start('levelSelect');
         break;
     case credits:
-      game.state.start('credits');
+      game.state.start('highscore');
     break;
     case settings:
       game.state.start('menuSettings');
