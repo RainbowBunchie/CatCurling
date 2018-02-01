@@ -32,9 +32,10 @@ let collect;
 let bump;
 let soundValue;
 let paused = false;
+let gameoverhelper;
 
 function create() {
-  shots = 3;
+  shots =3;
 
   //MUSIC
 
@@ -78,7 +79,7 @@ function create() {
   furniture.add(coffeetable);
 
   // GOAL
-  goal = getGoal(50,300);
+  goal = getGoal(80,300);
 
   //DUSTS
 
@@ -468,10 +469,6 @@ function update() {
         launchVelocity = analog.height-100;
 
     }
-
-    if (((shots == 0) && (player.body.speed == 0))&& gameIsWon!=true) {
-      gameOver();
-    }
     player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
 
     game.physics.arcade.overlap(player, goal, collisionHandler, null, this);
@@ -481,14 +478,112 @@ function update() {
     game.physics.arcade.overlap(player, dusts, collectDust, null, this);
 
     scoretext.text=~~scoretext.score;
+
+    if ((shots == 0 && player.body.speed == 0) && gameIsWon==false) {
+      if (gameoverhelper!=true){
+      gameOver();
+    }
+    }
+
 }
 
 let gameLost = false;
 
-function gameWon(){
-  if (gameIsWon == false){
-    let transparent = game.add.sprite(0,0, 'transparent');
+
+function gameOver() {
+
+  console.log('gameover function');
+ //if(gameLost==true){
+  let transparent = game.add.sprite(0,0, 'transparent');
+
+  menu = game.add.sprite(game.width/2,game.height/2,'menu');
+  menu.scale.setTo(0.9);
+  menu.anchor.setTo(0.5);
+  let menutext;
+  menutext = game.add.text(game.width/2, 100, `GAME OVER`, textstyleCenter);
+  menutext.anchor.setTo(0.5);
+
+  let restartbutton = game.add.sprite(menu.x+menu.height/3,menu.y + menu.height/2,'restartbutton');
+  restartbutton.scale.setTo(0.5);
+  restartbutton.anchor.setTo(0.5);
+  restartbutton.inputEnabled = true;
+  restartbutton.input.useHandCursor = true;
+  restartbutton.events.onInputUp.add(function(){
+    gameLost = false;
+    levelscore = 0;
+    music.stop();
+    game.state.start('level1');
+  });
+  restartbutton.events.onInputOver.add(buttonHoverSmall,this);
+  restartbutton.events.onInputOut.add(buttonHoverOutSmall,this);
+
+  let highscorebutton = game.add.sprite(menu.x+menu.width/2,menu.y,'highscorebutton');
+  highscorebutton.scale.setTo(0.5);
+  highscorebutton.anchor.setTo(0.5);
+  highscorebutton.inputEnabled = true;
+  highscorebutton.input.useHandCursor = true;
+  highscorebutton.events.onInputOver.add(buttonHoverSmall,this);
+  highscorebutton.events.onInputOut.add(buttonHoverOutSmall,this);
+  highscorebutton.events.onInputUp.add(function(){
+    game.state.states['highscore'].endscore = levelscore;
+    game.state.start('highscore');
+  });
+
+
+  let gameoverscore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
+  gameoverscore.anchor.setTo(0.5);
+  gameoverscore.scale.setTo(1.2);
+
+  let scoregameover = game.add.text(0,0,levelscore.toString(), textstyleRight);
+  scoregameover.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
+
+  let leveltextpause = game.add.text(0, 0, 'aww ;-; you ran out of shots', textstyleCenter);
+  leveltextpause.setTextBounds(game.width/2-200, game.height/2-50, 150, 10);
+
+  let homebutton;
+  homebutton = game.add.sprite(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton');
+  homebutton.scale.setTo(0.4);
+  homebutton.anchor.setTo(0.5);
+  homebutton.inputEnabled = true;
+  homebutton.input.useHandCursor = true;
+  homebutton.events.onInputOver.add(buttonHoverSmall,this);
+  homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
+  homebutton.events.onInputUp.add(function(){
+    gameLost = false;
+    levelscore = 0;
+    music.stop();
+    game.state.start('loading');
+  });
+
+gameoverhelper=true;
+}
+
+let gameIsWon = false;
+let inGoal = false;
+
+function collisionHandler (obj1, obj2) {
+  if (!gameIsWon && !inGoal){
+    if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
+        if (calcOverlap(player.body, goal.body)<20){
+          animateScore(shots*20);
+          animateScore(300);
+          gameWon();
+        }
+        else if (calcOverlap(player.body, goal.body)<60){
+          animateScore(shots*20);
+          animateScore(100);
+
+          gameWon();
+        }
+    }
   }
+}
+
+
+function gameWon(){
+            gameIsWon=true;
+    let transparent = game.add.sprite(0,0, 'transparent');
+
   menu = game.add.sprite(game.width/2,game.height/2,'menu');
   menu.scale.setTo(0.9,0.9);
   menu.anchor.setTo(0.5, 0.5);
@@ -517,24 +612,22 @@ function gameWon(){
     game.state.start('level1');
   });
 
-  restartbutton.events.onInputOver.add(buttonHover,this);
-  restartbutton.events.onInputOut.add(buttonHoverOut,this);
+  restartbutton.events.onInputOver.add(buttonHoverSmall,this);
+  restartbutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
   let homebutton = game.add.sprite(menu.x-menu.width/3,menu.y + menu.height/2,'homebutton');
   homebutton.scale.setTo(0.5);
   homebutton.anchor.setTo(0.5);
   homebutton.inputEnabled = true;
   homebutton.input.useHandCursor = true;
+  homebutton.events.onInputOver.add(buttonHoverSmall,this);
+  homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
   homebutton.events.onInputUp.add(function(){
     gameIsWon = false;
     levelscore = 0;
     music.stop();
     game.state.start('loading');
   });
-
-  homebutton.events.onInputOver.add(buttonHoverSmall,this);
-  homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
-
 
   let pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
   pausescore.anchor.setTo(0.5,0.5);
@@ -553,159 +646,7 @@ function gameWon(){
 
   leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
 
-  gameIsWon = true;
 }
-
-function gameOver() {
-  if (gameLost == false){
-    let transparent = game.add.sprite(0,0, 'transparent');
-  }
-  gameLost = true;
-
-  menu = game.add.sprite(game.width/2,game.height/2,'menu');
-  menu.scale.setTo(0.9);
-  menu.anchor.setTo(0.5);
-  let menutext;
-  menutext = game.add.text(game.width/2, 100, `GAME OVER`, textstyleCenter);
-  menutext.anchor.setTo(0.5);
-
-  let restartbutton = game.add.sprite(menu.x+menu.height/3,menu.y + menu.height/2,'restartbutton');
-  restartbutton.scale.setTo(0.5);
-  restartbutton.anchor.setTo(0.5);
-  restartbutton.inputEnabled = true;
-  restartbutton.input.useHandCursor = true;
-  restartbutton.events.onInputUp.add(function(){
-    gameLost = false;
-    levelscore = 0;
-    music.stop();
-    game.state.start('level1');
-  });
-  restartbutton.events.onInputOver.add(buttonHoverSmall,this);
-  restartbutton.events.onInputOut.add(buttonHoverOutSmall,this);
-
-
-  let gameoverscore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
-  gameoverscore.anchor.setTo(0.5);
-  gameoverscore.scale.setTo(1.2);
-
-  let scoregameover = game.add.text(0,0,levelscore.toString(), textstyleRight);
-  scoregameover.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
-
-  let leveltextpause = game.add.text(0, 0, 'aww ;-; you ran out of shots', textstyleCenter);
-  leveltextpause.setTextBounds(game.width/2-200, game.height/2-50, 150, 10);
-
-  let homebutton;
-  homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
-  homebutton.scale.setTo(0.4);
-  homebutton.anchor.setTo(0.5);
-  homebutton.inputEnabled = true;
-  homebutton.input.useHandCursor = true;
-  homebutton.events.onInputOver.add(buttonHoverSmall,this);
-  homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
-  homebutton.events.onInputUp.add(function(){
-    gameLost = false;
-    levelscore = 0;
-    music.stop();
-    game.state.start('loading');
-  });
-  let highscorebutton = game.add.sprite(game.width/2 + restartbutton.width + 40,menu.height/2 + game.height/2 + 20,'highscorebutton');
-  highscorebutton.scale.setTo(0.4);
-  highscorebutton.anchor.setTo(0.5);
-  highscorebutton.inputEnabled = true;
-  highscorebutton.input.useHandCursor = true;
-  highscorebutton.events.onInputUp.add(function(){
-    game.state.states['highscore'].endscore = levelscore;
-    game.state.start('highscore');
-  });
-}
-
-let gameIsWon = false;
-let inGoal = false;
-
-function collisionHandler (obj1, obj2) {
-  if (!gameIsWon && !inGoal){
-    if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
-        if (calcOverlap(player.body, goal.body)<20){
-          animateScore(shots*20);
-          animateScore(300);
-          gameWon();
-        }
-        else if (calcOverlap(player.body, goal.body)<60){
-          animateScore(shots*20);
-          animateScore(100);
-          gameWon();
-        }
-    }
-  }
-}
-
-function gameWon(){
-  if (gameIsWon == false){
-    let transparent = game.add.sprite(0,0, 'transparent');
-  }
-  menu = game.add.sprite(game.width/2,game.height/2,'menu');
-  menu.scale.setTo(0.9,0.9);
-  menu.anchor.setTo(0.5, 0.5);
-  let menutext;
-  menutext = game.add.text(game.width/2, 115, `VICTORY`, textstyleCenter);
-  menutext.anchor.setTo(0.5,1);
-
-  let nextlevel =  game.add.sprite(menu.x,menu.y+menu.height/2,'playbutton');
-  nextlevel.scale.setTo(0.5);
-  nextlevel.anchor.setTo(0.5);
-  nextlevel.inputEnabled = true;
-  nextlevel.input.useHandCursor = true;
-  nextlevel.events.onInputOver.add(buttonHoverSmall,this);
-  nextlevel.events.onInputOut.add(buttonHoverOutSmall,this);
-
-  let restartbutton = game.add.sprite(menu.x+menu.height/3,menu.y + menu.height/2,'restartbutton');
-  restartbutton.scale.setTo(0.5);
-  restartbutton.anchor.setTo(0.5);
-  restartbutton.inputEnabled = true;
-  restartbutton.input.useHandCursor = true;
-  restartbutton.events.onInputUp.add(function(){
-    gameIsWon = false;
-    levelscore = 0;
-    music.stop();
-    game.state.start('level1');
-  });
-  restartbutton.events.onInputOver.add(buttonHoverSmall,this);
-  restartbutton.events.onInputOut.add(buttonHoverOutSmall,this);
-
-  let homebutton = game.add.sprite(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton');
-  homebutton.scale.setTo(0.5);
-  homebutton.anchor.setTo(0.5);
-  homebutton.inputEnabled = true;
-  homebutton.input.useHandCursor = true;
-  homebutton.events.onInputUp.add(function(){
-    gameIsWon = false;
-    levelscore = 0;
-    music.stop();
-    game.state.start('loading');
-  });
-  homebutton.events.onInputOver.add(buttonHoverSmall,this);
-  homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
-
-  let pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
-  pausescore.anchor.setTo(0.5,0.5);
-  pausescore.scale.setTo(1.2,1.2);
-
-  let scorepause = game.add.text(0,0,levelscore.toString(), textstyleRight);
-  scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
-
-  let leveltextpause = game.add.text(0, 0, 'Level ' + level, {
-          font: "5em Stringz",
-          fill: "#fff",
-          align: "center",
-          boundsAlignH: "center",
-          boundsAlignV: "center"
-        });
-
-  leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
-
-  gameIsWon = true;
-}
-
 //triggered when cat overlaps with dust
 function collectDust(player, dust){
   collect.play();
