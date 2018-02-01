@@ -415,7 +415,7 @@ function buttonHoverOutSmall(button){
 }
 
 function set(player,pointer) {
-  if(player.body.speed<10){
+  if(player.body.speed<20){
     catchFlag = true;
     game.camera.follow(null);
     player.body.moves = false;
@@ -426,7 +426,7 @@ function set(player,pointer) {
 }
 
 function launch() {
-  if(player.body.speed<10){
+  if(player.body.speed<20){
     catchFlag = false;
     player.body.moves = true;
     game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
@@ -479,7 +479,7 @@ function update() {
 
     scoretext.text=~~scoretext.score;
 
-    if ((shots == 0 && player.body.speed == 0) && gameIsWon==false) {
+    if ((shots == 0 && player.body.speed == 0) && gameIsWon!=true) {
       if (gameoverhelper!=true){
       gameOver();
     }
