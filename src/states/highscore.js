@@ -50,9 +50,15 @@ function create(){
   confirmbutton.inputEnabled = true;
   confirmbutton.input.useHandCursor = true;
   confirmbutton.events.onInputUp.add(function(){
-      let name = "Me";
-      let points = 300;
-      save_highscore(name, points, id);
+    let name;
+    if(input.value != ""){
+      name = input.value;
+    }
+    else{
+      name = "Anonymous";
+    }
+    let points = 300;
+    save_highscore(name, points, id);
   });
 
   function buttonHover(button){
