@@ -334,6 +334,7 @@ function create() {
       if (showSettings){
         removeSettingsMenu();
       }
+      showSettings = true;
       if (!paused){
           paused = true;
           music.pause();
@@ -390,6 +391,7 @@ function create() {
         menutext.destroy();
         playbutton.destroy();
         paused = false;
+        showSettings = false;
       }
     }
     getLevelDisplay(level);
@@ -534,7 +536,6 @@ function gameWon(){
   homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
 
-
   let pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
   pausescore.anchor.setTo(0.5,0.5);
   pausescore.scale.setTo(1.2,1.2);
@@ -605,6 +606,15 @@ function gameOver() {
     gameLost = false;
     levelscore = 0;
     music.stop();
+    game.state.start('loading');
+  });
+
+  let highscorebutton = game.add.sprite(game.width/2 + restartbutton.width + 40,menu.height/2 + game.height/2 + 20,'highscorebutton');
+  highscorebutton.scale.setTo(0.4);
+  highscorebutton.anchor.setTo(0.5);
+  highscorebutton.inputEnabled = true;
+  highscorebutton.input.useHandCursor = true;
+  highscorebutton.events.onInputUp.add(function(){
     game.state.start('loading');
   });
 }
