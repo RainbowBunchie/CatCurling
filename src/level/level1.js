@@ -64,15 +64,13 @@ function create() {
   let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
   furniture.add(plant);
 
-  let deskchair = furnitureTpl(game,'deskchair',game.width-130,game.height/4 + 45,0.45,0.45);
-  deskchair.rotation = 0.2;
+  let deskchair = furnitureTpl(game,'deskchair',game.width-130,game.height/4 + 45,0.45,0.45, 0.2);
   furniture.add(deskchair);
 
   let desk = furnitureTpl(game,'desk',game.width,game.height/4,0.45,0.45);
   furniture.add(desk);
 
-  let coffeetable = furnitureTpl(game,'coffeetable',160,130,0.9,0.9);
-  coffeetable.rotation = 0.1;
+  let coffeetable = furnitureTpl(game,'coffeetable',160,130,0.9,0.9, 0.1);
   furniture.add(coffeetable);
 
   // GOAL
@@ -341,8 +339,6 @@ function create() {
       showSettings = true;
     }
 
-    //game.input.onDown.add(removeSettingsMenu, self);
-
     function removeSettingsMenu(){
       if (showSettings == true){
         restartbutton.destroy();
@@ -424,8 +420,6 @@ function create() {
       }
     }
 
-    //game.input.onDown.add(unpause, self);
-
     function unpause(){
       console.log("unpause aufruf");
       if (paused == true){
@@ -457,8 +451,6 @@ function create() {
     levelgroup.y = 10;
 }
 
-
-
 function buttonHover(button){
   button.scale.setTo(1.1);
 }
@@ -466,7 +458,6 @@ function buttonHover(button){
 function buttonHoverOut(button){
   button.scale.setTo(1);
 }
-
 
 function set(player,pointer) {
   if(player.body.speed<10){
