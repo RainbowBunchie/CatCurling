@@ -124,14 +124,14 @@ function create() {
     // SETTINGS MENU
     let showSettings = false;
 
-    let homebutton;
+    // ----------------------  buttons -----------------------
+
     let restartbutton;
     let raisebutton;
     let lowerbutton;
     let mutebutton;
+    let homebutton;
     let soundText;
-
-    // ----------------------  buttons -----------------------
 
     let settingsbutton = game.add.sprite(45, 45,'settingsbutton');
     settingsbutton.scale.setTo(1);
@@ -149,6 +149,7 @@ function create() {
     settingsbutton.events.onInputOut.add(buttonHoverOut,this);
 
     function getSettingsMenu(){
+      showSettings = true;
 
       transparent = game.add.sprite(0,0, 'transparent');
 
@@ -166,10 +167,8 @@ function create() {
       playbutton.input.useHandCursor = true;
       playbutton.events.onInputUp.add(function(){
         removeSettingsMenu();
+        console.log("hello");
       });
-
-      playbutton.events.onInputOver.add(buttonHover,this);
-      playbutton.events.onInputOut.add(buttonHoverOut,this);
 
       raisebutton = game.add.sprite(game.width/3,menu.height/2 + game.height/2 - 120,'raisebutton');
       raisebutton.scale.setTo(0.6,0.6);
@@ -190,9 +189,6 @@ function create() {
         soundText.setText(`${~~music.volume}`);
       });
 
-      raisebutton.events.onInputOver.add(buttonHover,this);
-      raisebutton.events.onInputOut.add(buttonHoverOut,this);
-
       lowerbutton = game.add.sprite(2*game.width/3,menu.height/2 + game.height/2 - 120,'lowerbutton');
       lowerbutton.scale.setTo(0.6,0.6);
       lowerbutton.anchor.setTo(0.5,1);
@@ -209,9 +205,6 @@ function create() {
         soundText.setText(`${~~music.volume}`);
       });
 
-      lowerbutton.events.onInputOver.add(buttonHover,this);
-      lowerbutton.events.onInputOut.add(buttonHoverOut,this);
-
       mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120, 'muteoffbutton');
       mutebutton.scale.setTo(0.6,0.6);
       mutebutton.anchor.setTo(0.5,1);
@@ -220,9 +213,6 @@ function create() {
       mutebutton.events.onInputUp.add(function(){
         onMuteButton();
       });
-
-      mutebutton.events.onInputOver.add(buttonHover,this);
-      mutebutton.events.onInputOut.add(buttonHoverOut,this);
 
       function onMuteButton(){
         soundValue = music.volume;
@@ -264,8 +254,8 @@ function create() {
       soundText.anchor.setTo(0.5,1);
 
       homebutton = game.add.sprite(game.width/2 - playbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
-      homebutton.scale.setTo(0.4);
-      homebutton.anchor.setTo(0.5);
+      homebutton.scale.setTo(0.4,0.4);
+      homebutton.anchor.setTo(0.5,1);
       homebutton.inputEnabled = true;
       homebutton.input.useHandCursor = true;
       homebutton.events.onInputUp.add(function(){
@@ -273,9 +263,6 @@ function create() {
         music.stop();
         game.state.start('loading');
       });
-
-      homebutton.events.onInputOver.add(buttonHover,this);
-      homebutton.events.onInputOut.add(buttonHoverOut,this);
 
       restartbutton = game.add.sprite(game.width/2 + playbutton.width + 40,menu.height/2 + game.height/2 + 20,'restartbutton');
       restartbutton.scale.setTo(0.4, 0.4);
@@ -287,14 +274,11 @@ function create() {
         music.stop();
         game.state.start('level1');
       });
-
-      restartbutton.events.onInputOver.add(buttonHover,this);
-      restartbutton.events.onInputOut.add(buttonHoverOut,this);
-
-      showSettings = true;
     }
 
+
     function removeSettingsMenu(){
+      console.log("remove "+ showSettings );
       if (showSettings == true){
         restartbutton.destroy();
         homebutton.destroy();
@@ -356,6 +340,9 @@ function create() {
           playbutton.events.onInputUp.add(function(){
             unpause();
           });
+
+          playbutton.events.onInputOver.add(buttonHover,this);
+          playbutton.events.onInputOut.add(buttonHoverOut,this);
 
           pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
           pausescore.anchor.setTo(0.5,0.5);
@@ -458,7 +445,7 @@ function update() {
 
     }
 
-    if (shots == 0 && (player.body.velocity.x ==0 && player.body.velocity.y ==0)) {
+    if (((shots == 0) && (player.body.speed == 0))) {
       gameOver();
     }
     player.body.velocity.setTo( player.body.velocity.x *0.99, player.body.velocity.y*0.99);
@@ -473,6 +460,75 @@ function update() {
 }
 
 let gameLost = false;
+
+function gameWon(){
+  if (gameIsWon == false){
+    let transparent = game.add.sprite(0,0, 'transparent');
+  }
+  menu = game.add.sprite(game.width/2,game.height/2,'menu');
+  menu.scale.setTo(0.9,0.9);
+  menu.anchor.setTo(0.5, 0.5);
+  let menutext;
+  menutext = game.add.text(game.width/2, 115, `VICTORY`, textstyleCenter);
+  menutext.anchor.setTo(0.5,1);
+
+  let nextlevel =  game.add.sprite(game.width/2 ,menu.height/2 + game.height/2 + 20,'playbutton');
+  nextlevel.scale.setTo(0.4,0.4);
+  nextlevel.anchor.setTo(0.5,1);
+  nextlevel.inputEnabled = true;
+  nextlevel.input.useHandCursor = true;
+
+  let restartbutton = game.add.sprite(game.width/2 + nextlevel.width + 40,menu.height/2 + game.height/2 + 20,'restartbutton');
+  restartbutton.scale.setTo(0.41);
+  restartbutton.anchor.setTo(0.5);
+  restartbutton.inputEnabled = true;
+  restartbutton.input.useHandCursor = true;
+  restartbutton.events.onInputUp.add(function(){
+    gameIsWon = false;
+    levelscore = 0;
+    music.stop();
+    game.state.start('level1');
+  });
+
+  restartbutton.events.onInputOver.add(buttonHover,this);
+  restartbutton.events.onInputOut.add(buttonHoverOut,this);
+
+  let homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
+  homebutton.scale.setTo(0.4);
+  homebutton.anchor.setTo(0.5);
+  homebutton.inputEnabled = true;
+  homebutton.input.useHandCursor = true;
+  homebutton.events.onInputUp.add(function(){
+    gameIsWon = false;
+    levelscore = 0;
+    music.stop();
+    game.state.start('loading');
+  });
+
+  homebutton.events.onInputOver.add(buttonHover,this);
+  homebutton.events.onInputOut.add(buttonHoverOut,this);
+
+
+
+  let pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
+  pausescore.anchor.setTo(0.5,0.5);
+  pausescore.scale.setTo(1.2,1.2);
+
+  let scorepause = game.add.text(0,0,levelscore.toString(), textstyleRight);
+  scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
+
+  let leveltextpause = game.add.text(0, 0, 'Level ' + level, {
+          font: "5em Stringz",
+          fill: "#fff",
+          align: "center",
+          boundsAlignH: "center",
+          boundsAlignV: "center"
+        });
+
+  leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
+
+  gameIsWon = true;
+}
 
 function gameOver() {
   if (gameLost == false){
@@ -514,6 +570,9 @@ function gameOver() {
   homebutton.anchor.setTo(0.5);
   homebutton.inputEnabled = true;
   homebutton.input.useHandCursor = true;
+
+  homebutton.events.onInputOver.add(buttonHover,this);
+  homebutton.events.onInputOut.add(buttonHoverOut,this);
   homebutton.events.onInputUp.add(function(){
     gameLost = false;
     levelscore = 0;
@@ -521,6 +580,8 @@ function gameOver() {
     game.state.start('loading');
   });
 }
+
+
 
 let gameIsWon = false;
 let inGoal = false;
