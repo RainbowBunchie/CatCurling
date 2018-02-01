@@ -35,7 +35,7 @@ let paused = false;
 function create() {
 
   level = 1;
-  shots = 5;
+  shots = 0;
   music = game.add.audio('background-music');
   music.volume = 2;
   collect = game.add.audio('collect');
@@ -55,11 +55,11 @@ function create() {
   let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
   furniture.add(tvTable);
 
-  // let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
-  // furniture.add(chairs);
+  let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
+  furniture.add(chairs);
 
-  // let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
-  // furniture.add(table);
+  let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
+  furniture.add(table);
 
   let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
   furniture.add(plant);
@@ -598,7 +598,7 @@ function gameOver() {
   menu.scale.setTo(0.9);
   menu.anchor.setTo(0.5);
   let menutext;
-  menutext = game.add.text(game.width/2, 115, `GAME OVER`, textstyleCenter);
+  menutext = game.add.text(game.width/2, 100, `GAME OVER`, textstyleCenter);
   menutext.anchor.setTo(0.5);
 
   let restartbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 20,'restartbutton');
@@ -612,6 +612,15 @@ function gameOver() {
     music.stop();
     game.state.start('level1');
   });
+  let gameoverscore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
+  gameoverscore.anchor.setTo(0.5,0.5);
+  gameoverscore.scale.setTo(1.2,1.2);
+
+  let scoregameover = game.add.text(0,0,levelscore.toString(), textstyleRight);
+  scoregameover.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
+
+  let leveltextpause = game.add.text(0, 0, 'aww ;-; you ran out of shots', textstyleCenter);
+  leveltextpause.setTextBounds(game.width/2-200, game.height/2-50, 150, 10);
 
   let homebutton;
   homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
@@ -733,7 +742,7 @@ function animateScore(amount){
 }
 
 function render() {
-
+/*
   game.debug.cameraInfo(game.camera, 32, 64);
   game.debug.spriteCoords(player, 32, 150);
   game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
@@ -744,7 +753,7 @@ function render() {
    game.debug.text("SPEEEEEED"+ player.body.speed, 400, 400, 'rgb(0,255,0)');
    game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
    game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
-
+*/
 }
 
 export default{
