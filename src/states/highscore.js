@@ -1,16 +1,11 @@
 import game from '../game';
 
-
-
-let back;
-let prev;
-let next;
 let bg;
 let play;
-let instructions;
-let instructions2;
+let highscore;
 let input;
-let textstyleLeft;
+let highscoreText;
+let inputstyleLeft;
 
 function create(){
 
@@ -18,11 +13,15 @@ function create(){
   bg.tileScale.y = 0.3;
   bg.tileScale.x = 0.3;
 
-  instructions = game.add.sprite(game.width/2 + 125, game.height/2, 'highscore');
-  instructions.anchor.setTo(0.5);
-  instructions.scale.setTo(1.2);
+  highscore = game.add.sprite(game.width/2, game.height/2, 'highscore');
+  highscore.anchor.setTo(0.5);
+  highscore.scale.setTo(1.2);
 
-  textstyleLeft = {
+  highscoreText = game.add.text(game.width/2, game.height/2-50, "Enter Your Name Here!", {font: "30px Stringz", fill: "#fff" });
+  highscoreText.anchor.setTo(0.5);
+
+
+  inputstyleLeft = {
     padding: 15,
     width: 200,
     font: "30px Stringz",
@@ -30,12 +29,12 @@ function create(){
     borderColor: "#f0b46a",
     borderWidth: 3,
     fill: "#ffafd2",
-    align: "left",
-    boundsAlignH: "left",
-    boundsAlignV: "left"
+    align: "center",
+    boundsAlignH: "center",
+    boundsAlignV: "center"
   };
 
-  input = game.add.inputField(game.width/2, game.height/2, textstyleLeft);
+  input = game.add.inputField(game.width/2-125, game.height/2 + 50, inputstyleLeft);
 
 }
 
