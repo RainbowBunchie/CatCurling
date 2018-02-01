@@ -1,4 +1,5 @@
 import game from '../game';
+import save_highscore from '../../public/save_highscore';
 
 let bg;
 let play;
@@ -9,6 +10,7 @@ let inputstyleLeft;
 let confirmbutton;
 let score = 100;
 let name;
+let id = 0;
 
 function create(){
 
@@ -48,7 +50,9 @@ function create(){
   confirmbutton.inputEnabled = true;
   confirmbutton.input.useHandCursor = true;
   confirmbutton.events.onInputUp.add(function(){
-      console.log("do stuff");
+      let name = "Me";
+      let points = 300;
+      save_highscore(name, points, id);
   });
 
   function buttonHover(button){
