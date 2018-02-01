@@ -571,13 +571,21 @@ function gameOver() {
   homebutton.anchor.setTo(0.5);
   homebutton.inputEnabled = true;
   homebutton.input.useHandCursor = true;
-
   homebutton.events.onInputOver.add(buttonHover,this);
   homebutton.events.onInputOut.add(buttonHoverOut,this);
   homebutton.events.onInputUp.add(function(){
     gameLost = false;
     levelscore = 0;
     music.stop();
+    game.state.start('loading');
+  });
+
+  let highscorebutton = game.add.sprite(game.width/2 + restartbutton.width + 40,menu.height/2 + game.height/2 + 20,'highscorebutton');
+  highscorebutton.scale.setTo(0.4);
+  highscorebutton.anchor.setTo(0.5);
+  highscorebutton.inputEnabled = true;
+  highscorebutton.input.useHandCursor = true;
+  highscorebutton.events.onInputUp.add(function(){
     game.state.start('loading');
   });
 }
