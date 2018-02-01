@@ -5,12 +5,17 @@ import game from '../game';
 import {textstyleRight}from '../style';
 import {textstyleCenter}from '../style';
 import furnitureTpl from '../module-assets/furniture';
+import {getGoal, getPlayer, getAnalog, getArrow, updateShots, displayShots, calcOverlap, getLevelDisplay, getShotsDisplay, addDust, checkIfPaused} from '../module-assets/functions';
 import pkg from '../../package.json';
 
-let dusts;
+
+let level = 1;
 let shots;
-let furniture;
+
+let goal;
 let player;
+let dusts;
+let furniture;
 let cursors;
 let arrow;
 let catchFlag = false;
@@ -21,8 +26,6 @@ let scoretext;
 let leveltext;
 let Xvector;
 let Yvector;
-let goal;
-let level;
 let transparent;
 let menu;
 let scorepause;
@@ -33,14 +36,17 @@ let soundValue;
 let paused = false;
 
 function create() {
-
-  level = 1;
   shots = 3;
+
+  //MUSIC
+
   music = game.add.audio('background-music');
   music.volume = 2;
   collect = game.add.audio('collect');
   bump = game.add.audio('bump');
   music.play();
+
+  //CREATE THE FURNITURE
 
   furniture = game.add.group();
 
@@ -74,60 +80,25 @@ function create() {
   furniture.add(coffeetable);
 
   // GOAL
+  goal = getGoal(50,300);
 
-  goal = game.add.sprite(50, 300,'goal');
-  goal.anchor.setTo(0.5);
-  game.physics.enable(goal, Phaser.Physics.ARCADE);
-  goal.body.collideWorldBounds = true;
-  goal.body.immovable = true;
-  goal.scale.setTo(0.6 , 0.6);
-  goal.body.setSize(200, 200, 0, 0);
+  //DUSTS
 
+  dusts = game.add.group();
+  dusts.enableBody = true;
 
-    //DUSTS
+  addDust(650, 250, dusts);
+  addDust(250, 450, dusts);
+  addDust(480, 180, dusts);
 
-    dusts = game.add.group();
-    dusts.enableBody = true;
+  // GAME CHARACTERS:
 
-    let dust = dusts.create(650, 250, 'dust');
-    let dust2 = dusts.create(250, 450, 'dust');
-    let dust3 = dusts.create(480, 180, 'dust');
+  analog = getAnalog(player);
+  arrow = getArrow(player);
 
-    dust.scale.setTo(0.2,0.2);
-    dust2.scale.setTo(0.2, 0.2);
-    dust3.scale.setTo(0.2,0.2);
+  // PLAYER
+  player = getPlayer(850, 550, set, launch);
 
-    // GAME CHARACTERS:
-
-    analog = game.add.sprite(player,player,'analog');
-    analog.width = 8;
-
-    //analog.rotation = 220;
-    analog.alpha = 0;
-    analog.anchor.setTo(0.5, 1);
-    analog.scale.setTo(0.5)
-
-    arrow = game.add.sprite(player,player,'arrow');
-    arrow.anchor.setTo(0.5,0);
-    arrow.alpha = 0;
-    arrow.scale.setTo(0.5);
-
-  	player = game.add.sprite(850, 550, 'player');
-    game.physics.enable([player], Phaser.Physics.ARCADE);
-    player.anchor.set(0.5);
-
-  	player.body.collideWorldBounds = true;
-  	player.body.bounce.set(0.9);
-    player.scale.setTo(0.5,0.5);
-    player.body.drag.set(20,20);
-
-
-  //Enable input
-    player.inputEnabled=true;
-    player.input.start(0, true);
-    player.events.onInputDown.add(set);
-    player.events.onInputUp.add(launch);
-    game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
 
     // GUI ELEMENTS
 
@@ -148,23 +119,7 @@ function create() {
     scoregroup.y = 70;
 
     // SHOTS
-
-    let shotsGroup = game.add.group();
-
-    let shotsHolder = game.add.sprite(0, 0, 'shotsholder');
-
-    shotsGroup.add(shotsHolder);
-
-    displayShots(shots);
-
-    let shotsText = game.add.text(10,7, "SHOTS", textstyleCenter);
-    shotsHolder.scale.setTo(0.73);
-
-    shotsGroup.add(shotsText);
-
-    shotsGroup.x = game.width -256;
-    shotsGroup.y = 12;
-
+    getShotsDisplay(shots);
 
     // SETTINGS MENU
     let showSettings = false;
@@ -436,19 +391,7 @@ function create() {
         paused = false;
       }
     }
-
-    let levelgroup = game.add.group();
-
-    let levelholder = game.add.sprite(0, 0,'levelholder');
-    levelholder.anchor.setTo(0.5,0);
-    levelgroup.add(levelholder);
-
-    leveltext = game.add.text(0, 7, `Level ${level.toString()}`, textstyleCenter);
-    leveltext.anchor.setTo(0.5,0);
-    levelgroup.add(leveltext);
-
-    levelgroup.x=game.width/2;
-    levelgroup.y = 10;
+    getLevelDisplay(level);
 }
 
 function buttonHover(button){
@@ -463,7 +406,6 @@ function set(player,pointer) {
   if(player.body.speed<10){
     catchFlag = true;
     game.camera.follow(null);
-
     player.body.moves = false;
     player.body.velocity.setTo(0, 0);
     arrow.reset(player.x, player.y);
@@ -472,63 +414,26 @@ function set(player,pointer) {
 }
 
 function launch() {
-if(player.body.speed<10){
-
+  if(player.body.speed<10){
     catchFlag = false;
     player.body.moves = true;
     game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
-    updateShots();
+    shots-=1;
+    updateShots(shots);
     arrow.alpha = 0;
     analog.alpha = 0;
 
-      Xvector = (arrow.x - player.x) * 3;
-      Yvector = (arrow.y - player.y) * 3;
+    Xvector = (arrow.x - player.x) * 3;
+    Yvector = (arrow.y - player.y) * 3;
 
-      player.body.velocity.setTo(Xvector, Yvector);
-    }
-}
-
-function updateShots(){
-  shots-=1;
-  reduceShots(shots);
-}
-
-let shot;
-let shotsleft
-
-function displayShots(shots){
-  shotsleft = game.add.group();
-  let x = 950;
-  while (shots > 0){
-    shot = game.add.sprite(x, 22, 'shot');
-    shot.scale.setTo(0.75,0.75);
-    x += 20;
-    shots -= 1;
-    shotsleft.add(shot);
+    player.body.velocity.setTo(Xvector, Yvector);
   }
 }
-function reduceShots(shots){
-  console.log(shotsleft.length);
-  shotsleft.destroy();
-  displayShots(shots);
-}
-let tmpvelocityx;
-let tmpvelocityy;
-let pausedLastframe=false;
+
 
 function update() {
-  if (paused){
-    if(!pausedLastframe){
-      tmpvelocityx = player.body.velocity.x;
-      tmpvelocityy = player.body.velocity.y;
-    }
-    player.body.velocity.setTo(0,0);
-    pausedLastframe = true;
-  }
-  if (!paused && pausedLastframe){
-    player.body.velocity.setTo(tmpvelocityx,tmpvelocityy);
-    pausedLastframe = false;
-  }
+
+  checkIfPaused(player, paused);
 
 	arrow.rotation = game.physics.arcade.angleBetween(arrow, player)- 3.14 / 2;
 
@@ -565,17 +470,6 @@ function update() {
     game.physics.arcade.overlap(player, dusts, collectDust, null, this);
 
     scoretext.text=~~scoretext.score;
-}
-
-function calcOverlap(obj1,obj2){
-  let x1 = obj1.x+(obj1.width/2);
-  let x2= obj2.x+(obj2.width/2);
-  let y1 = obj1.y+(obj1.height/2);
-  let y2= obj2.y+(obj2.height/2);
-  let dx = x1-x2;
-  let dy = y1-y2;
-  let result = Math.sqrt((Math.pow(dx,2)+Math.pow(dy,2)));
-  return result;
 }
 
 let gameLost = false;
@@ -644,7 +538,6 @@ function collisionHandler (obj1, obj2) {
           animateScore(100);
           gameWon();
         }
-
     }
   }
 }
@@ -690,8 +583,6 @@ function gameWon(){
     game.state.start('loading');
   });
 
-
-
   let pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
   pausescore.anchor.setTo(0.5,0.5);
   pausescore.scale.setTo(1.2,1.2);
@@ -735,10 +626,10 @@ function render() {
   game.debug.bodyInfo(player, 32, 32);
   game.debug.body(player);
   game.debug.body(goal);
-   game.debug.text("Overlap: inner"+ calcOverlap(player.body, goal.body), 250, 250, 'rgb(0,255,0)');
-   game.debug.text("SPEEEEEED"+ player.body.speed, 400, 400, 'rgb(0,255,0)');
-   game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
-   game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
+  game.debug.text("Overlap: inner"+ calcOverlap(player.body, goal.body), 250, 250, 'rgb(0,255,0)');
+  game.debug.text("SPEEEEEED"+ player.body.speed, 400, 400, 'rgb(0,255,0)');
+  game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
+  game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
 */
 }
 

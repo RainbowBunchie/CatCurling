@@ -1,4 +1,5 @@
 import 'phaser';
+import game from '../game';
 
 export default function (game, spriteName, posX=0, posY=0,scaleX=0.5,scaleY=0.5, rotation = 0) {
   const sprite = game.add.sprite(posX, posY, spriteName);
