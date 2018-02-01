@@ -35,7 +35,7 @@ let paused = false;
 function create() {
 
   level = 1;
-  shots = 2;
+  shots = 3;
   music = game.add.audio('background-music');
   music.volume = 2;
   collect = game.add.audio('collect');
@@ -57,8 +57,11 @@ function create() {
    let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
    furniture.add(chairs);
 
-   let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
-   furniture.add(table);
+  let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
+  furniture.add(chairs);
+
+  let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
+  furniture.add(table);
 
   let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
   furniture.add(plant);
@@ -93,6 +96,7 @@ function create() {
     let dust = dusts.create(650, 250, 'dust');
     let dust2 = dusts.create(250, 450, 'dust');
     let dust3 = dusts.create(480, 180, 'dust');
+
     dust.scale.setTo(0.2,0.2);
     dust2.scale.setTo(0.2, 0.2);
     dust3.scale.setTo(0.2,0.2);
@@ -674,7 +678,7 @@ function gameOver() {
   menu.scale.setTo(0.9);
   menu.anchor.setTo(0.5);
   let menutext;
-  menutext = game.add.text(game.width/2, 115, `GAME OVER`, textstyleCenter);
+  menutext = game.add.text(game.width/2, 100, `GAME OVER`, textstyleCenter);
   menutext.anchor.setTo(0.5);
 
   let restartbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 20,'restartbutton');
@@ -688,6 +692,15 @@ function gameOver() {
     music.stop();
     game.state.start('level1');
   });
+  let gameoverscore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
+  gameoverscore.anchor.setTo(0.5,0.5);
+  gameoverscore.scale.setTo(1.2,1.2);
+
+  let scoregameover = game.add.text(0,0,levelscore.toString(), textstyleRight);
+  scoregameover.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
+
+  let leveltextpause = game.add.text(0, 0, 'aww ;-; you ran out of shots', textstyleCenter);
+  leveltextpause.setTextBounds(game.width/2-200, game.height/2-50, 150, 10);
 
   let homebutton;
   homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
@@ -715,18 +728,14 @@ function collisionHandler (obj1, obj2) {
   if (!gameIsWon && !inGoal){
     if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
         if (calcOverlap(player.body, goal.body)<20){
-          //game.time.events.add(40, function () {
-            animateScore(shots*20);
-            animateScore(300);
-            gameWon();
-          //});
+          animateScore(shots*20);
+          animateScore(300);
+          gameWon();
         }
         else if (calcOverlap(player.body, goal.body)<60){
-          //game.time.events.add(40, function () {
-            animateScore(shots*20);
-            animateScore(100);
-            gameWon();
-          //});
+          animateScore(shots*20);
+          animateScore(100);
+          gameWon();
         }
 
     }
@@ -745,15 +754,13 @@ function collectDust(player, dust){
 }
 
 function animateScore(amount){
-  //console.log("score increased by " + amount);
   levelscore += amount;
   game.add.tween(scoretext).to({score:levelscore},700,"Linear", true);
-  //scoretext.score muss zurück gesetzt werden !!!!!!!!
 
 }
 
 function render() {
-
+/*
   game.debug.cameraInfo(game.camera, 32, 64);
   game.debug.spriteCoords(player, 32, 150);
   game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
@@ -764,7 +771,7 @@ function render() {
    game.debug.text("SPEEEEEED"+ player.body.speed, 400, 400, 'rgb(0,255,0)');
    game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
    game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
-
+*/
 }
 
 export default{
