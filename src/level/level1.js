@@ -94,6 +94,7 @@ function create() {
     let dust = dusts.create(650, 250, 'dust');
     let dust2 = dusts.create(250, 450, 'dust');
     let dust3 = dusts.create(480, 180, 'dust');
+
     dust.scale.setTo(0.2,0.2);
     dust2.scale.setTo(0.2, 0.2);
     dust3.scale.setTo(0.2,0.2);
@@ -643,18 +644,14 @@ function collisionHandler (obj1, obj2) {
   if (!gameIsWon && !inGoal){
     if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
         if (calcOverlap(player.body, goal.body)<20){
-          //game.time.events.add(40, function () {
-            animateScore(shots*20);
-            animateScore(300);
-            gameWon();
-          //});
+          animateScore(shots*20);
+          animateScore(300);
+          gameWon();
         }
         else if (calcOverlap(player.body, goal.body)<60){
-          //game.time.events.add(40, function () {
-            animateScore(shots*20);
-            animateScore(100);
-            gameWon();
-          //});
+          animateScore(shots*20);
+          animateScore(100);
+          gameWon();
         }
 
     }
@@ -734,10 +731,8 @@ function collectDust(player, dust){
 }
 
 function animateScore(amount){
-  //console.log("score increased by " + amount);
   levelscore += amount;
   game.add.tween(scoretext).to({score:levelscore},700,"Linear", true);
-  //scoretext.score muss zurück gesetzt werden !!!!!!!!
 
 }
 
