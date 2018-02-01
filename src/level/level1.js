@@ -380,7 +380,12 @@ function create() {
         game.paused = true;
     });
 
+    game.onPause.add(pause);
     game.onPause.add(handlePause);
+
+    function pause(){
+      paused = false;
+    }
 
     let menu;
     let menutext;
@@ -391,12 +396,15 @@ function create() {
     let scorepause;
 
     function handlePause(){
+      console.log("PAUSE");
       if (showSettings){
         removeSettingsMenu();
       }
-      //game.paused= true; //if player clicks outside game and game pauses automatically
-
+      unpause();
+      
       if (!paused){
+        game.paused == true;
+        paused = true;
         transparent = game.add.sprite(0,0, 'transparent');
 
         menu = game.add.sprite(game.width/2,game.height/2,'menu');
@@ -405,7 +413,6 @@ function create() {
 
         menutext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
         menutext.anchor.setTo(0.5,1);
-
 
         playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
         playbutton.scale.setTo(0.45,0.45);
@@ -429,14 +436,13 @@ function create() {
               });
         leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
       }
-      paused = true;
     }
 
     game.input.onDown.add(unpause, self);
 
     function unpause(){
       console.log("unpause aufruf");
-      if (paused == true){
+      if (paused == true || game.paused == true){
         console.log("UNPAUSE")
         pausebutton.scale.setTo(1);
         scorepause.destroy();
