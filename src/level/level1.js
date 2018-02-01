@@ -31,7 +31,7 @@ let music;
 let collect;
 let bump;
 let soundValue;
-
+let paused = false;
 
 function create() {
 
@@ -214,8 +214,6 @@ function create() {
     settingsbutton.events.onInputOver.add(buttonHover,this);
     settingsbutton.events.onInputOut.add(buttonHoverOut,this);
 
-    //WENN IN SETTINGS GEPAUSED WIRD -> SETTINGS KANN NICHT MEHR GESCHLOSSEN WERDEN?
-
     function getSettingsMenu(){
 
       transparent = game.add.sprite(0,0, 'transparent');
@@ -361,8 +359,6 @@ function create() {
         showSettings = false;
       }
     }
-
-
     // PAUSING THE GAME
 
     let pausebutton = game.add.sprite(125, 45,'pausebutton');
@@ -374,18 +370,9 @@ function create() {
     pausebutton.inputEnabled = true;
     pausebutton.input.useHandCursor = true;
 
-
-    let paused = false;
     pausebutton.events.onInputUp.add(function(){
-        game.paused = true;
+        handlePause();
     });
-
-    game.onPause.add(pause);
-    game.onPause.add(handlePause);
-
-    function pause(){
-      paused = false;
-    }
 
     let menu;
     let menutext;
@@ -396,53 +383,54 @@ function create() {
     let scorepause;
 
     function handlePause(){
-      console.log("PAUSE");
       if (showSettings){
         removeSettingsMenu();
       }
-      unpause();
-      
       if (!paused){
-        game.paused == true;
-        paused = true;
-        transparent = game.add.sprite(0,0, 'transparent');
+          paused = true;
+          music.pause();
+          transparent = game.add.sprite(0,0, 'transparent');
 
-        menu = game.add.sprite(game.width/2,game.height/2,'menu');
-        menu.scale.setTo(0.9,0.9);
-        menu.anchor.setTo(0.5, 0.5);
+          menu = game.add.sprite(game.width/2,game.height/2,'menu');
+          menu.scale.setTo(0.9,0.9);
+          menu.anchor.setTo(0.5, 0.5);
 
-        menutext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
-        menutext.anchor.setTo(0.5,1);
+          menutext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
+          menutext.anchor.setTo(0.5,1);
 
-        playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
-        playbutton.scale.setTo(0.45,0.45);
-        playbutton.anchor.setTo(0.5,1);
+          playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
+          playbutton.scale.setTo(0.45,0.45);
+          playbutton.anchor.setTo(0.5,1);
+          playbutton.inputEnabled = true;
+          playbutton.input.useHandCursor = true;
+          playbutton.events.onInputUp.add(function(){
+            unpause();
+          });
 
-        //playbutton.inputEnabled = true;
+          pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
+          pausescore.anchor.setTo(0.5,0.5);
+          pausescore.scale.setTo(1.2,1.2);
 
-        pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
-        pausescore.anchor.setTo(0.5,0.5);
-        pausescore.scale.setTo(1.2,1.2);
+          scorepause = game.add.text(0,0,levelscore.toString(), textstyleRight);
+          scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
-        scorepause = game.add.text(0,0,levelscore.toString(), textstyleRight);
-        scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
-
-        leveltextpause = game.add.text(0, 0, 'Level ' + level, {
-                font: "5em Stringz",
-                fill: "#fff",
-                align: "center",
-                boundsAlignH: "center",
-                boundsAlignV: "center"
-              });
-        leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
+          leveltextpause = game.add.text(0, 0, 'Level ' + level, {
+                  font: "5em Stringz",
+                  fill: "#fff",
+                  align: "center",
+                  boundsAlignH: "center",
+                  boundsAlignV: "center"
+                });
+          leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
       }
     }
 
-    game.input.onDown.add(unpause, self);
+    //game.input.onDown.add(unpause, self);
 
     function unpause(){
       console.log("unpause aufruf");
-      if (paused == true || game.paused == true){
+      if (paused == true){
+        music.resume();
         console.log("UNPAUSE")
         pausebutton.scale.setTo(1);
         scorepause.destroy();
@@ -452,7 +440,6 @@ function create() {
         menu.destroy();
         menutext.destroy();
         playbutton.destroy();
-        game.paused = false;
         paused = false;
       }
     }
@@ -495,19 +482,19 @@ function buttonHoverOut(button){
 
 function launch() {
 
-  if(player.body.velocity.x === 0 && player.body.velocity.y === 0){
-    catchFlag = false;
-    player.body.moves = true;
-    game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
-    updateShots();
-    arrow.alpha = 0;
-    analog.alpha = 0;
+    if(player.body.velocity.x === 0 && player.body.velocity.y === 0){
+      catchFlag = false;
+      player.body.moves = true;
+      game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
+      updateShots();
+      arrow.alpha = 0;
+      analog.alpha = 0;
 
-    Xvector = (arrow.x - player.x) * 3;
-    Yvector = (arrow.y - player.y) * 3;
+      Xvector = (arrow.x - player.x) * 3;
+      Yvector = (arrow.y - player.y) * 3;
 
-    player.body.velocity.setTo(Xvector, Yvector);
-  }
+      player.body.velocity.setTo(Xvector, Yvector);
+    }
 }
 
 function updateShots(){
@@ -534,8 +521,23 @@ function reduceShots(shots){
   shotsleft.destroy();
   displayShots(shots);
 }
+let tmpvelocityx;
+let tmpvelocityy;
+let pausedLastframe=false;
 
 function update() {
+  if (paused){
+    if(!pausedLastframe){
+      tmpvelocityx = player.body.velocity.x;
+      tmpvelocityy = player.body.velocity.y;
+    }
+    player.body.velocity.setTo(0,0);
+    pausedLastframe = true;
+  }
+  if (!paused && pausedLastframe){
+    player.body.velocity.setTo(tmpvelocityx,tmpvelocityy);
+    pausedLastframe = false;
+  }
 
 	arrow.rotation = game.physics.arcade.angleBetween(arrow, player)- 3.14 / 2;
 
@@ -734,7 +736,6 @@ function animateScore(amount){
 }
 
 function render() {
-
   // game.debug.cameraInfo(game.camera, 32, 64);
   // game.debug.spriteCoords(player, 32, 150);
   // game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
@@ -744,8 +745,8 @@ function render() {
   // game.debug.body(goalInner);
   //  game.debug.text("Overlap: inner"+ calcOverlap(player.body, goalInner.body), 250, 250, 'rgb(0,255,0)');
   //  game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
-  //  game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
-
+    game.debug.text("tmpvelocityx: " + tmpvelocityx, 250, 350, 'rgb(0,255,0)');
+    game.debug.text("paused: " + paused, 250, 390, 'rgb(0,255,0)');
 }
 
 export default{
