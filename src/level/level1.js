@@ -35,7 +35,7 @@ let paused = false;
 function create() {
 
   level = 1;
-  shots = 0;
+  shots = 3;
   music = game.add.audio('background-music');
   music.volume = 2;
   collect = game.add.audio('collect');
