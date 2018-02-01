@@ -320,6 +320,7 @@ function create() {
       if (showSettings){
         removeSettingsMenu();
       }
+      showSettings = true;
       if (!paused){
           paused = true;
           music.pause();
@@ -376,6 +377,7 @@ function create() {
         menutext.destroy();
         playbutton.destroy();
         paused = false;
+        showSettings = false;
       }
     }
     getLevelDisplay(level);
@@ -507,7 +509,6 @@ function gameWon(){
 
   homebutton.events.onInputOver.add(buttonHover,this);
   homebutton.events.onInputOut.add(buttonHoverOut,this);
-
 
 
   let pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
