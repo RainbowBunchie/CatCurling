@@ -63,8 +63,7 @@ function create(){
       name = "Anonymous";
     }
     save_highscore(name, score, id);
-    game.state.start('loading');
-
+    window.location.href = "http://localhost:8080/highscore.html";
   });
 
   function buttonHover(button){
