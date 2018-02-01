@@ -8,11 +8,16 @@ let input;
 let highscoreText;
 let inputstyleLeft;
 let confirmbutton;
-let score = 100;
+let score;
 let name;
 let id = 0;
 
 function create(){
+  this.game = game;
+
+  score = this.endscore;
+
+  console.log(this.endscore);
 
   bg=game.add.tileSprite(0, 0, 1100, 600, "bg");
   bg.tileScale.y = 0.3;
@@ -57,8 +62,9 @@ function create(){
     else{
       name = "Anonymous";
     }
-    let points = 300;
-    save_highscore(name, points, id);
+    save_highscore(name, score, id);
+    game.state.start('loading');
+
   });
 
   function buttonHover(button){

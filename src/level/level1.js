@@ -614,7 +614,8 @@ function gameOver() {
   highscorebutton.inputEnabled = true;
   highscorebutton.input.useHandCursor = true;
   highscorebutton.events.onInputUp.add(function(){
-    game.state.start('loading');
+    game.state.states['highscore'].endscore = levelscore;
+    game.state.start('highscore');
   });
 }
 
