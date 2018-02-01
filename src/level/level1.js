@@ -8,10 +8,8 @@ import furnitureTpl from '../module-assets/furniture';
 import {getGoal, getPlayer, getAnalog, getArrow, updateShots, displayShots, calcOverlap, getLevelDisplay, getShotsDisplay, addDust, checkIfPaused} from '../module-assets/functions';
 import pkg from '../../package.json';
 
-
 let level = 1;
 let shots;
-
 let goal;
 let player;
 let dusts;
@@ -154,25 +152,27 @@ function create() {
       transparent = game.add.sprite(0,0, 'transparent');
 
       menu = game.add.sprite(game.width/2,game.height/2,'menu');
-      menu.scale.setTo(0.9,0.9);
-      menu.anchor.setTo(0.5, 0.5);
+      menu.scale.setTo(0.9);
+      menu.anchor.setTo(0.5);
 
       menutext = game.add.text(game.width/2, 115, `SETTINGS`, textstyleCenter);
       menutext.anchor.setTo(0.5,1);
 
-      playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
-      playbutton.scale.setTo(0.45,0.45);
-      playbutton.anchor.setTo(0.5,1);
+      playbutton = game.add.sprite(menu.x,menu.y + menu.height/2 ,'playbutton');
+      playbutton.scale.setTo(0.5);
+      playbutton.anchor.setTo(0.5);
       playbutton.inputEnabled = true;
       playbutton.input.useHandCursor = true;
       playbutton.events.onInputUp.add(function(){
         removeSettingsMenu();
         console.log("hello");
       });
+      playbutton.events.onInputOver.add(buttonHoverSmall,this);
+      playbutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
-      raisebutton = game.add.sprite(game.width/3,menu.height/2 + game.height/2 - 120,'raisebutton');
-      raisebutton.scale.setTo(0.6,0.6);
-      raisebutton.anchor.setTo(0.5,1);
+      raisebutton = game.add.sprite(menu.x + menu.width/4,menu.y+40,'raisebutton');
+      raisebutton.scale.setTo(0.5);
+      raisebutton.anchor.setTo(0.5);
       raisebutton.inputEnabled = true;
       raisebutton.input.useHandCursor = true;
       raisebutton.events.onInputUp.add(function(){
@@ -188,10 +188,12 @@ function create() {
         }
         soundText.setText(`${~~music.volume}`);
       });
+      raisebutton.events.onInputOver.add(buttonHoverSmall,this);
+      raisebutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
-      lowerbutton = game.add.sprite(2*game.width/3,menu.height/2 + game.height/2 - 120,'lowerbutton');
-      lowerbutton.scale.setTo(0.6,0.6);
-      lowerbutton.anchor.setTo(0.5,1);
+      lowerbutton = game.add.sprite(menu.x - menu.width/4,menu.y+40,'lowerbutton');
+      lowerbutton.scale.setTo(0.5);
+      lowerbutton.anchor.setTo(0.5);
       lowerbutton.inputEnabled = true;
       lowerbutton.input.useHandCursor = true;
       lowerbutton.events.onInputUp.add(function(){
@@ -204,24 +206,30 @@ function create() {
           onMuteButton();
         soundText.setText(`${~~music.volume}`);
       });
+      lowerbutton.events.onInputOver.add(buttonHoverSmall,this);
+      lowerbutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
-      mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120, 'muteoffbutton');
-      mutebutton.scale.setTo(0.6,0.6);
-      mutebutton.anchor.setTo(0.5,1);
+      mutebutton = game.add.sprite(menu.x,menu.y+40, 'muteoffbutton');
+      mutebutton.scale.setTo(0.5);
+      mutebutton.anchor.setTo(0.5);
       mutebutton.inputEnabled = true;
       mutebutton.input.useHandCursor = true;
       mutebutton.events.onInputUp.add(function(){
         onMuteButton();
       });
+      mutebutton.events.onInputOver.add(buttonHoverSmall,this);
+      mutebutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
       function onMuteButton(){
         soundValue = music.volume;
         mutebutton.destroy();
-        mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120, 'muteonbutton');
-        mutebutton.scale.setTo(0.6,0.6);
-        mutebutton.anchor.setTo(0.5,1);
+        mutebutton = game.add.sprite(menu.x,menu.y+40, 'muteonbutton');
+        mutebutton.scale.setTo(0.5);
+        mutebutton.anchor.setTo(0.5);
         mutebutton.inputEnabled = true;
         mutebutton.input.useHandCursor = true;
+        mutebutton.events.onInputOver.add(buttonHoverSmall,this);
+        mutebutton.events.onInputOut.add(buttonHoverOutSmall,this);
         if(soundValue > 0){
           mutebutton.events.onInputUp.add(function(){
             onDeMuteButton();
@@ -233,11 +241,13 @@ function create() {
 
       function onDeMuteButton(){
         mutebutton.destroy();
-        mutebutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 - 120, 'muteoffbutton');
-        mutebutton.scale.setTo(0.6,0.6);
-        mutebutton.anchor.setTo(0.5,1);
+        mutebutton = game.add.sprite(menu.x,menu.y+40, 'muteoffbutton');
+        mutebutton.scale.setTo(0.5);
+        mutebutton.anchor.setTo(0.5);
         mutebutton.inputEnabled = true;
         mutebutton.input.useHandCursor = true;
+        mutebutton.events.onInputOver.add(buttonHoverSmall,this);
+        mutebutton.events.onInputOut.add(buttonHoverOutSmall,this);
         mutebutton.events.onInputUp.add(function(){
           onMuteButton();
         });
@@ -253,22 +263,26 @@ function create() {
           });
       soundText.anchor.setTo(0.5,1);
 
-      homebutton = game.add.sprite(game.width/2 - playbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
-      homebutton.scale.setTo(0.4,0.4);
-      homebutton.anchor.setTo(0.5,1);
+      homebutton = game.add.sprite(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton');
+      homebutton.scale.setTo(0.5);
+      homebutton.anchor.setTo(0.5);
       homebutton.inputEnabled = true;
       homebutton.input.useHandCursor = true;
+      homebutton.events.onInputOver.add(buttonHoverSmall,this);
+      homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
       homebutton.events.onInputUp.add(function(){
         levelscore = 0;
         music.stop();
         game.state.start('loading');
       });
 
-      restartbutton = game.add.sprite(game.width/2 + playbutton.width + 40,menu.height/2 + game.height/2 + 20,'restartbutton');
-      restartbutton.scale.setTo(0.4, 0.4);
-      restartbutton.anchor.setTo(0.5,1);
+      restartbutton = game.add.sprite(menu.x+menu.height/3,menu.y + menu.height/2,'restartbutton');
+      restartbutton.scale.setTo(0.5);
+      restartbutton.anchor.setTo(0.5);
       restartbutton.inputEnabled = true;
       restartbutton.input.useHandCursor = true;
+      restartbutton.events.onInputOver.add(buttonHoverSmall,this);
+      restartbutton.events.onInputOut.add(buttonHoverOutSmall,this);
       restartbutton.events.onInputUp.add(function(){
         levelscore = 0;
         music.stop();
@@ -333,17 +347,17 @@ function create() {
           menutext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
           menutext.anchor.setTo(0.5,1);
 
-          playbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 30,'playbutton');
-          playbutton.scale.setTo(0.45,0.45);
-          playbutton.anchor.setTo(0.5,1);
+          playbutton = game.add.sprite(menu.x,menu.y + menu.height/2 ,'playbutton');
+          playbutton.scale.setTo(0.5);
+          playbutton.anchor.setTo(0.5);
           playbutton.inputEnabled = true;
           playbutton.input.useHandCursor = true;
           playbutton.events.onInputUp.add(function(){
             unpause();
           });
 
-          playbutton.events.onInputOver.add(buttonHover,this);
-          playbutton.events.onInputOut.add(buttonHoverOut,this);
+          playbutton.events.onInputOver.add(buttonHoverSmall,this);
+          playbutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
           pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
           pausescore.anchor.setTo(0.5,0.5);
@@ -389,6 +403,14 @@ function buttonHover(button){
 
 function buttonHoverOut(button){
   button.scale.setTo(1);
+}
+
+function buttonHoverSmall(button){
+  button.scale.setTo(0.6);
+}
+
+function buttonHoverOutSmall(button){
+  button.scale.setTo(0.5);
 }
 
 function set(player,pointer) {
@@ -474,14 +496,17 @@ function gameWon(){
   menutext = game.add.text(game.width/2, 115, `VICTORY`, textstyleCenter);
   menutext.anchor.setTo(0.5,1);
 
-  let nextlevel =  game.add.sprite(game.width/2 ,menu.height/2 + game.height/2 + 20,'playbutton');
-  nextlevel.scale.setTo(0.4,0.4);
-  nextlevel.anchor.setTo(0.5,1);
+  let nextlevel =  game.add.sprite(menu.x,menu.y + menu.height/2,'playbutton');
+  nextlevel.scale.setTo(0.5);
+  nextlevel.anchor.setTo(0.5);
   nextlevel.inputEnabled = true;
   nextlevel.input.useHandCursor = true;
 
-  let restartbutton = game.add.sprite(game.width/2 + nextlevel.width + 40,menu.height/2 + game.height/2 + 20,'restartbutton');
-  restartbutton.scale.setTo(0.41);
+  nextlevel.events.onInputOver.add(buttonHoverSmall,this);
+  nextlevel.events.onInputOut.add(buttonHoverOutSmall,this);
+
+  let restartbutton = game.add.sprite(menu.x+menu.width/3,menu.y + menu.height/2,'restartbutton');
+  restartbutton.scale.setTo(0.5);
   restartbutton.anchor.setTo(0.5);
   restartbutton.inputEnabled = true;
   restartbutton.input.useHandCursor = true;
@@ -495,8 +520,8 @@ function gameWon(){
   restartbutton.events.onInputOver.add(buttonHover,this);
   restartbutton.events.onInputOut.add(buttonHoverOut,this);
 
-  let homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
-  homebutton.scale.setTo(0.4);
+  let homebutton = game.add.sprite(menu.x-menu.width/3,menu.y + menu.height/2,'homebutton');
+  homebutton.scale.setTo(0.5);
   homebutton.anchor.setTo(0.5);
   homebutton.inputEnabled = true;
   homebutton.input.useHandCursor = true;
@@ -507,8 +532,8 @@ function gameWon(){
     game.state.start('loading');
   });
 
-  homebutton.events.onInputOver.add(buttonHover,this);
-  homebutton.events.onInputOut.add(buttonHoverOut,this);
+  homebutton.events.onInputOver.add(buttonHoverSmall,this);
+  homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
 
   let pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
@@ -544,8 +569,8 @@ function gameOver() {
   menutext = game.add.text(game.width/2, 100, `GAME OVER`, textstyleCenter);
   menutext.anchor.setTo(0.5);
 
-  let restartbutton = game.add.sprite(game.width/2,menu.height/2 + game.height/2 + 20,'restartbutton');
-  restartbutton.scale.setTo(0.45);
+  let restartbutton = game.add.sprite(menu.x+menu.height/3,menu.y + menu.height/2,'restartbutton');
+  restartbutton.scale.setTo(0.5);
   restartbutton.anchor.setTo(0.5);
   restartbutton.inputEnabled = true;
   restartbutton.input.useHandCursor = true;
@@ -555,9 +580,13 @@ function gameOver() {
     music.stop();
     game.state.start('level1');
   });
+  restartbutton.events.onInputOver.add(buttonHoverSmall,this);
+  restartbutton.events.onInputOut.add(buttonHoverOutSmall,this);
+
+
   let gameoverscore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
-  gameoverscore.anchor.setTo(0.5,0.5);
-  gameoverscore.scale.setTo(1.2,1.2);
+  gameoverscore.anchor.setTo(0.5);
+  gameoverscore.scale.setTo(1.2);
 
   let scoregameover = game.add.text(0,0,levelscore.toString(), textstyleRight);
   scoregameover.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
@@ -565,21 +594,20 @@ function gameOver() {
   let leveltextpause = game.add.text(0, 0, 'aww ;-; you ran out of shots', textstyleCenter);
   leveltextpause.setTextBounds(game.width/2-200, game.height/2-50, 150, 10);
 
-  /*let homebutton;
+  let homebutton;
   homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
   homebutton.scale.setTo(0.4);
   homebutton.anchor.setTo(0.5);
   homebutton.inputEnabled = true;
   homebutton.input.useHandCursor = true;
-  homebutton.events.onInputOver.add(buttonHover,this);
-  homebutton.events.onInputOut.add(buttonHoverOut,this);
+  homebutton.events.onInputOver.add(buttonHoverSmall,this);
+  homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
   homebutton.events.onInputUp.add(function(){
     gameLost = false;
     levelscore = 0;
     music.stop();
     game.state.start('loading');
   });
-*/
   let highscorebutton = game.add.sprite(game.width/2 + restartbutton.width + 40,menu.height/2 + game.height/2 + 20,'highscorebutton');
   highscorebutton.scale.setTo(0.4);
   highscorebutton.anchor.setTo(0.5);
@@ -621,14 +649,16 @@ function gameWon(){
   menutext = game.add.text(game.width/2, 115, `VICTORY`, textstyleCenter);
   menutext.anchor.setTo(0.5,1);
 
-  let nextlevel =  game.add.sprite(game.width/2 ,menu.height/2 + game.height/2 + 20,'playbutton');
-  nextlevel.scale.setTo(0.4,0.4);
-  nextlevel.anchor.setTo(0.5,1);
+  let nextlevel =  game.add.sprite(menu.x,menu.y+menu.height/2,'playbutton');
+  nextlevel.scale.setTo(0.5);
+  nextlevel.anchor.setTo(0.5);
   nextlevel.inputEnabled = true;
   nextlevel.input.useHandCursor = true;
+  nextlevel.events.onInputOver.add(buttonHoverSmall,this);
+  nextlevel.events.onInputOut.add(buttonHoverOutSmall,this);
 
-  let restartbutton = game.add.sprite(game.width/2 + nextlevel.width + 40,menu.height/2 + game.height/2 + 20,'restartbutton');
-  restartbutton.scale.setTo(0.41);
+  let restartbutton = game.add.sprite(menu.x+menu.height/3,menu.y + menu.height/2,'restartbutton');
+  restartbutton.scale.setTo(0.5);
   restartbutton.anchor.setTo(0.5);
   restartbutton.inputEnabled = true;
   restartbutton.input.useHandCursor = true;
@@ -638,9 +668,11 @@ function gameWon(){
     music.stop();
     game.state.start('level1');
   });
+  restartbutton.events.onInputOver.add(buttonHoverSmall,this);
+  restartbutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
-  let homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
-  homebutton.scale.setTo(0.4);
+  let homebutton = game.add.sprite(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton');
+  homebutton.scale.setTo(0.5);
   homebutton.anchor.setTo(0.5);
   homebutton.inputEnabled = true;
   homebutton.input.useHandCursor = true;
@@ -650,6 +682,8 @@ function gameWon(){
     music.stop();
     game.state.start('loading');
   });
+  homebutton.events.onInputOver.add(buttonHoverSmall,this);
+  homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
   let pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
   pausescore.anchor.setTo(0.5,0.5);
