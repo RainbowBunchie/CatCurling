@@ -565,7 +565,7 @@ function gameOver() {
   let leveltextpause = game.add.text(0, 0, 'aww ;-; you ran out of shots', textstyleCenter);
   leveltextpause.setTextBounds(game.width/2-200, game.height/2-50, 150, 10);
 
-  let homebutton;
+  /*let homebutton;
   homebutton = game.add.sprite(game.width/2 - restartbutton.width - 40,menu.height/2 + game.height/2 + 20,'homebutton');
   homebutton.scale.setTo(0.4);
   homebutton.anchor.setTo(0.5);
@@ -579,7 +579,7 @@ function gameOver() {
     music.stop();
     game.state.start('loading');
   });
-
+*/
   let highscorebutton = game.add.sprite(game.width/2 + restartbutton.width + 40,menu.height/2 + game.height/2 + 20,'highscorebutton');
   highscorebutton.scale.setTo(0.4);
   highscorebutton.anchor.setTo(0.5);
@@ -589,8 +589,6 @@ function gameOver() {
     game.state.start('loading');
   });
 }
-
-
 
 let gameIsWon = false;
 let inGoal = false;
