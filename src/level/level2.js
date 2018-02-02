@@ -55,10 +55,35 @@ function create() {
 
 	game.stage.backgroundColor = '#f5cf99';
 
-	let couchBlue = furnitureTpl(game,'couchblue',0,game.height,0.8,0.8);
+	let couchBlue = furnitureTpl(game,'couchblue',0,game.height,0.78,0.78);
   furniture.add(couchBlue);
 
-  let catfurniture = furnitureTpl(game, 'catfurniture', game.width, game.height, 0.6, 0.6);
+  let catfurniture = furnitureTpl(game, 'catfurniture', game.width-60, game.height, 0.6, 0.6);
+  furniture.add(catfurniture);
+
+  let couchtable = furnitureTpl(game,'couchtable-glass',couchBlue.width + 40 ,couchBlue.y - 320 + 30,0.7,0.7);
+  furniture.add(couchtable);
+
+  let smalltable = furnitureTpl(game,'small-table', 600, 0, 0.7, 0.7);
+  furniture.add (smalltable);
+
+  let chairs = furnitureTpl(game, 'table-chair', 550, game.height-230, 0.45, 0.45);
+  furniture.add(chairs);
+
+  let chairs2 = furnitureTpl(game, 'table-chair', 750, game.height-133, 0.45, 0.45);
+  chairs2.anchor.setTo(0.5);
+  chairs2.angle = 180;
+  furniture.add(chairs2);
+
+  let table = furnitureTpl(game, 'table-2', 600, game.height, 0.45, 0.45);
+  furniture.add(table);
+
+  let plant = furnitureTpl(game,'plant',table.x + 25 , 230, 0.45,0.45);
+  furniture.add(plant);
+
+  let stool = furnitureTpl(game, 'stool', 210, 180, 0.65, 0.65);
+  stool.rotation = 0.2;
+  furniture.add(stool);
 
   /*let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
   furniture.add(tvTable);
@@ -82,16 +107,17 @@ function create() {
   furniture.add(coffeetable);*/
 
   // GOAL
-  goal = getGoal(80,300);
+  goal = getGoal(450,500);
 
   //DUSTS
 
   dusts = game.add.group();
   dusts.enableBody = true;
 
-  addDust(650, 250, dusts);
-  addDust(250, 450, dusts);
-  addDust(480, 180, dusts);
+  addDust(40, 80, dusts);
+  addDust(450, 150, dusts);
+  addDust(150, 65, dusts);
+  addDust(780, 180, dusts);
 
   // GAME CHARACTERS:
 

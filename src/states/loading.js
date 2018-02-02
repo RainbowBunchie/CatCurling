@@ -45,6 +45,11 @@ function preload(){
   game.load.image('highscore', 'assets/img/highscore.png');
   game.load.image('catfurniture', 'assets/img/furniture/kitty.png');
   game.load.image('couchblue', 'assets/img/furniture/couch-blue.png');
+  game.load.image('couchtable-glass','assets/img/furniture/coffee-table-2.png');
+  game.load.image('small-table','assets/img/furniture/small-table.png');
+  game.load.image('table-2', 'assets/img/furniture/table-2.png');
+  game.load.image('table-chair', 'assets/img/furniture/chairs-table-2.png');
+  game.load.image('stool', 'assets/img/furniture/stool.png');
 
 
   game.add.plugin(Fabrique.Plugins.InputField);
