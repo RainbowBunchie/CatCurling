@@ -40,7 +40,7 @@ function create() {
   //MUSIC
 
   music = game.add.audio('background-music');
-  music.volume = 2;
+  music.volume = 0.5;
   collect = game.add.audio('collect');
   bump = game.add.audio('bump');
   music.play();
@@ -178,16 +178,16 @@ function create() {
       raisebutton.input.useHandCursor = true;
       raisebutton.events.onInputUp.add(function(){
         music.pause();
-        music.volume += 1;
+        music.volume += 1/10;
         music.resume();
         console.log("raise: " + music.volume);
-        if(music.volume > 10)
-          music.volume = 10;
+        if(music.volume > 1)
+          music.volume = 1;
         if(music.volume == 1){
           soundValue = music.volume;
           onDeMuteButton();
         }
-        soundText.setText(`${~~music.volume}`);
+        soundText.setText(`${Math.round(music.volume*10)}`);
       });
       raisebutton.events.onInputOver.add(buttonHoverSmall,this);
       raisebutton.events.onInputOut.add(buttonHoverOutSmall,this);
@@ -199,13 +199,13 @@ function create() {
       lowerbutton.input.useHandCursor = true;
       lowerbutton.events.onInputUp.add(function(){
         music.pause();
-        music.volume -= 1;
+        music.volume -= 1/10;
         music.resume();
         if(music.volume < 0)
           music.volume = 0;
         if(music.volume <= 0)
           onMuteButton();
-        soundText.setText(`${~~music.volume}`);
+        soundText.setText(`${Math.round(music.volume*10)}`);
       });
       lowerbutton.events.onInputOver.add(buttonHoverSmall,this);
       lowerbutton.events.onInputOut.add(buttonHoverOutSmall,this);
@@ -237,7 +237,7 @@ function create() {
           });
         }
         music.volume = 0;
-        soundText.setText(`${~~music.volume}`);
+        soundText.setText(`${Math.round(music.volume*10)}`);
       }
 
       function onDeMuteButton(){
@@ -253,7 +253,7 @@ function create() {
           onMuteButton();
         });
         music.volume = soundValue;
-        soundText.setText(`${~~music.volume}`);
+        soundText.setText(`${Math.round(music.volume*10)}`);
       }
 
       soundText = game.add.text(game.width/2, menu.height/2 + game.height/2 - 250, `${~~music.volume}`, {
@@ -263,6 +263,7 @@ function create() {
           boundsAlignV: "center"
           });
       soundText.anchor.setTo(0.5,1);
+      soundText.setText(`${Math.round(music.volume*10)}`);
 
       homebutton = game.add.sprite(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton');
       homebutton.scale.setTo(0.5);
