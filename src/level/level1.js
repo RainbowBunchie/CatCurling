@@ -454,10 +454,8 @@ function gameOver() {
 
   let highscorebutton = getButton(menu.x+menu.width/2,menu.y,'highscorebutton', 0.5, 0.5, 1);
   highscorebutton.events.onInputUp.add(function(){
-    //game.state.states['highscore'].endscore = levelscore;
     game.state.start('score');
   });
-
 
   let gameoverscore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
   gameoverscore.anchor.setTo(0.5);
@@ -473,6 +471,7 @@ function gameOver() {
   homebutton = getButton(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton', 0.5, 0.5, 1);
   homebutton.events.onInputUp.add(function(){
     gameLost = false;
+    gameoverhelper = false;
     levelscore = 0;
     music.stop();
     game.state.start('loading');
@@ -535,6 +534,7 @@ function gameWon(){
     gameIsWon = false;
     levelscore = 0;
     music.stop();
+    gameIsWon = false;
     game.state.start('loading');
   });
 
