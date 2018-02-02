@@ -38,7 +38,7 @@ let sounds = [];
 let totalscore = game.global.score1+game.global.score2+game.global.score3+game.global.score4+game.global.score5;
 
 function create() {
-  shots =4;
+  shots = 3;
   //MUSIC
   music = game.add.audio('background-music');
   music.volume = 0.5;
@@ -56,30 +56,38 @@ function create() {
 
   game.stage.backgroundColor = '#f5cf99';
 
-  let bed = furnitureTpl(game,'bed',0,game.height,0.78,0.78);
+  let bed = furnitureTpl(game,'bed',150,0,0.78,0.78);
   furniture.add(bed);
 
-  let catfurniture = furnitureTpl(game, 'catfurniture', game.width-60, game.height, 0.6, 0.6);
-  furniture.add(catfurniture);
+  let smalltable1 = furnitureTpl(game,'small-table', 65, 0, 0.5, 0.5);
+  furniture.add (smalltable1);
 
-  let smalltable = furnitureTpl(game,'small-table', 600, 0, 0.7, 0.7);
-  furniture.add (smalltable);
+  let smalltable2 = furnitureTpl(game,'small-table', 377, 0, 0.5, 0.5);
+  furniture.add (smalltable2);
 
-  let chairs = furnitureTpl(game, 'table-chair', 550, game.height-230, 0.45, 0.45);
-  furniture.add(chairs);
+  let desk = furnitureTpl(game, 'desk', game.width, game.height-230, 0.45, 0.45);
+  furniture.add(desk);
 
-  let chairs2 = furnitureTpl(game, 'table-chair', 750, game.height-133, 0.45, 0.45);
-  chairs2.anchor.setTo(0.5);
-  chairs2.angle = 180;
-  furniture.add(chairs2);
+  let deskChair = furnitureTpl(game, 'deskchair', game.width-160, game.height-180, 0.45, 0.45);
+  furniture.add(deskChair);
 
-  let table = furnitureTpl(game, 'table-2', 600, game.height, 0.45, 0.45);
+  let tvTable = furnitureTpl(game, 'tv-table', 40, game.height, 0.45, 0.45);
+  furniture.add(tvTable);
+
+  let table = furnitureTpl(game, 'table-2', 600, 0, 0.45, 0.45);
   furniture.add(table);
 
-  let plant = furnitureTpl(game,'plant',table.x + 25 , 230, 0.45,0.45);
+  let chairsTable = furnitureTpl(game, 'chairs', 800, 150, 0.45, 0.45);
+  chairsTable.anchor.setTo(0.5);
+  chairsTable.angle = 180;
+  furniture.add(chairsTable);
+
+  let plant = furnitureTpl(game,'plant',table.x + 25 , 280, 0.45,0.45);
   furniture.add(plant);
 
-  let stool = furnitureTpl(game, 'stool', 210, 180, 0.65, 0.65);
+  let chairs
+
+  let stool = furnitureTpl(game, 'stool', 260, 300, 0.65, 0.65);
   stool.rotation = 0.2;
   furniture.add(stool);
 
@@ -105,7 +113,7 @@ function create() {
   furniture.add(coffeetable);*/
 
   // GOAL
-  goal = getGoal(450,500);
+  goal = getGoal(80, 150);
 
   //DUSTS
 
@@ -113,9 +121,9 @@ function create() {
   dusts.enableBody = true;
 
   addDust(40, 80, dusts);
-  addDust(450, 150, dusts);
-  addDust(150, 65, dusts);
-  addDust(780, 180, dusts);
+  addDust(450, 120, dusts);
+  addDust(game.width-50, 300, dusts);
+  addDust(300, game.height-150, dusts);
 
   // GAME CHARACTERS:
 
