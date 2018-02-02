@@ -54,7 +54,6 @@ function create() {
 	let couchLong = furnitureTpl(game,'couch-long',0,0,0.35,0.35);
   furniture.add(couchLong);
 
-
   // GOAL
   goal = getGoal(500,100);
 
