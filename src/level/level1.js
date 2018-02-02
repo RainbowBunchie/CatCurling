@@ -430,7 +430,7 @@ function gameOver() {
   let highscorebutton = getButton(menu.x+menu.width/2,menu.y,'highscorebutton', 0.5, 0.5, 1);
   highscorebutton.events.onInputUp.add(function(){
     //game.state.states['highscore'].endscore = levelscore;
-    game.state.start('highscore');
+    game.state.start('score');
   });
 
 
@@ -481,7 +481,7 @@ function collisionHandler (obj1, obj2) {
 function gameWon(){
   game.global.score1=levelscore;
   game.global.unlock1 = true;
-  
+
   gameIsWon=true;
   let transparent = game.add.sprite(0,0, 'transparent');
 
