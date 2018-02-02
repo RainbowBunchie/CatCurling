@@ -449,7 +449,7 @@ function create() {
   gameoverscore.anchor.setTo(0.5);
   gameoverscore.scale.setTo(1.2);
 
-  let scoregameover = game.add.text(0,0,game.global.score1 + game.global.score2, textstyleRight);
+  let scoregameover = game.add.text(0,0,game.global.score1 + game.global.score2 + game.global.score3 + + game.global.score4 + game.global.score5, textstyleRight);
   scoregameover.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
   let leveltextpause = game.add.text(0, 0, 'aww ;-; you ran out of shots', textstyleCenter);
@@ -534,7 +534,7 @@ function create() {
   pausescore.anchor.setTo(0.5,0.5);
   pausescore.scale.setTo(1.2,1.2);
 
-  let scorepause = game.add.text(0,0,game.global.score1 + game.global.score2, textstyleRight);
+  let scorepause = game.add.text(0,0,game.global.score1 + game.global.score2 + game.global.score3 + + game.global.score4 + game.global.score5, textstyleRight);
   scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
   let leveltextpause = game.add.text(0, 0, 'Level ' + level, {
