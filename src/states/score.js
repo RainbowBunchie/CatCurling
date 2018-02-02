@@ -31,8 +31,8 @@ function create(){
   back.inputEnabled=true;
 
   back.events.onInputUp.add(buttonClick);
-  back.events.onInputOver.add(buttonHover,this);
-  back.events.onInputOut.add(buttonHoverOut,this);
+  back.events.onInputOver.add(buttonHover2);
+  back.events.onInputOut.add(buttonHoverOut2);
 
   let h1 = game.add.text(middleX, middleY-game.height/4, 'Here are your scores!', textstyleCenter);
   h1.anchor.setTo(0.5);
@@ -128,6 +128,14 @@ function buttonHover(){
 
 function buttonHoverOut(){
   submit.scale.setTo(0.4);
+}
+
+function buttonHover2(){
+  back.scale.setTo(0.6);
+}
+
+function buttonHoverOut2(){
+  back.scale.setTo(0.5);
 }
 
 function update(){

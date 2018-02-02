@@ -8,7 +8,7 @@ import furnitureTpl from '../module-assets/furniture';
 import {getGoal, getPlayer, getAnalog, getArrow, updateShots, displayShots, calcOverlap, getLevelDisplay, getShotsDisplay, addDust, checkIfPaused, getButton} from '../module-assets/functions';
 import pkg from '../../package.json';
 
-let level = 2;
+let level = 3;
 let shots;
 let goal;
 let player;
@@ -274,7 +274,7 @@ function create() {
       restartbutton.events.onInputUp.add(function(){
         levelscore = 0;
         music.stop();
-        game.state.start('level2');
+        game.state.start('level3');
       });
     }
 
@@ -478,7 +478,7 @@ function create() {
     levelscore = 0;
     music.stop();
     gameoverhelper = false;
-    game.state.start('level2');
+    game.state.start('level3');
   });
 
   let highscorebutton = getButton(menu.x+menu.width/2,menu.y,'highscorebutton', 0.5, 0.5, 1);
@@ -490,7 +490,7 @@ function create() {
   gameoverscore.anchor.setTo(0.5);
   gameoverscore.scale.setTo(1.2);
 
-  let scoregameover = game.add.text(0,0,game.global.score1 + game.global.score2, textstyleRight);
+  let scoregameover = game.add.text(0,0,game.global.score1 + game.global.score2 + game.global.score3, textstyleRight);
   scoregameover.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
   let leveltextpause = game.add.text(0, 0, 'aww ;-; you ran out of shots', textstyleCenter);
@@ -532,8 +532,8 @@ function create() {
 
 
   function gameWon(){
-  game.global.score2=levelscore;
-  game.global.unlock1 = true;
+  game.global.score3=levelscore;
+  game.global.unlock3 = true;
 
   gameIsWon=true;
   let transparent = game.add.sprite(0,0, 'transparent');
@@ -551,7 +551,7 @@ function create() {
   let nextlevel = getButton(menu.x,menu.y + menu.height/2,'playbutton', 0.5, 0.5, 1);
   nextlevel.events.onInputUp.add(function(){
     stopMusic();
-    game.state.start('level3');
+    game.state.start('level4');
   });
 
   let restartbutton = getButton(menu.x+menu.width/3,menu.y + menu.height/2,'restartbutton', 0.5, 0.5, 1);
@@ -559,7 +559,7 @@ function create() {
     gameIsWon = false;
     levelscore = 0;
     stopMusic();
-    game.state.start('level2');
+    game.state.start('level3');
   });
 
   let homebutton = getButton(menu.x-menu.width/3,menu.y + menu.height/2,'homebutton', 0.5, 0.5, 1);
@@ -575,7 +575,7 @@ function create() {
   pausescore.anchor.setTo(0.5,0.5);
   pausescore.scale.setTo(1.2,1.2);
 
-  let scorepause = game.add.text(0,0,game.global.score1 + game.global.score2, textstyleRight);
+  let scorepause = game.add.text(0,0,game.global.score1 + game.global.score2 + game.global.score3, textstyleRight);
   scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
   let leveltextpause = game.add.text(0, 0, 'Level ' + level, {
