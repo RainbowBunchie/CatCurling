@@ -38,55 +38,60 @@ function create(){
 
   //---------------LEVEL-----------------------------------
 
-  if(game.global.unlock1==true) {
+
     level1=game.add.text(100, middleY-50, 'Level 1 ', textstyleRight);
     level1.anchor.setTo(0.5);
 
     score1= game.add.sprite(90, middleY,'scoreholder');
     score1.anchor.setTo(0.5);
-
-    let scoreText1 = game.add.text(110, middleY, game.global.score1, textstyleRight);
+    let scoreText1 = game.add.text(110, middleY, '-', textstyleRight);
     scoreText1.anchor.setTo(0.5);
+
+if(game.global.unlock1==true) {
+    scoreText1.setText(game.global.score1);
   }
 
-  if(game.global.unlock2==true) {
     level2=game.add.text(320, middleY-50, 'Level 2 ', textstyleRight);
     level2.anchor.setTo(0.5);
     score2= game.add.sprite(310, middleY,'scoreholder');
     score2.anchor.setTo(0.5);
-
-    let scoreText2 = game.add.text(330, middleY, game.global.score2, textstyleRight);
+    let scoreText2 = game.add.text(330, middleY, '-', textstyleRight);
     scoreText2.anchor.setTo(0.5);
+
+  if(game.global.unlock2==true) {
+    scoreText2.setText(game.global.score2);
   }
 
-  if(game.global.unlock3==true) {
+
     level3=game.add.text(middleX, middleY-50, 'Level 3 ', textstyleRight);
     level3.anchor.setTo(0.5);
     score3= game.add.sprite(middleX-10, middleY,'scoreholder');
     score3.anchor.setTo(0.5);
-
-    let scoreText3 = game.add.text(middleX+10, middleY, game.global.score3, textstyleRight);
+    let scoreText3 = game.add.text(middleX+10, middleY,'-', textstyleRight);
     scoreText3.anchor.setTo(0.5);
+  if(game.global.unlock3==true) {
+    scoreText3.setText(game.global.score3);
   }
 
-  if(game.global.unlock4==true) {
+
     level4=game.add.text(780, middleY-50, 'Level 4 ', textstyleRight);
     level4.anchor.setTo(0.5);
     score4= game.add.sprite(770, middleY,'scoreholder');
     score4.anchor.setTo(0.5);
-
-    let scoreText4 = game.add.text(790, middleY, game.global.score4, textstyleRight);
+    let scoreText4 = game.add.text(790, middleY, '-', textstyleRight);
     scoreText4.anchor.setTo(0.5);
+  if(game.global.unlock4==true) {
+    scoreText4.setText(game.global.score4);
   }
 
-  if(game.global.unlock5==true) {
     level5=game.add.text(game.width-100, middleY-50, 'Level 5 ', textstyleRight);
     level5.anchor.setTo(0.5);
     score5= game.add.sprite(game.width-90, middleY,'scoreholder');
     score5.anchor.setTo(0.5);
-
-    let scoreText5 = game.add.text(game.width-70, middleY, game.global.score5, textstyleRight);
+    let scoreText5 = game.add.text(game.width-70, middleY, '-', textstyleRight);
     scoreText5.anchor.setTo(0.5);
+    if(game.global.unlock5==true) {
+    scoreText5.setText(game.global.score5);
   }
 
 
