@@ -1,0 +1,9 @@
+pages:
+	script
+	- gem install jekyll
+	- jekyll build -s 'public' -d public
+	artifacts:
+		paths
+		- public
+	only:
+	- master
