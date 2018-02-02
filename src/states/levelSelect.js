@@ -92,7 +92,7 @@ if(game.global.unlock3==true) {
   three.events.onInputOut.add(buttonHoverOut,this);
 }
 
-if(game.global.unlock4==false) {
+if(game.global.unlock4==true) {
   four.destroy();
   four = game.add.sprite(775, middleY, 'Level4');
   four.scale.setTo(0.5);

@@ -85,14 +85,29 @@ function create() {
   chair.anchor.setTo(0.5);
   furniture.add(chair);
 
-  let table2 = furnitureTpl(game,'table2',600,500,0.4,0.4);
+  let chairs2 = furnitureTpl(game,'chairs2',600,500,0.35,0.35);
+  chairs2.anchor.setTo(0.5);
+  furniture.add(chairs2);
+
+  let chairs3 = furnitureTpl(game,'chairs2',700,500,0.35,0.35);
+  chairs3.anchor.setTo(0.5);
+  chairs3.angle=180;
+  furniture.add(chairs3);
+
+  let table2 = furnitureTpl(game,'table2',650,500,0.35,0.35);
   table2.anchor.setTo(0.5);
   furniture.add(table2);
 
-  let chairs2 = furnitureTpl(game,'chairs2',550,500,0.4,0.4);
-  chairs2.anchor.setTo(0.5);
-  furniture.add(chairs2);
+  let kitchen2 = furnitureTpl(game,'kitchen2',780,0,0.8,0.8);
+  kitchen2.anchor.setTo(0.5);
+  furniture.add(kitchen2);
   // GOAL
+
+  let kitchen = furnitureTpl(game,'kitchen1',600,0,0.55,0.55);
+  kitchen.anchor.setTo(0.5);
+  furniture.add(kitchen);
+
+
   goal = getGoal(160,460);
 
   //DUSTS
@@ -100,9 +115,10 @@ function create() {
   dusts = game.add.group();
   dusts.enableBody = true;
 
-  addDust(650, 250, dusts);
-  addDust(250, 450, dusts);
-  addDust(480, 180, dusts);
+  addDust(700, 150, dusts);
+  addDust(800, 450, dusts);
+  addDust(350, 40, dusts);
+  addDust(400, 550, dusts);
 
   // GAME CHARACTERS:
 
@@ -253,7 +269,7 @@ function create() {
       restartbutton.events.onInputUp.add(function(){
         levelscore = 0;
         music.stop();
-        game.state.start('level1');
+        game.state.start('level4');
       });
     }
 
@@ -457,7 +473,7 @@ function gameOver() {
     levelscore = 0;
     music.stop();
     gameoverhelper = false;
-    game.state.start('level1');
+    game.state.start('level4');
   });
 
   let highscorebutton = getButton(menu.x+menu.width/2,menu.y,'highscorebutton', 0.5, 0.5, 1);
@@ -512,8 +528,8 @@ function collisionHandler (obj1, obj2) {
 
 
 function gameWon(){
-  game.global.score1=levelscore;
-  game.global.unlock1 = true;
+  game.global.score4=levelscore;
+  game.global.unlock4 = true;
 
   gameIsWon=true;
   let transparent = game.add.sprite(0,0, 'transparent');
@@ -527,7 +543,7 @@ function gameWon(){
 
   let nextlevel = getButton(menu.x,menu.y + menu.height/2,'playbutton', 0.5, 0.5, 1);
   nextlevel.events.onInputUp.add(function(){
-    game.state.start('level2');
+    game.state.start('level5');
   });
 
   let restartbutton = getButton(menu.x+menu.width/3,menu.y + menu.height/2,'restartbutton', 0.5, 0.5, 1);
@@ -535,7 +551,7 @@ function gameWon(){
     gameIsWon = false;
     levelscore = 0;
     music.stop();
-    game.state.start('level1');
+    game.state.start('level4');
   });
 
   let homebutton = getButton(menu.x-menu.width/3,menu.y + menu.height/2,'homebutton', 0.5, 0.5, 1);
