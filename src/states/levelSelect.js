@@ -116,7 +116,7 @@ if(game.global.unlock5==true) {
   });
   five.events.onInputOver.add(buttonHover,this);
   five.events.onInputOut.add(buttonHoverOut,this);
-//}
+}
 //_________________________LEVEL__________________
 
 }

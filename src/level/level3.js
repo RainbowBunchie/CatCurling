@@ -74,7 +74,7 @@ function create() {
   let tvTable = furnitureTpl(game, 'tv-table', 40, game.height, 0.45, 0.45);
   furniture.add(tvTable);
 
-  let table = furnitureTpl(game, 'table-2', 600, 0, 0.45, 0.45);
+  let table = furnitureTpl(game, 'table2', 600, 0, 0.45, 0.45);
   furniture.add(table);
 
   let chairsTable = furnitureTpl(game, 'chairs', 800, 150, 0.45, 0.45);
