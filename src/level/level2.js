@@ -8,7 +8,7 @@ import furnitureTpl from '../module-assets/furniture';
 import {getGoal, getPlayer, getAnalog, getArrow, updateShots, displayShots, calcOverlap, getLevelDisplay, getShotsDisplay, addDust, checkIfPaused} from '../module-assets/functions';
 import pkg from '../../package.json';
 
-let level = 1;
+let level = 2;
 let shots;
 let goal;
 let player;
@@ -35,7 +35,7 @@ let paused = false;
 let gameoverhelper;
 
 function create() {
-  shots =3;
+  shots =5;
 
   //MUSIC
 
@@ -79,7 +79,7 @@ function create() {
   furniture.add(coffeetable);
 
   // GOAL
-  goal = getGoal(80,300);
+  goal = getGoal(500,100);
 
   //DUSTS
 
@@ -96,7 +96,7 @@ function create() {
   arrow = getArrow(player);
 
   // PLAYER
-  player = getPlayer(850, 550, set, launch);
+  player = getPlayer(50, 550, set, launch);
 
 
     // GUI ELEMENTS
@@ -599,10 +599,6 @@ function gameWon(){
 
   nextlevel.events.onInputOver.add(buttonHoverSmall,this);
   nextlevel.events.onInputOut.add(buttonHoverOutSmall,this);
-
-  nextlevel.events.onInputUp.add(function(){
-    game.state.start('level2');
-  });
 
   let restartbutton = game.add.sprite(menu.x+menu.width/3,menu.y + menu.height/2,'restartbutton');
   restartbutton.scale.setTo(0.5);

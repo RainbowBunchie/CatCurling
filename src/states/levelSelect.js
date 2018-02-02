@@ -4,6 +4,8 @@ import game from '../game';
 let back;
 let next;
 let bg;
+let one;
+let two;
 
 function create(){
   let middleX = game.width/2;
@@ -22,7 +24,39 @@ function create(){
   back.events.onInputOver.add(buttonHover,this);
   back.events.onInputOut.add(buttonHoverOut,this);
 
+  one = game.add.sprite(middleX, middleY, 'back');
+  one.anchor.setTo(0.5);
+  one.scale.setTo(0.5);
+
+  one.inputEnabled=true;
+
+  one.events.onInputUp.add(function(){
+    selected(1);
+  });
+  one.events.onInputOver.add(buttonHover,this);
+  one.events.onInputOut.add(buttonHoverOut,this);
+
+
+
+two = game.add.sprite(middleX, middleY+100, 'back');
+two.anchor.setTo(0.5);
+two.scale.setTo(0.5);
+
+two.inputEnabled=true;
+
+two.events.onInputUp.add(function(){
+  selected(2);
+});
+two.events.onInputOver.add(buttonHover,this);
+two.events.onInputOut.add(buttonHoverOut,this);
+
 }
+
+ function selected(level){
+   let s ='level'+level+'';
+   console.log(s);
+    game.state.start(s);
+  }
 
 function buttonClick(){
   game.state.start('menu');
