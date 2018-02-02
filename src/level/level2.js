@@ -44,7 +44,7 @@ function create() {
   music.volume = 0.5;
   collect = game.add.audio('collect');
   bump = game.add.audio('bump');
-  music.play();
+  music.start();
   meow1 = game.add.audio('meow1');
   meow2 = game.add.audio('meow2');
   meow3 = game.add.audio('meow3');

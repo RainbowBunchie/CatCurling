@@ -509,6 +509,9 @@ function gameWon(){
 
   gameIsWon=true;
   let transparent = game.add.sprite(0,0, 'transparent');
+  function stopMusic(){
+    music.stop();
+  }
 
   menu = game.add.sprite(game.width/2,game.height/2,'menu');
   menu.scale.setTo(0.9,0.9);
@@ -519,6 +522,7 @@ function gameWon(){
 
   let nextlevel = getButton(menu.x,menu.y + menu.height/2,'playbutton', 0.5, 0.5, 1);
   nextlevel.events.onInputUp.add(function(){
+    stopMusic();
     game.state.start('level2');
   });
 
@@ -526,7 +530,7 @@ function gameWon(){
   restartbutton.events.onInputUp.add(function(){
     gameIsWon = false;
     levelscore = 0;
-    music.stop();
+    stopMusic();
     game.state.start('level1');
   });
 
@@ -534,7 +538,7 @@ function gameWon(){
   homebutton.events.onInputUp.add(function(){
     gameIsWon = false;
     levelscore = 0;
-    music.stop();
+    stopMusic();
     game.state.start('loading');
   });
 
