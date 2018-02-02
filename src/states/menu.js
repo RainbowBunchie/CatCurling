@@ -9,7 +9,7 @@ let middleX;
 let middleY;
 
 function create(){
-
+  console.log('global score: '+game.global.score);
   middleX = game.width/2;
   middleY =game.height/2;
 

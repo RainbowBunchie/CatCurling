@@ -54,29 +54,6 @@ function create() {
 	let couchLong = furnitureTpl(game,'couch-long',0,0,0.35,0.35);
   furniture.add(couchLong);
 
-  let couchShort = furnitureTpl(game,'couch-short',0,couchLong.height-2,0.35,0.35);
-  furniture.add(couchShort);
-
-  let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
-  furniture.add(tvTable);
-
-  let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
-  furniture.add(chairs);
-
-  let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
-  furniture.add(table);
-
-  let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
-  furniture.add(plant);
-
-  let deskchair = furnitureTpl(game,'deskchair',game.width-130,game.height/4 + 45,0.45,0.45, 0.2);
-  furniture.add(deskchair);
-
-  let desk = furnitureTpl(game,'desk',game.width,game.height/4,0.45,0.45);
-  furniture.add(desk);
-
-  let coffeetable = furnitureTpl(game,'coffeetable',160,130,0.9,0.9, 0.1);
-  furniture.add(coffeetable);
 
   // GOAL
   goal = getGoal(500,100);
