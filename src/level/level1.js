@@ -418,6 +418,20 @@ function update() {
         gameOver();
       }
     }
+
+    // random meow 
+    let a = Math.random();
+    if(a <0.01){
+      let b = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+      switch(b){
+        case 1: meow1.play();
+        break;
+        case 2: meow2.play();
+        break;
+        case 3: meow3.play();
+        break;
+      }
+    }
 }
 
 let gameLost = false;
