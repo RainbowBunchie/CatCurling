@@ -223,7 +223,7 @@ function create() {
       restartbutton.events.onInputUp.add(function(){
         levelscore = 0;
         music.stop();
-        game.state.start('level2');
+        game.state.start('level5');
       });
     }
 
@@ -427,7 +427,7 @@ function create() {
     levelscore = 0;
     music.stop();
     gameoverhelper = false;
-    game.state.start('level2');
+    game.state.start('level5');
   });
 
   let highscorebutton = getButton(menu.x+menu.width/2,menu.y,'highscorebutton', 0.5, 0.5, 1);
@@ -500,7 +500,7 @@ function create() {
   let nextlevel = getButton(menu.x,menu.y + menu.height/2,'playbutton', 0.5, 0.5, 1);
   nextlevel.events.onInputUp.add(function(){
     stopMusic();
-    game.state.start('level3');
+    game.state.start('score');
   });
 
   let restartbutton = getButton(menu.x+menu.width/3,menu.y + menu.height/2,'restartbutton', 0.5, 0.5, 1);
@@ -508,7 +508,7 @@ function create() {
     gameIsWon = false;
     levelscore = 0;
     stopMusic();
-    game.state.start('level2');
+    game.state.start('level5');
   });
 
   let homebutton = getButton(menu.x-menu.width/3,menu.y + menu.height/2,'homebutton', 0.5, 0.5, 1);
