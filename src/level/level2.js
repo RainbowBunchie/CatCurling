@@ -56,10 +56,35 @@ function create() {
 
 	game.stage.backgroundColor = '#f5cf99';
 
-	let couchBlue = furnitureTpl(game,'couchblue',0,game.height,0.8,0.8);
+	let couchBlue = furnitureTpl(game,'couchblue',0,game.height,0.78,0.78);
   furniture.add(couchBlue);
 
-  let catfurniture = furnitureTpl(game, 'catfurniture', game.width, game.height, 0.6, 0.6);
+  let catfurniture = furnitureTpl(game, 'catfurniture', game.width-60, game.height, 0.6, 0.6);
+  furniture.add(catfurniture);
+
+  let couchtable = furnitureTpl(game,'couchtable-glass',couchBlue.width + 40 ,couchBlue.y - 320 + 30,0.7,0.7);
+  furniture.add(couchtable);
+
+  let smalltable = furnitureTpl(game,'small-table', 600, 0, 0.7, 0.7);
+  furniture.add (smalltable);
+
+  let chairs = furnitureTpl(game, 'table-chair', 550, game.height-230, 0.45, 0.45);
+  furniture.add(chairs);
+
+  let chairs2 = furnitureTpl(game, 'table-chair', 750, game.height-133, 0.45, 0.45);
+  chairs2.anchor.setTo(0.5);
+  chairs2.angle = 180;
+  furniture.add(chairs2);
+
+  let table = furnitureTpl(game, 'table-2', 600, game.height, 0.45, 0.45);
+  furniture.add(table);
+
+  let plant = furnitureTpl(game,'plant',table.x + 25 , 230, 0.45,0.45);
+  furniture.add(plant);
+
+  let stool = furnitureTpl(game, 'stool', 210, 180, 0.65, 0.65);
+  stool.rotation = 0.2;
+  furniture.add(stool);
 
   /*let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
   furniture.add(tvTable);
@@ -83,16 +108,17 @@ function create() {
   furniture.add(coffeetable);*/
 
   // GOAL
-  goal = getGoal(80,300);
+  goal = getGoal(450,500);
 
   //DUSTS
 
   dusts = game.add.group();
   dusts.enableBody = true;
 
-  addDust(650, 250, dusts);
-  addDust(250, 450, dusts);
-  addDust(480, 180, dusts);
+  addDust(40, 80, dusts);
+  addDust(450, 150, dusts);
+  addDust(150, 65, dusts);
+  addDust(780, 180, dusts);
 
   // GAME CHARACTERS:
 
@@ -337,9 +363,9 @@ function create() {
       }
     }
     getLevelDisplay(level);
-}
+  }
 
-function set(player,pointer) {
+  function set(player,pointer) {
   if(player.body.speed<20){
     catchFlag = true;
     game.camera.follow(null);
@@ -348,9 +374,9 @@ function set(player,pointer) {
     arrow.reset(player.x, player.y);
     analog.reset(player.x, player.y);
   }
-}
+  }
 
-function launch() {
+  function launch() {
   if(player.body.speed<20){
     catchFlag = false;
     player.body.moves = true;
@@ -365,14 +391,14 @@ function launch() {
 
     player.body.velocity.setTo(Xvector, Yvector);
   }
-}
+  }
 
 
-function update() {
+  function update() {
 
   checkIfPaused(player, paused);
 
-	arrow.rotation = game.physics.arcade.angleBetween(arrow, player)- 3.14 / 2;
+  arrow.rotation = game.physics.arcade.angleBetween(arrow, player)- 3.14 / 2;
 
   if(player.body.blocked.up || player.body.blocked.down || player.body.blocked.left || player.body.blocked.right){
     bump.play();
@@ -423,15 +449,15 @@ function update() {
         break;
       }
     }
-}
+  }
 
-let gameLost = false;
+  let gameLost = false;
 
 
-function gameOver() {
+  function gameOver() {
 
   console.log('gameover function');
- //if(gameLost==true){
+  //if(gameLost==true){
   let transparent = game.add.sprite(0,0, 'transparent');
 
   menu = game.add.sprite(game.width/2,game.height/2,'menu');
@@ -452,16 +478,14 @@ function gameOver() {
 
   let highscorebutton = getButton(menu.x+menu.width/2,menu.y,'highscorebutton', 0.5, 0.5, 1);
   highscorebutton.events.onInputUp.add(function(){
-    //game.state.states['highscore'].endscore = levelscore;
     game.state.start('score');
   });
-
 
   let gameoverscore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
   gameoverscore.anchor.setTo(0.5);
   gameoverscore.scale.setTo(1.2);
 
-  let scoregameover = game.add.text(0,0,totalscore, textstyleRight);
+  let scoregameover = game.add.text(0,0,game.global.score1 + game.global.score2, textstyleRight);
   scoregameover.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
   let leveltextpause = game.add.text(0, 0, 'aww ;-; you ran out of shots', textstyleCenter);
@@ -471,18 +495,19 @@ function gameOver() {
   homebutton = getButton(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton', 0.5, 0.5, 1);
   homebutton.events.onInputUp.add(function(){
     gameLost = false;
+    gameoverhelper = false;
     levelscore = 0;
     music.stop();
     game.state.start('loading');
   });
 
   gameoverhelper=true;
-}
+  }
 
-let gameIsWon = false;
-let inGoal = false;
+  let gameIsWon = false;
+  let inGoal = false;
 
-function collisionHandler (obj1, obj2) {
+  function collisionHandler (obj1, obj2) {
   if (!gameIsWon && !inGoal){
     if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
         if (calcOverlap(player.body, goal.body)<20){
@@ -498,26 +523,29 @@ function collisionHandler (obj1, obj2) {
         }
     }
   }
-}
+  }
 
 
-function gameWon(){
+  function gameWon(){
   game.global.score2=levelscore;
-  game.global.unlock2 = true;
+  game.global.unlock1 = true;
 
   gameIsWon=true;
   let transparent = game.add.sprite(0,0, 'transparent');
+  function stopMusic(){
+    music.stop();
+  }
 
   menu = game.add.sprite(game.width/2,game.height/2,'menu');
   menu.scale.setTo(0.9,0.9);
   menu.anchor.setTo(0.5, 0.5);
-
   let menutext;
   menutext = game.add.text(game.width/2, 115, `VICTORY`, textstyleCenter);
   menutext.anchor.setTo(0.5,1);
 
   let nextlevel = getButton(menu.x,menu.y + menu.height/2,'playbutton', 0.5, 0.5, 1);
   nextlevel.events.onInputUp.add(function(){
+    stopMusic();
     game.state.start('level3');
   });
 
@@ -525,7 +553,7 @@ function gameWon(){
   restartbutton.events.onInputUp.add(function(){
     gameIsWon = false;
     levelscore = 0;
-    music.stop();
+    stopMusic();
     game.state.start('level2');
   });
 
@@ -533,7 +561,8 @@ function gameWon(){
   homebutton.events.onInputUp.add(function(){
     gameIsWon = false;
     levelscore = 0;
-    music.stop();
+    stopMusic();
+    gameIsWon = false;
     game.state.start('loading');
   });
 
@@ -541,7 +570,7 @@ function gameWon(){
   pausescore.anchor.setTo(0.5,0.5);
   pausescore.scale.setTo(1.2,1.2);
 
-  let scorepause = game.add.text(0,0,levelscore.toString(), textstyleRight);
+  let scorepause = game.add.text(0,0,game.global.score1 + game.global.score2, textstyleRight);
   scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
   let leveltextpause = game.add.text(0, 0, 'Level ' + level, {
@@ -553,24 +582,24 @@ function gameWon(){
         });
 
   leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
-}
-//triggered when cat overlaps with dust
-function collectDust(player, dust){
+  }
+  //triggered when cat overlaps with dust
+  function collectDust(player, dust){
   collect.play();
   dust.kill();
   game.time.events.add(30, function () {
     animateScore(50);
   });
-}
+  }
 
-function animateScore(amount){
+  function animateScore(amount){
   levelscore += amount;
   game.add.tween(scoretext).to({score:levelscore},700,"Linear", true);
 
-}
+  }
 
-function render() {
-/*
+  function render() {
+  /*
   game.debug.cameraInfo(game.camera, 32, 64);
   game.debug.spriteCoords(player, 32, 150);
   game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
@@ -581,11 +610,11 @@ function render() {
   game.debug.text("SPEEEEEED"+ player.body.speed, 400, 400, 'rgb(0,255,0)');
   game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
   game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
-*/
-}
+  */
+  }
 
-export default{
+  export default{
     create,
     update,
     render
-}
+  }

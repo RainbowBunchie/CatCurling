@@ -454,10 +454,8 @@ function gameOver() {
 
   let highscorebutton = getButton(menu.x+menu.width/2,menu.y,'highscorebutton', 0.5, 0.5, 1);
   highscorebutton.events.onInputUp.add(function(){
-    //game.state.states['highscore'].endscore = levelscore;
     game.state.start('score');
   });
-
 
   let gameoverscore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
   gameoverscore.anchor.setTo(0.5);
@@ -473,6 +471,7 @@ function gameOver() {
   homebutton = getButton(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton', 0.5, 0.5, 1);
   homebutton.events.onInputUp.add(function(){
     gameLost = false;
+    gameoverhelper = false;
     levelscore = 0;
     music.stop();
     game.state.start('loading');
@@ -509,6 +508,9 @@ function gameWon(){
 
   gameIsWon=true;
   let transparent = game.add.sprite(0,0, 'transparent');
+  function stopMusic(){
+    music.stop();
+  }
 
   menu = game.add.sprite(game.width/2,game.height/2,'menu');
   menu.scale.setTo(0.9,0.9);
@@ -519,6 +521,7 @@ function gameWon(){
 
   let nextlevel = getButton(menu.x,menu.y + menu.height/2,'playbutton', 0.5, 0.5, 1);
   nextlevel.events.onInputUp.add(function(){
+    stopMusic();
     game.state.start('level2');
   });
 
@@ -526,7 +529,7 @@ function gameWon(){
   restartbutton.events.onInputUp.add(function(){
     gameIsWon = false;
     levelscore = 0;
-    music.stop();
+    stopMusic();
     game.state.start('level1');
   });
 
@@ -534,7 +537,7 @@ function gameWon(){
   homebutton.events.onInputUp.add(function(){
     gameIsWon = false;
     levelscore = 0;
-    music.stop();
+    stopMusic();
     game.state.start('loading');
   });
 
