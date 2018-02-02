@@ -330,23 +330,6 @@ function create() {
     getLevelDisplay(level);
 }
 
-/*function buttonHover(button){
-  button.scale.setTo(1.1);
-}
-
-function buttonHoverOut(button){
-  button.scale.setTo(1);
-}
-
-function buttonHoverSmall(button){
-  button.scale.setTo(0.6);
-}
-
-function buttonHoverOutSmall(button){
-  button.scale.setTo(0.5);
-}
-*/
-
 function set(player,pointer) {
   if(player.body.speed<20){
     catchFlag = true;
