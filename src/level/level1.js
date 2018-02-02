@@ -40,7 +40,7 @@ function create() {
   //MUSIC
 
   music = game.add.audio('background-music');
-  music.volume = 2;
+  music.volume = 0.5;
   collect = game.add.audio('collect');
   bump = game.add.audio('bump');
   music.play();
@@ -163,28 +163,28 @@ function create() {
       raisebutton = getButton(menu.x + menu.width/4,menu.y+40,'raisebutton', 0.5, 0.5, 1);
       raisebutton.events.onInputUp.add(function(){
         music.pause();
-        music.volume += 1;
+        music.volume += 1/10;
         music.resume();
         console.log("raise: " + music.volume);
-        if(music.volume > 10)
-          music.volume = 10;
+        if(music.volume > 1)
+          music.volume = 1;
         if(music.volume == 1){
           soundValue = music.volume;
           onDeMuteButton();
         }
-        soundText.setText(`${~~music.volume}`);
+        soundText.setText(`${Math.round(music.volume*10)}`);
       });
 
       lowerbutton = getButton(menu.x - menu.width/4,menu.y+40,'lowerbutton', 0.5, 0.5, 1);
       lowerbutton.events.onInputUp.add(function(){
         music.pause();
-        music.volume -= 1;
+        music.volume -= 1/10;
         music.resume();
         if(music.volume < 0)
           music.volume = 0;
         if(music.volume <= 0)
           onMuteButton();
-        soundText.setText(`${~~music.volume}`);
+        soundText.setText(`${Math.round(music.volume*10)}`);
       });
 
       mutebutton = getButton(menu.x,menu.y+40, 'muteoffbutton', 0.5, 0.5, 1);
@@ -202,7 +202,7 @@ function create() {
           });
         }
         music.volume = 0;
-        soundText.setText(`${~~music.volume}`);
+        soundText.setText(`${Math.round(music.volume*10)}`);
       }
 
       function onDeMuteButton(){
@@ -212,7 +212,7 @@ function create() {
           onMuteButton();
         });
         music.volume = soundValue;
-        soundText.setText(`${~~music.volume}`);
+        soundText.setText(`${Math.round(music.volume*10)}`);
       }
 
       soundText = game.add.text(game.width/2, menu.height/2 + game.height/2 - 250, `${~~music.volume}`, {
@@ -222,6 +222,7 @@ function create() {
           boundsAlignV: "center"
           });
       soundText.anchor.setTo(0.5,1);
+      soundText.setText(`${Math.round(music.volume*10)}`);
 
       homebutton = getButton(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton', 0.5, 0.5, 1);
       homebutton.events.onInputUp.add(function(){
@@ -397,9 +398,9 @@ function update() {
 
     if ((shots <= 0 && player.body.speed == 0) && gameIsWon!=true) {
       if (gameoverhelper!=true){
-      gameOver();
+        gameOver();
+      }
     }
-  }
 }
 
 let gameLost = false;

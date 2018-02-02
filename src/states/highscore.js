@@ -13,11 +13,16 @@ let name;
 let id = 0;
 
 function create(){
-  this.game = game;
+  
+  let score1 = game.global.score1;
+  let score2 = game.global.score2;
+  let score3 = game.global.score3;
+  let score4 = game.global.score4;
+  let score5 = game.global.score5;
+  console.log(game.global.score1 + " " + game.global.score2 + " " + game.global.score3 + " " + game.global.score4 + " " + game.global.score5)
 
-  score = this.endscore;
 
-  console.log(this.endscore);
+  score = score1+score2+score3+score4+score5;
 
   bg=game.add.tileSprite(0, 0, 1100, 600, "bg");
   bg.tileScale.y = 0.3;
@@ -63,7 +68,7 @@ function create(){
       name = "Anonymous";
     }
     save_highscore(name, score, id);
-    window.location.href = "http://localhost:8080/highscore.html";
+    //window.location.href = "http://localhost:8080/highscore.html";
   });
 
   function buttonHover(button){
