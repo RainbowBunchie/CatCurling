@@ -87,7 +87,7 @@ function create() {
 
   let chairs
 
-  let stool = furnitureTpl(game, 'stool', 260, 300, 0.65, 0.65);
+  let stool = furnitureTpl(game, 'stool', 260, 300, 0.5, 0.5);
   stool.rotation = 0.2;
   furniture.add(stool);
 
