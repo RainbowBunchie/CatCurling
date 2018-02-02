@@ -9,7 +9,7 @@ let two;
 
 function create(){
 
-  game.global.score+=2;
+  game.global.score2+=2;
   let middleX = game.width/2;
   let middleY =game.height/2;
   bg=game.add.tileSprite(0, 0, 1100, 600, "bg");

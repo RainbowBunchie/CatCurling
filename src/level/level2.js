@@ -622,6 +622,7 @@ function gameWon(){
         });
 
   leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
+  game.global.score2=levelscore;
 
 }
 //triggered when cat overlaps with dust
