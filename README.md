@@ -1,8 +1,8 @@
 # CAT CURLING
 
-![Cat](./public/assets/img/study.png)
+![Cat](./public/assets/sprites/kitty.png)
 
-Simple starter project to get a Phaser game environment up and running with ease. With Webpack, ES6 transpiling, page reloading and Github page publishing.
+A fun little game with Cats and Curling, build with Phaser.
 
 ## Install
 - Get the files
