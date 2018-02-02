@@ -482,8 +482,8 @@ function update() {
 
     if ((shots <= 0 && player.body.speed == 0) && gameIsWon!=true) {
       if (gameoverhelper!=true){
-      gameOver();
-    }
+        gameOver();
+      }
     }
 
 }
