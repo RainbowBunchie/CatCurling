@@ -79,7 +79,7 @@ function create(){
       name = "Anonymous";
     }
     save_highscore(name, score, id);
-    //window.location.href = "http://localhost:8080/highscore.html";
+    window.location.href = "http://localhost:8080/highscore.html";
   });
 
   function buttonHover(button){

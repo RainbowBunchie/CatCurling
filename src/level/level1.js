@@ -35,6 +35,7 @@ let paused = false;
 let gameoverhelper;
 let meow1, meow2, meow3;
 let sounds = [];
+let totalscore = game.global.score1+game.global.score2+game.global.score3+game.global.score4+game.global.score5;
 
 function create() {
   shots =3;
@@ -117,7 +118,7 @@ function create() {
     scoreholder.scale.setTo(1, 1);
     scoregroup.add(scoreholder);
 
-    scoretext = game.add.text(0, 0, levelscore, textstyleRight);
+    scoretext = game.add.text(0, 0, totalscore, textstyleRight);
     scoretext.setTextBounds(35, 13, 100, 10);
     scoregroup.add(scoretext);
     scoregroup.y = 70;
@@ -411,7 +412,7 @@ function update() {
       }
     }
 
-    // random meow 
+    // random meow
     let a = Math.random();
     if(a <0.01){
       let b = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
