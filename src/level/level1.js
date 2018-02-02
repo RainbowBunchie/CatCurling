@@ -36,7 +36,6 @@ let gameoverhelper;
 
 function create() {
   shots =3;
-
   //MUSIC
 
   music = game.add.audio('background-music');
@@ -424,6 +423,7 @@ function gameOver() {
     gameLost = false;
     levelscore = 0;
     music.stop();
+    gameoverhelper = false;
     game.state.start('level1');
   });
 
@@ -479,6 +479,9 @@ function collisionHandler (obj1, obj2) {
 
 
 function gameWon(){
+  game.global.score1=levelscore;
+  game.global.unlock1 = true;
+  
   gameIsWon=true;
   let transparent = game.add.sprite(0,0, 'transparent');
 
@@ -526,7 +529,6 @@ function gameWon(){
         });
 
   leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
-  game.global.score=levelscore;
 }
 //triggered when cat overlaps with dust
 function collectDust(player, dust){
