@@ -105,7 +105,7 @@ if(game.global.unlock4==true) {
   four.events.onInputOut.add(buttonHoverOut,this);
 }
 
-//if(game.global.unlock5==true) {
+if(game.global.unlock5==true) {
   five.destroy();
   five = game.add.sprite(1000, middleY, 'Level5');
   five.scale.setTo(0.5);
