@@ -33,6 +33,8 @@ let bump;
 let soundValue;
 let paused = false;
 let gameoverhelper;
+let meow1, meow2, meow3;
+let sounds = [];
 
 function create() {
   shots =3;
@@ -43,6 +45,10 @@ function create() {
   collect = game.add.audio('collect');
   bump = game.add.audio('bump');
   music.play();
+  meow1 = game.add.audio('meow1');
+  meow2 = game.add.audio('meow2');
+  meow3 = game.add.audio('meow3');
+  sounds.push(music, collect, bump, meow1, meow2, meow3);
 
   //CREATE THE FURNITURE
 
@@ -200,7 +206,9 @@ function create() {
             onDeMuteButton();
           });
         }
-        music.volume = 0;
+        for(let sound of sounds){
+          sound.volume = 0;
+        }
         soundText.setText(`${Math.round(music.volume*10)}`);
       }
 
@@ -210,7 +218,9 @@ function create() {
         mutebutton.events.onInputUp.add(function(){
           onMuteButton();
         });
-        music.volume = soundValue;
+        for(let sound of sounds){
+          sound.volume = 0;
+        }
         soundText.setText(`${Math.round(music.volume*10)}`);
       }
 
@@ -398,6 +408,20 @@ function update() {
     if ((shots <= 0 && player.body.speed == 0) && gameIsWon!=true) {
       if (gameoverhelper!=true){
         gameOver();
+      }
+    }
+
+    // random meow 
+    let a = Math.random();
+    if(a <0.01){
+      let b = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+      switch(b){
+        case 1: meow1.play();
+        break;
+        case 2: meow2.play();
+        break;
+        case 3: meow3.play();
+        break;
       }
     }
 }

@@ -49,6 +49,9 @@ function preload(){
   game.load.audio('background-music', ['assets/audio/background.mp3', 'assets/audio/background.ogg']);
   game.load.audio('collect', 'assets/audio/collect.ogg');
   game.load.audio('bump', 'assets/audio/bump.ogg');
+  game.load.audio('meow1', 'assets/audio/meow1.ogg');
+  game.load.audio('meow2', 'assets/audio/meow2.ogg');
+  game.load.audio('meow3', 'assets/audio/meow3.ogg');
 
   game.load.image('menuPlay', 'assets/buttons/playbutton.png');
   game.load.image('menuSetting', 'assets/buttons/settings2.png');
