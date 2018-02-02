@@ -3,12 +3,11 @@
 ![Cat](./public/assets/sprites/kitty.png)
 
 A fun little game with Cats and Curling, build with Phaser.
+Made by Alexander Tischhart, Denise Buder & Selina Brunner.
 
 ## Install
-- Get the files
-  - `git clone https://github.com/oliverbenns/phaser-starter.git`
-  - **or** download a r [zip/tar.gz](https://github.com/oliverbenns/phaser-starter/releases)
-- `cd phaser-starter`
+- Get the files (clone or zip)
+- `cd CatCurling-MMP`
 - `nvm install`
 - `npm install`
 
