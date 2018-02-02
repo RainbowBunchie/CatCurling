@@ -140,3 +140,39 @@ export function checkIfPaused(player, paused){
     pausedLastframe = false;
   }
 }
+
+// buttons
+
+export function getButton(x, y, spritename, scale, anchor = 0.5, hoverscale){
+  let button = game.add.sprite(x,y,spritename);
+  button.scale.setTo(scale);
+  button.anchor.setTo(anchor);
+  button.inputEnabled = true;
+  button.input.useHandCursor = true;
+
+  if (hoverscale == 0){
+    button.events.onInputOver.add(buttonHover,this);
+    button.events.onInputOut.add(buttonHoverOut,this);
+  }
+  else{
+    button.events.onInputOver.add(buttonHoverSmall,this);
+    button.events.onInputOut.add(buttonHoverOutSmall,this);
+  }
+  return button;
+}
+
+function buttonHover(button){
+  button.scale.setTo(1.1);
+}
+
+function buttonHoverOut(button){
+  button.scale.setTo(1);
+}
+
+function buttonHoverSmall(button){
+  button.scale.setTo(0.6);
+}
+
+function buttonHoverOutSmall(button){
+  button.scale.setTo(0.5);
+}
