@@ -63,6 +63,18 @@ function preload(){
   game.load.image('next', 'assets/instructions/next-button.png');
   game.load.image('previous', 'assets/instructions/back-button.png');
 
+game.load.image('Level1', 'assets/levelbuttons/level1-blau.png');
+game.load.image('Level1-lock', 'assets/levelbuttons/level1-grau.png');
+game.load.image('Level2', 'assets/levelbuttons/level2-blau.png');
+game.load.image('Level2-lock', 'assets/levelbuttons/level2-grau.png');
+game.load.image('Level3', 'assets/levelbuttons/level3-blau.png');
+game.load.image('Level3-lock', 'assets/levelbuttons/level3-grau.png');
+game.load.image('Level4', 'assets/levelbuttons/level4-blau.png');
+game.load.image('Level4-lock', 'assets/levelbuttons/level4-grau.png');
+game.load.image('Level5', 'assets/levelbuttons/level5-blau.png');
+game.load.image('Level5-lock', 'assets/levelbuttons/level5-grau.png');
+
+
   let intID;
   game.load.onLoadStart.add(function() {
       intID = setInterval(update, 5);
