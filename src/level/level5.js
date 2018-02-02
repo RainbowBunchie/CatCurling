@@ -491,8 +491,8 @@ function create() {
 
 
   function gameWon(){
-  game.global.score2=levelscore;
-  game.global.unlock2 = true;
+  game.global.score5=levelscore;
+  game.global.unlock5 = true;
 
   gameIsWon=true;
   let transparent = game.add.sprite(0,0, 'transparent');
