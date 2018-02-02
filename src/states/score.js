@@ -15,6 +15,7 @@ let score2;
 let score3;
 let score4;
 let score5;
+let submit;
 
 function create(){
 
@@ -36,6 +37,15 @@ function create(){
   let h1 = game.add.text(middleX, middleY-game.height/4, 'Here are your scores!', textstyleCenter);
   h1.anchor.setTo(0.5);
 
+  submit =  game.add.sprite(800, middleY+game.height/4,'submit');
+  submit.scale.setTo(0.4);
+  submit.anchor.setTo(0.5);
+  submit.inputEnabled=true;
+  submit.events.onInputUp.add(function(){
+    game.state.start('highscore');
+  });
+  submit.events.onInputOver.add(buttonHover);
+  submit.events.onInputOut.add(buttonHoverOut);
   //---------------LEVEL-----------------------------------
 
 
@@ -112,12 +122,12 @@ function buttonClick(){
   game.state.start('menu');
 }
 
-function buttonHover(button){
-  button.scale.setTo(0.6);
+function buttonHover(){
+  submit.scale.setTo(0.5);
 }
 
-function buttonHoverOut(button){
-  button.scale.setTo(0.5);
+function buttonHoverOut(){
+  submit.scale.setTo(0.4);
 }
 
 function update(){

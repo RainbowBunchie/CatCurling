@@ -76,6 +76,7 @@ game.load.image('Level4', 'assets/levelbuttons/level4-blau.png');
 game.load.image('Level4-lock', 'assets/levelbuttons/level4-grau.png');
 game.load.image('Level5', 'assets/levelbuttons/level5-blau.png');
 game.load.image('Level5-lock', 'assets/levelbuttons/level5-grau.png');
+game.load.image('submit', 'assets/buttons/submitbutton.png');
 
 
   let intID;

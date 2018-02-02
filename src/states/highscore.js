@@ -11,9 +11,12 @@ let confirmbutton;
 let score;
 let name;
 let id = 0;
+let back;
 
 function create(){
-  
+
+
+
   let score1 = game.global.score1;
   let score2 = game.global.score2;
   let score3 = game.global.score3;
@@ -35,6 +38,14 @@ function create(){
   highscoreText = game.add.text(game.width/2, game.height/2-50, "Enter Your Name Here!", {font: "30px Stringz", fill: "#fff" });
   highscoreText.anchor.setTo(0.5);
 
+  back = game.add.sprite(50, game.height-50, 'back');
+  back.anchor.setTo(0.5);
+  back.scale.setTo(0.5);
+  back.inputEnabled=true;
+
+  back.events.onInputUp.add(buttonClick);
+  back.events.onInputOver.add(buttonHover,this);
+  back.events.onInputOut.add(buttonHoverOut,this);
 
   inputstyleLeft = {
     padding: 15,
