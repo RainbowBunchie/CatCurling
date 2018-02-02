@@ -65,7 +65,7 @@ function create() {
   let couchtable = furnitureTpl(game,'couchtable-glass',couchBlue.width + 40 ,couchBlue.y - 320 + 30,0.7,0.7);
   furniture.add(couchtable);
 
-  let smalltable = furnitureTpl(game,'small-table', 600, 0, 0.7, 0.7);
+  let smalltable = furnitureTpl(game,'small-table', 700, 0, 0.7, 0.7);
   furniture.add (smalltable);
 
   let chairs = furnitureTpl(game, 'table-chair', 550, game.height-230, 0.45, 0.45);
@@ -76,7 +76,7 @@ function create() {
   chairs2.angle = 180;
   furniture.add(chairs2);
 
-  let table = furnitureTpl(game, 'table-2', 600, game.height, 0.45, 0.45);
+  let table = furnitureTpl(game, 'table2', 600, game.height, 0.45, 0.45);
   furniture.add(table);
 
   let plant = furnitureTpl(game,'plant',table.x + 25 , 230, 0.45,0.45);
@@ -86,26 +86,11 @@ function create() {
   stool.rotation = 0.2;
   furniture.add(stool);
 
-  /*let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
-  furniture.add(tvTable);
-
-  let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
-  furniture.add(chairs);
-
-  let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
-  furniture.add(table);
-
-  let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
-  furniture.add(plant);
-
-  let deskchair = furnitureTpl(game,'deskchair',game.width-130,game.height/4 + 45,0.45,0.45, 0.2);
+  let deskchair = furnitureTpl(game,'deskchair',game.width-130,game.height/7 + 45,0.45,0.45, 0.2);
   furniture.add(deskchair);
 
-  let desk = furnitureTpl(game,'desk',game.width,game.height/4,0.45,0.45);
+  let desk = furnitureTpl(game,'desk',game.width,game.height/7,0.45,0.45);
   furniture.add(desk);
-
-  let coffeetable = furnitureTpl(game,'coffeetable',160,130,0.9,0.9, 0.1);
-  furniture.add(coffeetable);*/
 
   // GOAL
   goal = getGoal(450,500);
@@ -528,7 +513,7 @@ function create() {
 
   function gameWon(){
   game.global.score2=levelscore;
-  game.global.unlock1 = true;
+  game.global.unlock2 = true;
 
   gameIsWon=true;
   let transparent = game.add.sprite(0,0, 'transparent');
