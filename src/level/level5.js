@@ -54,6 +54,18 @@ function create() {
 
   furniture = game.add.group();
 
+  let couchLong = furnitureTpl(game,'couch-long',0,0,0.35,0.35);
+  furniture.add(couchLong);
+
+  let couchShort = furnitureTpl(game,'couch-short',0,couchLong.height-2,0.35,0.35);
+  furniture.add(couchShort);
+
+  let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
+  furniture.add(plant);
+
+  let coffeetable = furnitureTpl(game,'coffeetable',160,130,0.9,0.9, 0.1);
+  furniture.add(coffeetable);
+
   let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
   furniture.add(chairs);
 
@@ -70,10 +82,8 @@ function create() {
   dusts = game.add.group();
   dusts.enableBody = true;
 
-  addDust(40, 80, dusts);
-  addDust(450, 150, dusts);
-  addDust(150, 65, dusts);
-  addDust(780, 180, dusts);
+  addDust(900, 480, dusts);
+  addDust(450, 50, dusts);
 
   // GAME CHARACTERS:
 
