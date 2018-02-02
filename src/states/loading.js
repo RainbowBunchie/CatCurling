@@ -50,6 +50,7 @@ function preload(){
   game.load.image('table-2', 'assets/img/furniture/table-2.png');
   game.load.image('table-chair', 'assets/img/furniture/chairs-table-2.png');
   game.load.image('stool', 'assets/img/furniture/stool.png');
+  game.load.image('bed', 'assets/img/furniture/bed.png');
 
 
   game.add.plugin(Fabrique.Plugins.InputField);

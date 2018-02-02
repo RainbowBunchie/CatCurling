@@ -5,7 +5,7 @@ import game from '../game';
 import {textstyleRight}from '../style';
 import {textstyleCenter}from '../style';
 import furnitureTpl from '../module-assets/furniture';
-import {getGoal, getPlayer, getAnalog, getArrow, updateShots, displayShots, calcOverlap, getLevelDisplay, getShotsDisplay, addDust, checkIfPaused} from '../module-assets/functions';
+import {getGoal, getPlayer, getAnalog, getArrow, updateShots, displayShots, calcOverlap, getLevelDisplay, getShotsDisplay, addDust, checkIfPaused, getButton} from '../module-assets/functions';
 import pkg from '../../package.json';
 
 let level = 2;
@@ -33,39 +33,89 @@ let bump;
 let soundValue;
 let paused = false;
 let gameoverhelper;
+let meow1, meow2, meow3;
+let sounds = [];
+let totalscore = game.global.score1+game.global.score2+game.global.score3+game.global.score4+game.global.score5;
 
 function create() {
-  shots =5;
-
+  shots =4;
   //MUSIC
-
   music = game.add.audio('background-music');
-  music.volume = 2;
+  music.volume = 0.5;
   collect = game.add.audio('collect');
   bump = game.add.audio('bump');
   music.play();
+  meow1 = game.add.audio('meow1');
+  meow2 = game.add.audio('meow2');
+  meow3 = game.add.audio('meow3');
+  sounds.push(music, collect, bump, meow1, meow2, meow3);
 
   //CREATE THE FURNITURE
 
   furniture = game.add.group();
 
-	game.stage.backgroundColor = '#f5cf99';
+  game.stage.backgroundColor = '#f5cf99';
 
-	let couchLong = furnitureTpl(game,'couch-long',0,0,0.35,0.35);
-  furniture.add(couchLong);
+  let bed = furnitureTpl(game,'bed',0,game.height,0.78,0.78);
+  furniture.add(bed);
 
+  let catfurniture = furnitureTpl(game, 'catfurniture', game.width-60, game.height, 0.6, 0.6);
+  furniture.add(catfurniture);
+
+  let smalltable = furnitureTpl(game,'small-table', 600, 0, 0.7, 0.7);
+  furniture.add (smalltable);
+
+  let chairs = furnitureTpl(game, 'table-chair', 550, game.height-230, 0.45, 0.45);
+  furniture.add(chairs);
+
+  let chairs2 = furnitureTpl(game, 'table-chair', 750, game.height-133, 0.45, 0.45);
+  chairs2.anchor.setTo(0.5);
+  chairs2.angle = 180;
+  furniture.add(chairs2);
+
+  let table = furnitureTpl(game, 'table-2', 600, game.height, 0.45, 0.45);
+  furniture.add(table);
+
+  let plant = furnitureTpl(game,'plant',table.x + 25 , 230, 0.45,0.45);
+  furniture.add(plant);
+
+  let stool = furnitureTpl(game, 'stool', 210, 180, 0.65, 0.65);
+  stool.rotation = 0.2;
+  furniture.add(stool);
+
+  /*let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
+  furniture.add(tvTable);
+
+  let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
+  furniture.add(chairs);
+
+  let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
+  furniture.add(table);
+
+  let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
+  furniture.add(plant);
+
+  let deskchair = furnitureTpl(game,'deskchair',game.width-130,game.height/4 + 45,0.45,0.45, 0.2);
+  furniture.add(deskchair);
+
+  let desk = furnitureTpl(game,'desk',game.width,game.height/4,0.45,0.45);
+  furniture.add(desk);
+
+  let coffeetable = furnitureTpl(game,'coffeetable',160,130,0.9,0.9, 0.1);
+  furniture.add(coffeetable);*/
 
   // GOAL
-  goal = getGoal(500,100);
+  goal = getGoal(450,500);
 
   //DUSTS
 
   dusts = game.add.group();
   dusts.enableBody = true;
 
-  addDust(650, 250, dusts);
-  addDust(250, 450, dusts);
-  addDust(480, 180, dusts);
+  addDust(40, 80, dusts);
+  addDust(450, 150, dusts);
+  addDust(150, 65, dusts);
+  addDust(780, 180, dusts);
 
   // GAME CHARACTERS:
 
@@ -73,7 +123,7 @@ function create() {
   arrow = getArrow(player);
 
   // PLAYER
-  player = getPlayer(50, 550, set, launch);
+  player = getPlayer(850, 550, set, launch);
 
 
     // GUI ELEMENTS
@@ -89,7 +139,7 @@ function create() {
     scoreholder.scale.setTo(1, 1);
     scoregroup.add(scoreholder);
 
-    scoretext = game.add.text(0, 0, levelscore, textstyleRight);
+    scoretext = game.add.text(0, 0, totalscore, textstyleRight);
     scoretext.setTextBounds(35, 13, 100, 10);
     scoregroup.add(scoretext);
     scoregroup.y = 70;
@@ -109,20 +159,14 @@ function create() {
     let homebutton;
     let soundText;
 
-    let settingsbutton = game.add.sprite(45, 45,'settingsbutton');
-    settingsbutton.scale.setTo(1);
-    settingsbutton.anchor.setTo(0.5);
-    settingsbutton.inputEnabled = true;
-    settingsbutton.input.useHandCursor = true;
+
+    let settingsbutton = getButton(45,45, 'settingsbutton', 1, 0.5, 0);
 
     settingsbutton.events.onInputUp.add(function(){
       if (showSettings == false){
         getSettingsMenu();
       }
     });
-
-    settingsbutton.events.onInputOver.add(buttonHover,this);
-    settingsbutton.events.onInputOut.add(buttonHoverOut,this);
 
     function getSettingsMenu(){
       showSettings = true;
@@ -136,101 +180,70 @@ function create() {
       menutext = game.add.text(game.width/2, 115, `SETTINGS`, textstyleCenter);
       menutext.anchor.setTo(0.5,1);
 
-      playbutton = game.add.sprite(menu.x,menu.y + menu.height/2 ,'playbutton');
-      playbutton.scale.setTo(0.5);
-      playbutton.anchor.setTo(0.5);
-      playbutton.inputEnabled = true;
-      playbutton.input.useHandCursor = true;
+      playbutton = getButton(menu.x,menu.y + menu.height/2 ,'playbutton', 0.5, 0.5, 1);
       playbutton.events.onInputUp.add(function(){
         removeSettingsMenu();
         console.log("hello");
       });
-      playbutton.events.onInputOver.add(buttonHoverSmall,this);
-      playbutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
-      raisebutton = game.add.sprite(menu.x + menu.width/4,menu.y+40,'raisebutton');
-      raisebutton.scale.setTo(0.5);
-      raisebutton.anchor.setTo(0.5);
-      raisebutton.inputEnabled = true;
-      raisebutton.input.useHandCursor = true;
+
+      raisebutton = getButton(menu.x + menu.width/4,menu.y+40,'raisebutton', 0.5, 0.5, 1);
       raisebutton.events.onInputUp.add(function(){
         music.pause();
-        music.volume += 1;
+        music.volume += 1/10;
         music.resume();
         console.log("raise: " + music.volume);
-        if(music.volume > 10)
-          music.volume = 10;
+        if(music.volume > 1)
+          music.volume = 1;
         if(music.volume == 1){
           soundValue = music.volume;
           onDeMuteButton();
         }
-        soundText.setText(`${~~music.volume}`);
+        soundText.setText(`${Math.round(music.volume*10)}`);
       });
-      raisebutton.events.onInputOver.add(buttonHoverSmall,this);
-      raisebutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
-      lowerbutton = game.add.sprite(menu.x - menu.width/4,menu.y+40,'lowerbutton');
-      lowerbutton.scale.setTo(0.5);
-      lowerbutton.anchor.setTo(0.5);
-      lowerbutton.inputEnabled = true;
-      lowerbutton.input.useHandCursor = true;
+      lowerbutton = getButton(menu.x - menu.width/4,menu.y+40,'lowerbutton', 0.5, 0.5, 1);
       lowerbutton.events.onInputUp.add(function(){
         music.pause();
-        music.volume -= 1;
+        music.volume -= 1/10;
         music.resume();
         if(music.volume < 0)
           music.volume = 0;
         if(music.volume <= 0)
           onMuteButton();
-        soundText.setText(`${~~music.volume}`);
+        soundText.setText(`${Math.round(music.volume*10)}`);
       });
-      lowerbutton.events.onInputOver.add(buttonHoverSmall,this);
-      lowerbutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
-      mutebutton = game.add.sprite(menu.x,menu.y+40, 'muteoffbutton');
-      mutebutton.scale.setTo(0.5);
-      mutebutton.anchor.setTo(0.5);
-      mutebutton.inputEnabled = true;
-      mutebutton.input.useHandCursor = true;
+      mutebutton = getButton(menu.x,menu.y+40, 'muteoffbutton', 0.5, 0.5, 1);
       mutebutton.events.onInputUp.add(function(){
         onMuteButton();
       });
-      mutebutton.events.onInputOver.add(buttonHoverSmall,this);
-      mutebutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
       function onMuteButton(){
         soundValue = music.volume;
         mutebutton.destroy();
-        mutebutton = game.add.sprite(menu.x,menu.y+40, 'muteonbutton');
-        mutebutton.scale.setTo(0.5);
-        mutebutton.anchor.setTo(0.5);
-        mutebutton.inputEnabled = true;
-        mutebutton.input.useHandCursor = true;
-        mutebutton.events.onInputOver.add(buttonHoverSmall,this);
-        mutebutton.events.onInputOut.add(buttonHoverOutSmall,this);
+        mutebutton = getButton(menu.x,menu.y+40, 'muteonbutton', 0.5, 0.5, 1);
         if(soundValue > 0){
           mutebutton.events.onInputUp.add(function(){
             onDeMuteButton();
           });
         }
-        music.volume = 0;
-        soundText.setText(`${~~music.volume}`);
+        for(let sound of sounds){
+          sound.volume = 0;
+        }
+        soundText.setText(`${Math.round(music.volume*10)}`);
       }
 
       function onDeMuteButton(){
         mutebutton.destroy();
-        mutebutton = game.add.sprite(menu.x,menu.y+40, 'muteoffbutton');
-        mutebutton.scale.setTo(0.5);
-        mutebutton.anchor.setTo(0.5);
-        mutebutton.inputEnabled = true;
-        mutebutton.input.useHandCursor = true;
-        mutebutton.events.onInputOver.add(buttonHoverSmall,this);
-        mutebutton.events.onInputOut.add(buttonHoverOutSmall,this);
+        mutebutton = getButton(menu.x,menu.y+40, 'muteoffbutton', 0.5, 0.5, 1);
         mutebutton.events.onInputUp.add(function(){
           onMuteButton();
         });
-        music.volume = soundValue;
-        soundText.setText(`${~~music.volume}`);
+        for(let sound of sounds){
+          sound.volume = 0;
+        }
+        soundText.setText(`${Math.round(music.volume*10)}`);
       }
 
       soundText = game.add.text(game.width/2, menu.height/2 + game.height/2 - 250, `${~~music.volume}`, {
@@ -240,31 +253,20 @@ function create() {
           boundsAlignV: "center"
           });
       soundText.anchor.setTo(0.5,1);
+      soundText.setText(`${Math.round(music.volume*10)}`);
 
-      homebutton = game.add.sprite(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton');
-      homebutton.scale.setTo(0.5);
-      homebutton.anchor.setTo(0.5);
-      homebutton.inputEnabled = true;
-      homebutton.input.useHandCursor = true;
-      homebutton.events.onInputOver.add(buttonHoverSmall,this);
-      homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
+      homebutton = getButton(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton', 0.5, 0.5, 1);
       homebutton.events.onInputUp.add(function(){
         levelscore = 0;
         music.stop();
         game.state.start('loading');
       });
 
-      restartbutton = game.add.sprite(menu.x+menu.height/3,menu.y + menu.height/2,'restartbutton');
-      restartbutton.scale.setTo(0.5);
-      restartbutton.anchor.setTo(0.5);
-      restartbutton.inputEnabled = true;
-      restartbutton.input.useHandCursor = true;
-      restartbutton.events.onInputOver.add(buttonHoverSmall,this);
-      restartbutton.events.onInputOut.add(buttonHoverOutSmall,this);
+      restartbutton = getButton(menu.x+menu.height/3,menu.y + menu.height/2,'restartbutton', 0.5, 0.5, 1);
       restartbutton.events.onInputUp.add(function(){
         levelscore = 0;
         music.stop();
-        game.state.start('level1');
+        game.state.start('level2');
       });
     }
 
@@ -287,15 +289,7 @@ function create() {
     }
     // PAUSING THE GAME
 
-    let pausebutton = game.add.sprite(125, 45,'pausebutton');
-    pausebutton.anchor.setTo(0.5);
-
-    pausebutton.events.onInputOver.add(buttonHover,this);
-    pausebutton.events.onInputOut.add(buttonHoverOut,this);
-
-    pausebutton.inputEnabled = true;
-    pausebutton.input.useHandCursor = true;
-
+    let pausebutton = getButton(125, 45,'pausebutton', 1, 0.5, 0);
     pausebutton.events.onInputUp.add(function(){
         handlePause();
     });
@@ -325,17 +319,10 @@ function create() {
           menutext = game.add.text(game.width/2, 115, `GAME PAUSED`, textstyleCenter);
           menutext.anchor.setTo(0.5,1);
 
-          playbutton = game.add.sprite(menu.x,menu.y + menu.height/2 ,'playbutton');
-          playbutton.scale.setTo(0.5);
-          playbutton.anchor.setTo(0.5);
-          playbutton.inputEnabled = true;
-          playbutton.input.useHandCursor = true;
+          playbutton = getButton(menu.x,menu.y + menu.height/2 ,'playbutton', 0.5, 0.5, 1);
           playbutton.events.onInputUp.add(function(){
             unpause();
           });
-
-          playbutton.events.onInputOver.add(buttonHoverSmall,this);
-          playbutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
           pausescore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
           pausescore.anchor.setTo(0.5,0.5);
@@ -373,25 +360,9 @@ function create() {
       }
     }
     getLevelDisplay(level);
-}
+  }
 
-function buttonHover(button){
-  button.scale.setTo(1.1);
-}
-
-function buttonHoverOut(button){
-  button.scale.setTo(1);
-}
-
-function buttonHoverSmall(button){
-  button.scale.setTo(0.6);
-}
-
-function buttonHoverOutSmall(button){
-  button.scale.setTo(0.5);
-}
-
-function set(player,pointer) {
+  function set(player,pointer) {
   if(player.body.speed<20){
     catchFlag = true;
     game.camera.follow(null);
@@ -400,9 +371,9 @@ function set(player,pointer) {
     arrow.reset(player.x, player.y);
     analog.reset(player.x, player.y);
   }
-}
+  }
 
-function launch() {
+  function launch() {
   if(player.body.speed<20){
     catchFlag = false;
     player.body.moves = true;
@@ -417,14 +388,14 @@ function launch() {
 
     player.body.velocity.setTo(Xvector, Yvector);
   }
-}
+  }
 
 
-function update() {
+  function update() {
 
   checkIfPaused(player, paused);
 
-	arrow.rotation = game.physics.arcade.angleBetween(arrow, player)- 3.14 / 2;
+  arrow.rotation = game.physics.arcade.angleBetween(arrow, player)- 3.14 / 2;
 
   if(player.body.blocked.up || player.body.blocked.down || player.body.blocked.left || player.body.blocked.right){
     bump.play();
@@ -458,19 +429,32 @@ function update() {
 
     if ((shots <= 0 && player.body.speed == 0) && gameIsWon!=true) {
       if (gameoverhelper!=true){
-      gameOver();
+        gameOver();
+      }
     }
+
+    // random meow
+    let a = Math.random();
+    if(a <0.01){
+      let b = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+      switch(b){
+        case 1: meow1.play();
+        break;
+        case 2: meow2.play();
+        break;
+        case 3: meow3.play();
+        break;
+      }
     }
+  }
 
-}
-
-let gameLost = false;
+  let gameLost = false;
 
 
-function gameOver() {
+  function gameOver() {
 
   console.log('gameover function');
- //if(gameLost==true){
+  //if(gameLost==true){
   let transparent = game.add.sprite(0,0, 'transparent');
 
   menu = game.add.sprite(game.width/2,game.height/2,'menu');
@@ -480,65 +464,47 @@ function gameOver() {
   menutext = game.add.text(game.width/2, 100, `GAME OVER`, textstyleCenter);
   menutext.anchor.setTo(0.5);
 
-  let restartbutton = game.add.sprite(menu.x+menu.height/3,menu.y + menu.height/2,'restartbutton');
-  restartbutton.scale.setTo(0.5);
-  restartbutton.anchor.setTo(0.5);
-  restartbutton.inputEnabled = true;
-  restartbutton.input.useHandCursor = true;
+  let restartbutton = getButton(menu.x+menu.height/3,menu.y + menu.height/2,'restartbutton', 0.5, 0.5, 1);
   restartbutton.events.onInputUp.add(function(){
     gameLost = false;
     levelscore = 0;
     music.stop();
-    game.state.start('level1');
+    gameoverhelper = false;
+    game.state.start('level2');
   });
-  restartbutton.events.onInputOver.add(buttonHoverSmall,this);
-  restartbutton.events.onInputOut.add(buttonHoverOutSmall,this);
 
-  let highscorebutton = game.add.sprite(menu.x+menu.width/2,menu.y,'highscorebutton');
-  highscorebutton.scale.setTo(0.5);
-  highscorebutton.anchor.setTo(0.5);
-  highscorebutton.inputEnabled = true;
-  highscorebutton.input.useHandCursor = true;
-  highscorebutton.events.onInputOver.add(buttonHoverSmall,this);
-  highscorebutton.events.onInputOut.add(buttonHoverOutSmall,this);
+  let highscorebutton = getButton(menu.x+menu.width/2,menu.y,'highscorebutton', 0.5, 0.5, 1);
   highscorebutton.events.onInputUp.add(function(){
-    game.state.states['highscore'].endscore = levelscore;
-    game.state.start('highscore');
+    game.state.start('score');
   });
-
 
   let gameoverscore = game.add.sprite(game.width/2,game.height/2 + 60, 'scoreholder');
   gameoverscore.anchor.setTo(0.5);
   gameoverscore.scale.setTo(1.2);
 
-  let scoregameover = game.add.text(0,0,levelscore.toString(), textstyleRight);
+  let scoregameover = game.add.text(0,0,game.global.score1 + game.global.score2, textstyleRight);
   scoregameover.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
   let leveltextpause = game.add.text(0, 0, 'aww ;-; you ran out of shots', textstyleCenter);
   leveltextpause.setTextBounds(game.width/2-200, game.height/2-50, 150, 10);
 
   let homebutton;
-  homebutton = game.add.sprite(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton');
-  homebutton.scale.setTo(0.4);
-  homebutton.anchor.setTo(0.5);
-  homebutton.inputEnabled = true;
-  homebutton.input.useHandCursor = true;
-  homebutton.events.onInputOver.add(buttonHoverSmall,this);
-  homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
+  homebutton = getButton(menu.x-menu.height/3,menu.y + menu.height/2,'homebutton', 0.5, 0.5, 1);
   homebutton.events.onInputUp.add(function(){
     gameLost = false;
+    gameoverhelper = false;
     levelscore = 0;
     music.stop();
     game.state.start('loading');
   });
 
-gameoverhelper=true;
-}
+  gameoverhelper=true;
+  }
 
-let gameIsWon = false;
-let inGoal = false;
+  let gameIsWon = false;
+  let inGoal = false;
 
-function collisionHandler (obj1, obj2) {
+  function collisionHandler (obj1, obj2) {
   if (!gameIsWon && !inGoal){
     if((player.body.velocity.x == 0 ) && (player.body.velocity.y == 0) ){
         if (calcOverlap(player.body, goal.body)<20){
@@ -554,12 +520,18 @@ function collisionHandler (obj1, obj2) {
         }
     }
   }
-}
+  }
 
 
-function gameWon(){
-            gameIsWon=true;
-    let transparent = game.add.sprite(0,0, 'transparent');
+  function gameWon(){
+  game.global.score2=levelscore;
+  game.global.unlock1 = true;
+
+  gameIsWon=true;
+  let transparent = game.add.sprite(0,0, 'transparent');
+  function stopMusic(){
+    music.stop();
+  }
 
   menu = game.add.sprite(game.width/2,game.height/2,'menu');
   menu.scale.setTo(0.9,0.9);
@@ -568,41 +540,26 @@ function gameWon(){
   menutext = game.add.text(game.width/2, 115, `VICTORY`, textstyleCenter);
   menutext.anchor.setTo(0.5,1);
 
-  let nextlevel =  game.add.sprite(menu.x,menu.y + menu.height/2,'playbutton');
-  nextlevel.scale.setTo(0.5);
-  nextlevel.anchor.setTo(0.5);
-  nextlevel.inputEnabled = true;
-  nextlevel.input.useHandCursor = true;
+  let nextlevel = getButton(menu.x,menu.y + menu.height/2,'playbutton', 0.5, 0.5, 1);
+  nextlevel.events.onInputUp.add(function(){
+    stopMusic();
+    game.state.start('level3');
+  });
 
-  nextlevel.events.onInputOver.add(buttonHoverSmall,this);
-  nextlevel.events.onInputOut.add(buttonHoverOutSmall,this);
-
-  let restartbutton = game.add.sprite(menu.x+menu.width/3,menu.y + menu.height/2,'restartbutton');
-  restartbutton.scale.setTo(0.5);
-  restartbutton.anchor.setTo(0.5);
-  restartbutton.inputEnabled = true;
-  restartbutton.input.useHandCursor = true;
+  let restartbutton = getButton(menu.x+menu.width/3,menu.y + menu.height/2,'restartbutton', 0.5, 0.5, 1);
   restartbutton.events.onInputUp.add(function(){
     gameIsWon = false;
     levelscore = 0;
-    music.stop();
-    game.state.start('level1');
+    stopMusic();
+    game.state.start('level2');
   });
 
-  restartbutton.events.onInputOver.add(buttonHoverSmall,this);
-  restartbutton.events.onInputOut.add(buttonHoverOutSmall,this);
-
-  let homebutton = game.add.sprite(menu.x-menu.width/3,menu.y + menu.height/2,'homebutton');
-  homebutton.scale.setTo(0.5);
-  homebutton.anchor.setTo(0.5);
-  homebutton.inputEnabled = true;
-  homebutton.input.useHandCursor = true;
-  homebutton.events.onInputOver.add(buttonHoverSmall,this);
-  homebutton.events.onInputOut.add(buttonHoverOutSmall,this);
+  let homebutton = getButton(menu.x-menu.width/3,menu.y + menu.height/2,'homebutton', 0.5, 0.5, 1);
   homebutton.events.onInputUp.add(function(){
     gameIsWon = false;
     levelscore = 0;
-    music.stop();
+    stopMusic();
+    gameIsWon = false;
     game.state.start('loading');
   });
 
@@ -610,7 +567,7 @@ function gameWon(){
   pausescore.anchor.setTo(0.5,0.5);
   pausescore.scale.setTo(1.2,1.2);
 
-  let scorepause = game.add.text(0,0,levelscore.toString(), textstyleRight);
+  let scorepause = game.add.text(0,0,game.global.score1 + game.global.score2, textstyleRight);
   scorepause.setTextBounds(game.width/2-75, game.height/2 + 40, 144, 10);
 
   let leveltextpause = game.add.text(0, 0, 'Level ' + level, {
@@ -622,26 +579,24 @@ function gameWon(){
         });
 
   leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
-  game.global.score2=levelscore;
-
-}
-//triggered when cat overlaps with dust
-function collectDust(player, dust){
+  }
+  //triggered when cat overlaps with dust
+  function collectDust(player, dust){
   collect.play();
   dust.kill();
   game.time.events.add(30, function () {
     animateScore(50);
   });
-}
+  }
 
-function animateScore(amount){
+  function animateScore(amount){
   levelscore += amount;
   game.add.tween(scoretext).to({score:levelscore},700,"Linear", true);
 
-}
+  }
 
-function render() {
-/*
+  function render() {
+  /*
   game.debug.cameraInfo(game.camera, 32, 64);
   game.debug.spriteCoords(player, 32, 150);
   game.debug.text("Launch Velocity: " + parseInt(launchVelocity), 550, 32, 'rgb(0,255,0)');
@@ -652,11 +607,11 @@ function render() {
   game.debug.text("SPEEEEEED"+ player.body.speed, 400, 400, 'rgb(0,255,0)');
   game.debug.text("Overlap: outer"+ calcOverlap(player.body, goal.body), 250, 290, 'rgb(0,255,0)');
   game.debug.text("Shots left: "+ shots, 250, 350, 'rgb(0,255,0)');
-*/
-}
+  */
+  }
 
-export default{
+  export default{
     create,
     update,
     render
-}
+  }
