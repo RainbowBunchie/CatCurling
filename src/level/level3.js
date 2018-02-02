@@ -458,7 +458,6 @@ function create() {
 
   let gameLost = false;
 
-
   function gameOver() {
 
   console.log('gameover function');
@@ -501,6 +500,7 @@ function create() {
   homebutton.events.onInputUp.add(function(){
     gameLost = false;
     gameoverhelper = false;
+    gameWon = false;
     levelscore = 0;
     music.stop();
     game.state.start('loading');
