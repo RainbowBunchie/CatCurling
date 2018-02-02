@@ -43,6 +43,9 @@ function preload(){
   game.load.image('shotsholder', 'assets/img/gui/shotsholder.png');
   game.load.image('shot', 'assets/img/gui/shot.png');
   game.load.image('highscore', 'assets/img/highscore.png');
+  game.load.image('catfurniture', 'assets/img/furniture/kitty.png');
+  game.load.image('couchblue', 'assets/img/furniture/couch-blue.png');
+
 
   game.add.plugin(Fabrique.Plugins.InputField);
 
