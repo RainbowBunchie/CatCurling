@@ -3,7 +3,7 @@ pages:
     - gem install jekyll
     - jekyll build -s 'public' -d public
     artifacts:
-        paths
+        paths:
         - public
     only:
     - master
