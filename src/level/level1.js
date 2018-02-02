@@ -479,7 +479,7 @@ function update() {
 
     scoretext.text=~~scoretext.score;
 
-    if ((shots == 0 && player.body.speed == 0) && gameIsWon!=true) {
+    if ((shots <= 0 && player.body.speed == 0) && gameIsWon!=true) {
       if (gameoverhelper!=true){
       gameOver();
     }
