@@ -1,11 +1,15 @@
 import game from '../game';
-
+import {textstyleRight}from '../style';
+import {textstyleCenter}from '../style';
 
 let back;
-let next;
 let bg;
-let one;
-let two;
+let level1;
+let level2;
+let level3;
+let level4;
+let level5;
+let high;
 
 function create(){
 
@@ -18,46 +22,22 @@ function create(){
   back = game.add.sprite(middleX, game.height - 100, 'back');
   back.anchor.setTo(0.5);
   back.scale.setTo(0.5);
-
   back.inputEnabled=true;
 
   back.events.onInputUp.add(buttonClick);
   back.events.onInputOver.add(buttonHover,this);
   back.events.onInputOut.add(buttonHoverOut,this);
 
-  one = game.add.sprite(middleX, middleY, 'back');
-  one.anchor.setTo(0.5);
-  one.scale.setTo(0.5);
+  let h1 = game.add.text(middleX, middleY-game.height/4, 'Here are your scores!', textstyleCenter);
+  h1.anchor.setTo(0.5);
 
-  one.inputEnabled=true;
+  level1=game.add.text(middleX, middleY, 'Level 1: ' + game.global.score1, textstyleRight)
 
-  one.events.onInputUp.add(function(){
-    selected(1);
-  });
-  one.events.onInputOver.add(buttonHover,this);
-  one.events.onInputOut.add(buttonHoverOut,this);
+  high = game.add.text(middleX, middleY-game.height/4, 'Here are your scores!', textstyleCenter);
+  h1.anchor.setTo(0.5);
 
-
-
-two = game.add.sprite(middleX, middleY+100, 'back');
-two.anchor.setTo(0.5);
-two.scale.setTo(0.5);
-
-two.inputEnabled=true;
-
-two.events.onInputUp.add(function(){
-  selected(2);
-});
-two.events.onInputOver.add(buttonHover,this);
-two.events.onInputOut.add(buttonHoverOut,this);
-
+  level1=game.add.text(middleX, middleY, 'Level 1: ' + game.global.score1, textstyleRight);
 }
-
- function selected(level){
-   let s ='level'+level+'';
-   console.log(s);
-    game.state.start(s);
-  }
 
 function buttonClick(){
   game.state.start('menu');

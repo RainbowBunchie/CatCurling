@@ -8,7 +8,7 @@ import furnitureTpl from '../module-assets/furniture';
 import {getGoal, getPlayer, getAnalog, getArrow, updateShots, displayShots, calcOverlap, getLevelDisplay, getShotsDisplay, addDust, checkIfPaused} from '../module-assets/functions';
 import pkg from '../../package.json';
 
-let level = 1;
+let level = 2;
 let shots;
 let goal;
 let player;
@@ -35,7 +35,7 @@ let paused = false;
 let gameoverhelper;
 
 function create() {
-  shots =3;
+  shots =5;
 
   //MUSIC
 
@@ -54,32 +54,9 @@ function create() {
 	let couchLong = furnitureTpl(game,'couch-long',0,0,0.35,0.35);
   furniture.add(couchLong);
 
-  let couchShort = furnitureTpl(game,'couch-short',0,couchLong.height-2,0.35,0.35);
-  furniture.add(couchShort);
-
-  let tvTable = furnitureTpl(game,'tv-table',60,game.height,0.35,0.35);
-  furniture.add(tvTable);
-
-  let chairs = furnitureTpl(game,'chairs',(game.width/2 - 55),(game.height - 243),0.35,0.35);
-  furniture.add(chairs);
-
-  let table = furnitureTpl(game,'table',game.width/2,game.height,0.35,0.35);
-  furniture.add(table);
-
-  let plant = furnitureTpl(game,'plant',game.width/5 * 3,10,0.45,0.45);
-  furniture.add(plant);
-
-  let deskchair = furnitureTpl(game,'deskchair',game.width-130,game.height/4 + 45,0.45,0.45, 0.2);
-  furniture.add(deskchair);
-
-  let desk = furnitureTpl(game,'desk',game.width,game.height/4,0.45,0.45);
-  furniture.add(desk);
-
-  let coffeetable = furnitureTpl(game,'coffeetable',160,130,0.9,0.9, 0.1);
-  furniture.add(coffeetable);
 
   // GOAL
-  goal = getGoal(80,300);
+  goal = getGoal(500,100);
 
   //DUSTS
 
@@ -96,7 +73,7 @@ function create() {
   arrow = getArrow(player);
 
   // PLAYER
-  player = getPlayer(850, 550, set, launch);
+  player = getPlayer(50, 550, set, launch);
 
 
     // GUI ELEMENTS
@@ -600,10 +577,6 @@ function gameWon(){
   nextlevel.events.onInputOver.add(buttonHoverSmall,this);
   nextlevel.events.onInputOut.add(buttonHoverOutSmall,this);
 
-  nextlevel.events.onInputUp.add(function(){
-    game.state.start('level2');
-  });
-
   let restartbutton = game.add.sprite(menu.x+menu.width/3,menu.y + menu.height/2,'restartbutton');
   restartbutton.scale.setTo(0.5);
   restartbutton.anchor.setTo(0.5);
@@ -649,7 +622,8 @@ function gameWon(){
         });
 
   leveltextpause.setTextBounds(game.width/2-72, game.height/2-70, 150, 10);
-game.global.score1=levelscore;
+  game.global.score2=levelscore;
+
 }
 //triggered when cat overlaps with dust
 function collectDust(player, dust){
