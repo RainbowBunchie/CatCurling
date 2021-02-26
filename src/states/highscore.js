@@ -85,7 +85,7 @@ function create(){
   });
 
   function buttonHover(button){
-    button.scale.setTo(0.9);
+    button.scale.setTo(0.9);g
   }
 
   function buttonHoverOut(button){
